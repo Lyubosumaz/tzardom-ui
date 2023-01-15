@@ -23,21 +23,12 @@ export default [
                 sourcemap: true,
             },
         ],
-        plugins: [
-            peerDepsExternal(),
-            resolve(),
-            commonjs(),
-            typescript({ tsconfig: './tsconfig.json' }),
-            postcss({
-                plugins: [],
-            }),
-            terser(),
-        ],
+        plugins: [peerDepsExternal(), resolve({ extensions: ['.js', '.ts'] }), commonjs(), typescript({ tsconfig: './tsconfig.json' }), postcss({ sourceMap: true, extract: true }), terser()],
     },
     {
         input: 'dist/esm/types/index.d.ts',
         output: [{ file: 'dist/index.d.ts', format: 'esm' }],
         plugins: [dts()],
-        external: [/\.css$/],
+        external: [/\.(css|less|scss)$/],
     },
 ];

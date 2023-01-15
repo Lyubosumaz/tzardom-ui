@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Button } from './Button';
-import './header.css';
+// import 'header.sass';
 
 type User = {
   name: string;
 };
 
-interface HeaderProps {
+export interface HeaderProps {
   user?: User;
   onLogin: () => void;
   onLogout: () => void;
