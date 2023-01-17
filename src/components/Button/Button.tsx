@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import confetti from 'canvas-confetti';
 import './Button.scss'
 
 export interface ButtonProps {
@@ -6,7 +7,19 @@ export interface ButtonProps {
 }
 
 const Button = (props: ButtonProps) => {
-    return <button>{[props.label]}</button>
+    const onClick = useCallback(() => {
+        confetti({
+            particleCount: 1024,
+            spread: 360
+        });
+    }, []);
+
+    return (
+        <button className="button" onClick={onClick}>
+            <span>🎉</span>
+            <span>{props.label}</span>
+        </button>
+    )
 }
 
 export default Button

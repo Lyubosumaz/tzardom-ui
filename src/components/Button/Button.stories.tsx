@@ -11,10 +11,6 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
 export const HelloWorld = Template.bind({});
 HelloWorld.args = {
-    label: "Hello world!",
-};
-
-export const ClickMe = Template.bind({});
-ClickMe.args = {
     label: "Click me!",
 };
+
