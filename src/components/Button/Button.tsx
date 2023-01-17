@@ -1,10 +1,7 @@
 import React, { useCallback } from 'react'
 import confetti from 'canvas-confetti';
+import { ButtonProps } from './Button.types'
 import './Button.scss'
-
-export interface ButtonProps {
-    label: string;
-}
 
 const Button = (props: ButtonProps) => {
     const onClick = useCallback(() => {
