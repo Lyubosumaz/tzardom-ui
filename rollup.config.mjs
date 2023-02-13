@@ -4,7 +4,9 @@ import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import depsExternal from 'rollup-plugin-peer-deps-external';
+import sourcemaps from 'rollup-plugin-sourcemaps';
+import sucrase from '@rollup/plugin-sucrase';
 
 import packageJson from './package.json' assert { type: 'json' };
 
@@ -23,14 +25,26 @@ export default [
                 sourcemap: true,
             },
         ],
+        onwarn(warning, warn) {
+            if (warning.code === 'THIS_IS_UNDEFINED') return;
+            warn(warning);
+        },
         plugins: [
-            peerDepsExternal(),
+            depsExternal(),
             resolve({
                 extensions: ['.js', '.ts'],
             }),
+            sourcemaps(),
             commonjs(),
-            typescript({ tsconfig: './tsconfig.json' }),
+            typescript({
+                tsconfig: './tsconfig.json',
+                exclude: ['**/__tests__', '**/*.test.tsx'],
+            }),
             postcss(),
+            sucrase({
+                exclude: ['node_modules/**'],
+                transforms: ['typescript', 'jsx'],
+            }),
             terser(),
         ],
     },

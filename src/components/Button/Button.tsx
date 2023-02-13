@@ -1,18 +1,27 @@
-import React, { useCallback } from 'react'
 import confetti from 'canvas-confetti';
-import { ButtonProps } from './Button.types'
-import './Button.scss'
+import React, { useContext } from 'react';
+import { TzarContext, ThemeColorMode2, ThemeActionsType} from '../../provider'
+import './Button.scss';
+import { ButtonProps } from './Button.types';
 
 const Button = (props: ButtonProps) => {
-    const onClick = useCallback(() => {
+    const { theme, setTheme } = useContext(TzarContext)
+
+    const onClick = () => {
+        setTheme({
+            type: ThemeActionsType.THEME_COLOR_MODE,
+            theme: theme === ThemeColorMode2.LIGHT ? ThemeColorMode2.DARK: ThemeColorMode2.LIGHT
+        });
+
         confetti({
             particleCount: 1024,
             spread: 360
         });
-    }, []);
+    };
 
     return (
         <button className="button" onClick={onClick}>
+            <div>|4|</div>
             <span>🎉</span>
             <span>{props.label}</span>
         </button>
