@@ -1,6 +1,6 @@
 # tzardom-ui
 
-pet component lib mainly for educational purposes
+pet component lib - mainly for educational purposes
 
 node version >= 16.8.0/19.4.0
 

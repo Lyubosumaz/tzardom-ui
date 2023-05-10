@@ -10,4 +10,5 @@ module.exports = {
     builder: '@storybook/builder-webpack5',
     enableCrashReports: false,
   },
+  typescript: { reactDocgen: false },
 }

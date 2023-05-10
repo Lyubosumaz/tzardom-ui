@@ -2,5 +2,5 @@ export {
   TzarProvider,
   TzarContext,
   ThemeActionsType,
-  ThemeColorMode2,
+  ColorMode,
 } from './TzarProvider'

@@ -1,6 +1,6 @@
-import React, { createContext, useReducer, useState } from 'react'
+import React, { createContext, useReducer } from 'react'
 
-export enum ThemeColorMode2 {
+export enum ColorMode {
   LIGHT = 'light',
   DARK = 'dark',
 }
@@ -9,11 +9,6 @@ export enum ThemeActionsType {
   THEME_COLOR_MODE = 'THEME_COLOR_MODE',
 }
 export type ThemeColorMode = 'light' | 'dark'
-// export type TzarTheme = {
-//     theme: ThemeColorMode;
-//     setTheme: (theme: ThemeColorMode) => void;
-// }
-// export const TzarContext = createContext<TzarTheme | null>(null);
 
 type ThemeData = {
   theme: string
@@ -21,7 +16,7 @@ type ThemeData = {
 
 type ThemeAction = {
   type: ThemeActionsType
-  theme: ThemeColorMode2
+  theme: ColorMode
 }
 
 const themeReducer = (state: ThemeData, action: ThemeAction): ThemeData => {
