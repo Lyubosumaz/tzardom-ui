@@ -1,5 +1,6 @@
-import Input from '../Input'
 import React from 'react'
+
+import Input from '../Input'
 
 const InputLabel = ({ label, error, info, value, ...inputProps }: any) => {
   return (

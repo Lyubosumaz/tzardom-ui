@@ -7,7 +7,7 @@ const sealed = (constructor: Function) => {
 }
 
 const required = (
-  target: Object,
+  target: object,
   propertyKey: string | symbol,
   parameterIndex: number,
 ) => {
