@@ -1,0 +1,5 @@
+{
+  // No-op unless you have the ESLint extension installed;
+  // this line makes it read the project's lint config (eslint.config.mjs)
+  "eslint.useFlatConfig": true
+}
