@@ -1,5 +1,4 @@
 import { Meta, StoryFn } from '@storybook/react'
-
 import SPHeader from './SPHeader'
 
 export default {

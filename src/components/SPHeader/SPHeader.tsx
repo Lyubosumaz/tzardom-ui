@@ -4,8 +4,6 @@ import './SPHeader.scss'
 const SPHeader = () => {
   const isLogged = true
 
-  const additionalClasses = 'main-site-functionalities'
-
   return (
     <header className="site-header-2">
       <nav className="site-navigation">

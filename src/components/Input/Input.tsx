@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { InputProps } from './Input.types'
 
 const Input = ({
   id,
@@ -6,7 +7,7 @@ const Input = ({
   type = 'text',
   readOnly = false,
   required = false,
-}: any) => {
+}: InputProps) => {
   const input = useRef<HTMLInputElement>(null)
 
   useEffect(() => {

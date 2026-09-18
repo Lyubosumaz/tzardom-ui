@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState, Dispatch, ReactNode } from 'react'
+import { createContext, useReducer, Dispatch, ReactNode } from 'react'
 
 export enum ThemeColorMode2 {
   LIGHT = 'light',
@@ -30,7 +30,7 @@ const themeReducer = (state: ThemeData, action: ThemeAction): ThemeData => {
 
 const myTheme = {
   theme: 'dark',
-  setTheme: (action: ThemeAction): void => {},
+  setTheme: (_action: ThemeAction): void => {},
 }
 
 type TypeContext = {

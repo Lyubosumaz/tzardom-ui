@@ -1,5 +1,15 @@
 {
   // No-op unless you have the ESLint extension installed;
   // this line makes it read the project's lint config (eslint.config.mjs)
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+
+  // Custom title bar is required on macOS for VS Code to render
+  // titleBar.* colors at all (the native title bar ignores them).
+  "window.titleBarStyle": "custom",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#702963",
+    "titleBar.activeForeground": "#ffffff",
+    "titleBar.inactiveBackground": "#4e1c46",
+    "titleBar.inactiveForeground": "#d9c3d6"
+  }
 }
