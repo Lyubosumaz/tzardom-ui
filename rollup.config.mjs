@@ -1,7 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
-import dts from 'rollup-plugin-dts'
 import postcss from 'rollup-plugin-postcss'
 import terser from '@rollup/plugin-terser'
 import depsExternal from 'rollup-plugin-peer-deps-external'
@@ -19,7 +17,6 @@ const sharedPlugins = [
   resolve({
     extensions: ['.js', '.ts', '.tsx'],
   }),
-  commonjs(),
   postcss(),
   terser(),
 ]
@@ -73,11 +70,5 @@ export default [
         },
       }),
     ],
-  },
-  {
-    input: 'dist/esm/types/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    plugins: [dts()],
-    external: [/\.(css|less|scss)$/],
   },
 ]

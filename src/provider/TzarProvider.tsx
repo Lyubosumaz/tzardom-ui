@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useState } from 'react'
+import { createContext, useReducer, useState, Dispatch, ReactNode } from 'react'
 
 export enum ThemeColorMode2 {
   LIGHT = 'light',
@@ -9,11 +9,6 @@ export enum ThemeActionsType {
   THEME_COLOR_MODE = 'THEME_COLOR_MODE',
 }
 export type ThemeColorMode = 'light' | 'dark'
-// export type TzarTheme = {
-//     theme: ThemeColorMode;
-//     setTheme: (theme: ThemeColorMode) => void;
-// }
-// export const TzarContext = createContext<TzarTheme | null>(null);
 
 type ThemeData = {
   theme: string
@@ -40,13 +35,13 @@ const myTheme = {
 
 type TypeContext = {
   theme: string
-  setTheme: React.Dispatch<ThemeAction>
+  setTheme: Dispatch<ThemeAction>
 }
 
 export const TzarContext = createContext<TypeContext>(myTheme)
 
 interface ITzarProviderProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export const TzarProvider = ({ children }: ITzarProviderProps) => {

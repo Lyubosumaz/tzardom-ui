@@ -10,14 +10,14 @@ module.exports = {
 
   framework: {
     name: '@storybook/react-webpack5',
-    options: {}
+    options: {},
   },
 
   core: {
-    enableCrashReports: false
+    enableCrashReports: false,
   },
 
   docs: {
-    autodocs: true
-  }
+    autodocs: true,
+  },
 }
