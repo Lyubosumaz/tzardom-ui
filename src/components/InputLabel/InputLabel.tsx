@@ -1,19 +1,35 @@
 import Input from '../Input'
-import React from 'react'
+import { InputProps } from '../Input/Input.types'
+import { InputLabelProps } from './InputLabel.types'
 
-const InputLabel = ({ label, error, info, value, ...inputProps }: any) => {
+const InputLabel = ({
+  label,
+  error,
+  info,
+  value,
+  ...inputProps
+}: InputLabelProps) => {
   return (
     <p className="input-label">
       <label htmlFor={inputProps.id}>{label}</label>
       {inputProps.type === 'multiple-rows' ? (
         <>
-          {value.map((element: any) => (
-            <Input key={element} value={element} {...inputProps} />
+          {(value as Array<string | number>).map((element) => (
+            <Input
+              key={element}
+              value={element}
+              {...(inputProps as Omit<InputProps, 'value'>)}
+            />
           ))}
         </>
       ) : (
-        <Input value={value} {...inputProps} />
+        <Input
+          value={value as InputProps['value']}
+          {...(inputProps as Omit<InputProps, 'value'>)}
+        />
       )}
+      {error && <span className="input-label__error">{error}</span>}
+      {info && <span className="input-label__info">{info}</span>}
     </p>
   )
 }

@@ -1,13 +1,23 @@
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/preset-scss',
+    '@storybook/addon-webpack5-compiler-babel',
   ],
-  framework: '@storybook/react',
+
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
+  },
+
   core: {
-    builder: '@storybook/builder-webpack5',
     enableCrashReports: false,
+  },
+
+  docs: {
+    autodocs: true,
   },
 }

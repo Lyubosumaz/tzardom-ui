@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { TzarContext, ThemeColorMode2, ThemeActionsType } from '../../provider'
-import './Button.scss'
 import { ButtonProps } from './Button.types'
+import './Button.scss'
 
 const Button = (props: ButtonProps) => {
   const { theme, setTheme } = useContext(TzarContext)
