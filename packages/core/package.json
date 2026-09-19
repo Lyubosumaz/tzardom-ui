@@ -1,0 +1,23 @@
+{
+  "name": "@tzardom-ui/core",
+  "version": "0.0.1",
+  "description": "Framework-agnostic components for tzardom-ui, built with Stencil",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/tzardom-ui-core/tzardom-ui-core.esm.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve"
+  },
+  "devDependencies": {
+    "@stencil/core": "^4.23.0",
+    "@stencil/sass": "^3.0.13"
+  },
+  "license": "MIT"
+}

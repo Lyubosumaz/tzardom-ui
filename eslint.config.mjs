@@ -13,27 +13,28 @@ import globals from 'globals'
 export default [
   {
     ignores: [
-      'dist/**',
-      'storybook-static/**',
-      'node_modules/**',
-      'package-lock.json',
+      '**/dist/**',
+      '**/storybook-static/**',
+      '**/node_modules/**',
+      '**/package-lock.json',
+      'packages/core/**',
     ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: [
-      'babel.config.js',
-      'jest.config.js',
+      'packages/react/babel.config.js',
+      'packages/react/jest.config.js',
       'eslint.config.mjs',
-      '.storybook/**/*.js',
+      'packages/react/.storybook/**/*.js',
     ],
     languageOptions: {
       globals: globals.node,
     },
   },
   {
-    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    files: ['packages/react/src/**/*.{js,jsx,ts,tsx}'],
     plugins: {
       react,
       'react-hooks': reactHooks,
@@ -42,7 +43,7 @@ export default [
     languageOptions: {
       parserOptions: {
         ecmaFeatures: { jsx: true },
-        project: ['./tsconfig.json'],
+        project: ['./packages/react/tsconfig.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },

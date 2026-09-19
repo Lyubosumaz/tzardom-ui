@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
-import './SPHeader.scss'
+import './TzarHeader.scss'
 
-const SPHeader = () => {
+const TzarHeader = () => {
   const isLogged = true
 
   return (
@@ -48,4 +48,4 @@ const SPHeader = () => {
   )
 }
 
-export default SPHeader
+export default TzarHeader

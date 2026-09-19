@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 import { TzarContext, ThemeColorMode2, ThemeActionsType } from '../../provider'
-import { ButtonProps } from './Button.types'
-import './Button.scss'
+import { TzarButtonProps } from './TzarButton.types'
+import './TzarButton.scss'
 
-const Button = (props: ButtonProps) => {
+const TzarButton = (props: TzarButtonProps) => {
   const { theme, setTheme } = useContext(TzarContext)
 
   const onClick = () => {
@@ -23,4 +23,4 @@ const Button = (props: ButtonProps) => {
   )
 }
 
-export default Button
+export default TzarButton
