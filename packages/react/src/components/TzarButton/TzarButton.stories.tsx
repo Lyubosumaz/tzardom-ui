@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from '@storybook/react'
-import TzarButton from './TzarButton'
+import { TzarButton } from '../../generated/components'
 
 export default {
   title: 'ReactComponentLibrary/TzarButton',

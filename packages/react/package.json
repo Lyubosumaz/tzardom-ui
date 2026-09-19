@@ -18,6 +18,8 @@
   "author": "Lyubosumaz",
   "license": "MIT",
   "dependencies": {
+    "@stencil/react-output-target": "^1.6.2",
+    "@tzardom-ui/core": "^0.0.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {

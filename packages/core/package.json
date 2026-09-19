@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@stencil/core": "^4.23.0",
+    "@stencil/react-output-target": "^1.6.2",
     "@stencil/sass": "^3.0.13"
   },
   "license": "MIT"

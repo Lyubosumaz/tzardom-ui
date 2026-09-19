@@ -3,11 +3,11 @@ import { Component, Prop, State, Event, EventEmitter, h } from '@stencil/core'
 export type ThemeColorMode = 'light' | 'dark'
 
 @Component({
-  tag: 'tzr-button',
-  styleUrl: 'button.scss',
+  tag: 'tzar-button',
+  styleUrl: 'tzar-button.scss',
   shadow: true,
 })
-export class Button {
+export class TzarButton {
   /** Text shown inside the button. */
   @Prop() label!: string
 

@@ -1,5 +1,6 @@
 import { Config } from '@stencil/core'
 import { sass } from '@stencil/sass'
+import { reactOutputTarget } from '@stencil/react-output-target'
 
 export const config: Config = {
   namespace: 'tzardom-ui-core',
@@ -10,6 +11,7 @@ export const config: Config = {
     },
     {
       type: 'dist-custom-elements',
+      externalRuntime: false,
     },
     {
       type: 'docs-readme',
@@ -18,6 +20,9 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null,
     },
+    reactOutputTarget({
+      outDir: '../react/src/generated',
+    }),
   ],
   plugins: [sass()],
 }

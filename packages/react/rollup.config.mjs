@@ -12,6 +12,12 @@ const onwarn = (warning, warn) => {
   warn(warning)
 }
 
+// Real runtime dependencies (package.json "dependencies"), not just peers —
+// keep them external so their code isn't duplicated into this bundle, and so
+// @tzardom-ui/core's customElements.define() only ever runs once per page.
+const external = (id) =>
+  /^@tzardom-ui\/core/.test(id) || /^@stencil\/react-output-target/.test(id)
+
 const sharedPlugins = [
   depsExternal(),
   resolve({
@@ -36,6 +42,7 @@ export default [
       format: 'esm',
       sourcemap: true,
     },
+    external,
     onwarn,
     plugins: [
       ...sharedPlugins,
@@ -57,6 +64,7 @@ export default [
       format: 'cjs',
       sourcemap: true,
     },
+    external,
     onwarn,
     plugins: [
       ...sharedPlugins,

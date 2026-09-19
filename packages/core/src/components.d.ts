@@ -5,46 +5,60 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ThemeColorMode } from "./components/button/button";
-export { ThemeColorMode } from "./components/button/button";
+import { ThemeColorMode } from "./components/tzar-button/tzar-button";
+export { ThemeColorMode } from "./components/tzar-button/tzar-button";
 export namespace Components {
-    interface TzrButton {
+    interface TzarButton {
         /**
           * Text shown inside the button.
          */
         "label": string;
     }
+    interface TzarHeader {
+        /**
+          * Whether to show the logged-in nav items.
+          * @default true
+         */
+        "isLogged": boolean;
+    }
 }
-export interface TzrButtonCustomEvent<T> extends CustomEvent<T> {
+export interface TzarButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLTzrButtonElement;
+    target: HTMLTzarButtonElement;
 }
 declare global {
-    interface HTMLTzrButtonElementEventMap {
+    interface HTMLTzarButtonElementEventMap {
         "themeChange": ThemeColorMode;
     }
-    interface HTMLTzrButtonElement extends Components.TzrButton, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLTzrButtonElementEventMap>(type: K, listener: (this: HTMLTzrButtonElement, ev: TzrButtonCustomEvent<HTMLTzrButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLTzarButtonElement extends Components.TzarButton, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTzarButtonElementEventMap>(type: K, listener: (this: HTMLTzarButtonElement, ev: TzarButtonCustomEvent<HTMLTzarButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLTzrButtonElementEventMap>(type: K, listener: (this: HTMLTzrButtonElement, ev: TzrButtonCustomEvent<HTMLTzrButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTzarButtonElementEventMap>(type: K, listener: (this: HTMLTzarButtonElement, ev: TzarButtonCustomEvent<HTMLTzarButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLTzrButtonElement: {
-        prototype: HTMLTzrButtonElement;
-        new (): HTMLTzrButtonElement;
+    var HTMLTzarButtonElement: {
+        prototype: HTMLTzarButtonElement;
+        new (): HTMLTzarButtonElement;
+    };
+    interface HTMLTzarHeaderElement extends Components.TzarHeader, HTMLStencilElement {
+    }
+    var HTMLTzarHeaderElement: {
+        prototype: HTMLTzarHeaderElement;
+        new (): HTMLTzarHeaderElement;
     };
     interface HTMLElementTagNameMap {
-        "tzr-button": HTMLTzrButtonElement;
+        "tzar-button": HTMLTzarButtonElement;
+        "tzar-header": HTMLTzarHeaderElement;
     }
 }
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K]?: never };
 
-    interface TzrButton {
+    interface TzarButton {
         /**
           * Text shown inside the button.
          */
@@ -52,22 +66,34 @@ declare namespace LocalJSX {
         /**
           * Fired when the button is clicked, with the new theme value.
          */
-        "onThemeChange"?: (event: TzrButtonCustomEvent<ThemeColorMode>) => void;
+        "onThemeChange"?: (event: TzarButtonCustomEvent<ThemeColorMode>) => void;
+    }
+    interface TzarHeader {
+        /**
+          * Whether to show the logged-in nav items.
+          * @default true
+         */
+        "isLogged"?: boolean;
     }
 
-    interface TzrButtonAttributes {
+    interface TzarButtonAttributes {
         "label": string;
+    }
+    interface TzarHeaderAttributes {
+        "isLogged": boolean;
     }
 
     interface IntrinsicElements {
-        "tzr-button": Omit<TzrButton, keyof TzrButtonAttributes> & { [K in keyof TzrButton & keyof TzrButtonAttributes]?: TzrButton[K] } & { [K in keyof TzrButton & keyof TzrButtonAttributes as `attr:${K}`]?: TzrButtonAttributes[K] } & { [K in keyof TzrButton & keyof TzrButtonAttributes as `prop:${K}`]?: TzrButton[K] } & OneOf<"label", TzrButton["label"], TzrButtonAttributes["label"]>;
+        "tzar-button": Omit<TzarButton, keyof TzarButtonAttributes> & { [K in keyof TzarButton & keyof TzarButtonAttributes]?: TzarButton[K] } & { [K in keyof TzarButton & keyof TzarButtonAttributes as `attr:${K}`]?: TzarButtonAttributes[K] } & { [K in keyof TzarButton & keyof TzarButtonAttributes as `prop:${K}`]?: TzarButton[K] } & OneOf<"label", TzarButton["label"], TzarButtonAttributes["label"]>;
+        "tzar-header": Omit<TzarHeader, keyof TzarHeaderAttributes> & { [K in keyof TzarHeader & keyof TzarHeaderAttributes]?: TzarHeader[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `attr:${K}`]?: TzarHeaderAttributes[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `prop:${K}`]?: TzarHeader[K] };
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "tzr-button": LocalJSX.IntrinsicElements["tzr-button"] & JSXBase.HTMLAttributes<HTMLTzrButtonElement>;
+            "tzar-button": LocalJSX.IntrinsicElements["tzar-button"] & JSXBase.HTMLAttributes<HTMLTzarButtonElement>;
+            "tzar-header": LocalJSX.IntrinsicElements["tzar-header"] & JSXBase.HTMLAttributes<HTMLTzarHeaderElement>;
         }
     }
 }
