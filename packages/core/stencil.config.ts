@@ -15,14 +15,9 @@ export const config: Config = {
       type: 'docs-readme',
     },
     {
-      // Local dev-only harness (`npm start`). Not published — package.json's
-      // "files" only ships dist/.
       type: 'www',
       serviceWorker: null,
     },
   ],
   plugins: [sass()],
-  testing: {
-    browserHeadless: 'new',
-  },
 }
