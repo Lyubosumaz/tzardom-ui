@@ -2,11 +2,13 @@
 
 <!-- Auto Generated Below -->
 
+
 ## Properties
 
 | Property             | Attribute | Description | Type     | Default     |
 | -------------------- | --------- | ----------- | -------- | ----------- |
 | `label` _(required)_ | `label`   |             | `string` | `undefined` |
+
 
 ## Events
 
@@ -14,6 +16,7 @@
 | ------------- | ----------- | -------------------------------- |
 | `themeChange` |             | `CustomEvent<"dark" \| "light">` |
 
----
 
-_Built with [StencilJS](https://stenciljs.com/)_
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

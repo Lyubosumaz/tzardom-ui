@@ -9,20 +9,16 @@
   ],
   "scripts": {
     "setup": "npm install --legacy-peer-deps",
-    "build": "npm run build --workspaces --if-present",
     "clean": "node scripts/clean.mjs",
     "kill-ports": "node scripts/kill-ports.mjs",
     "version:bump": "node scripts/bump-version.mjs",
+    "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
     "storybook": "npm run storybook --workspace=@tzardom-ui/react",
     "storybook:build": "npm run build-storybook --workspace=@tzardom-ui/react",
     "lint": "prettier --write . && eslint --fix .",
     "prepare": "husky"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,mts}": "eslint --fix",
-    "*.{js,jsx,ts,tsx,mjs,mts,json,md,scss,html}": "prettier --write"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -34,7 +30,6 @@
     "globals": "^15.14.0",
     "husky": "^9.1.7",
     "kill-port": "^2.0.1",
-    "lint-staged": "^16.4.0",
     "prettier": "^3.9.8",
     "rimraf": "^6.1.3",
     "typescript-eslint": "^8.70.0"
