@@ -14,6 +14,7 @@
     "version:bump": "node scripts/bump-version.mjs",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
     "storybook": "npm run storybook --workspace=@tzardom-ui/react",
     "storybook:build": "npm run build-storybook --workspace=@tzardom-ui/react",

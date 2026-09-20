@@ -1,5 +1,6 @@
 import { render, h } from '@stencil/vitest'
 import { describe, it, expect } from 'vitest'
+import './tzar-header'
 
 describe('tzar-header', () => {
   it('renders the logged-in nav items by default', async () => {

@@ -18,7 +18,7 @@ const themeReducer = (state: ThemeData, action: ThemeAction): ThemeData => {
 
 const myTheme = {
   theme: 'dark',
-  setTheme: (_action: ThemeAction): void => {},
+  setTheme: (action: ThemeAction): void => void action,
 }
 
 export const TzarContext = createContext<TypeContext>(myTheme)

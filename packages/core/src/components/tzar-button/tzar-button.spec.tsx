@@ -1,5 +1,6 @@
 import { render, h } from '@stencil/vitest'
 import { describe, it, expect } from 'vitest'
+import './tzar-button'
 
 describe('tzar-button', () => {
   it('renders the label text', async () => {

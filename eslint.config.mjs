@@ -13,7 +13,11 @@ export default [
       '**/storybook-static/**',
       '**/node_modules/**',
       '**/package-lock.json',
-      'packages/core/**',
+      'packages/core/www/**',
+      'packages/core/loader/**',
+      'packages/core/.stencil/**',
+      'packages/core/coverage/**',
+      'packages/core/src/components.d.ts',
     ],
   },
   js.configs.recommended,
@@ -28,6 +32,15 @@ export default [
     ],
     languageOptions: {
       globals: globals.node,
+    },
+  },
+  {
+    files: ['packages/core/src/**/*.{ts,tsx}'],
+    rules: {
+      // Stencil's classic JSX transform (jsxFactory: "h") means `h` is only
+      // ever referenced implicitly by the JSX compiler, never named directly
+      // in code - downgraded here instead of disabled globally.
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
   {
@@ -52,7 +65,7 @@ export default [
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
-      'react/jsx-uses-react': 'off',
+      'react/jsx-uses-react': 'error',
       'import/order': [
         'warn',
         {
@@ -79,11 +92,8 @@ export default [
           peerDependencies: true,
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' },
-      ],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-explicit-any': 'error',
     },
   },
   prettierConfig,

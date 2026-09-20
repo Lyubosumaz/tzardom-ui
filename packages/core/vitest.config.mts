@@ -1,10 +1,22 @@
 import { defineVitestConfig } from '@stencil/vitest/config'
+import { stencilVitestPlugin } from '@stencil/vitest/plugin'
 
 export default defineVitestConfig({
   stencilConfig: './stencil.config.ts',
   test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'src/**/*.spec.{ts,tsx}',
+        'src/**/*.e2e.ts',
+        'src/components.d.ts',
+      ],
+    },
     projects: [
       {
+        plugins: [stencilVitestPlugin()],
         oxc: {
           jsx: {
             runtime: 'classic',
@@ -21,7 +33,6 @@ export default defineVitestConfig({
               domEnvironment: 'jsdom',
             },
           },
-          setupFiles: ['./vitest-setup.ts'],
         },
       },
     ],

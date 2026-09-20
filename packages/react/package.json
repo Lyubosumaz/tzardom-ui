@@ -12,6 +12,7 @@
     "precore-build": "npm run build --workspace=@tzardom-ui/core",
     "build": "npm run precore-build && rollup --config",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "prestorybook": "npm run precore-build",
     "storybook": "storybook dev -p 6006",
     "prebuild-storybook": "npm run precore-build",
