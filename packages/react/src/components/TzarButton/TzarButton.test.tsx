@@ -1,5 +1,5 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
-import { TzarButton } from '../../generated/components'
+import { TzarButton } from '@/generated/components'
 
 const getHost = (container: HTMLElement) =>
   container.querySelector('tzar-button') as HTMLElement

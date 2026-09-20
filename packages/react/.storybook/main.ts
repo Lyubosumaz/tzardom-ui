@@ -1,4 +1,7 @@
-module.exports = {
+import path from 'path'
+import type { StorybookConfig } from '@storybook/react-webpack5'
+
+const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
 
   addons: [
@@ -20,4 +23,15 @@ module.exports = {
   docs: {
     autodocs: true,
   },
+
+  webpackFinal: async (config) => {
+    config.resolve = config.resolve ?? {}
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, '../src'),
+    }
+    return config
+  },
 }
+
+export default config

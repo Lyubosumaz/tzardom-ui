@@ -1,1 +1,1 @@
-export { TzarButton, TzarHeader } from '../generated/components'
+export { TzarButton, TzarHeader } from '@/generated/components'

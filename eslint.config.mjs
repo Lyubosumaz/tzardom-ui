@@ -24,7 +24,7 @@ export default [
       'scripts/**/*.mjs',
       'packages/react/babel.config.js',
       'packages/react/jest.config.js',
-      'packages/react/.storybook/**/*.js',
+      'packages/react/.storybook/**/*.ts',
     ],
     languageOptions: {
       globals: globals.node,
@@ -46,6 +46,7 @@ export default [
     },
     settings: {
       react: { version: 'detect' },
+      'import/internal-regex': '^@/',
     },
     rules: {
       ...react.configs.recommended.rules,

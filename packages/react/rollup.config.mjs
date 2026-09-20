@@ -3,8 +3,13 @@ import typescript from '@rollup/plugin-typescript'
 import postcss from 'rollup-plugin-postcss'
 import terser from '@rollup/plugin-terser'
 import depsExternal from 'rollup-plugin-peer-deps-external'
+import alias from '@rollup/plugin-alias'
 
 import { readFileSync } from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'))
 
 const onwarn = (warning, warn) => {
@@ -17,6 +22,9 @@ const external = (id) =>
 
 const sharedPlugins = [
   depsExternal(),
+  alias({
+    entries: [{ find: '@', replacement: path.resolve(dirname, 'src') }],
+  }),
   resolve({
     extensions: ['.js', '.ts', '.tsx'],
   }),

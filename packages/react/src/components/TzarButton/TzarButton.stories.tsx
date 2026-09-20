@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { expect, fn, waitFor } from '@storybook/test'
-import { TzarButton } from '../../generated/components'
+import { TzarButton } from '@/generated/components'
 
 const meta: Meta<typeof TzarButton> = {
   title: 'ReactComponentLibrary/TzarButton',

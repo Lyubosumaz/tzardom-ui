@@ -1,5 +1,5 @@
 import { render, waitFor } from '@testing-library/react'
-import { TzarHeader } from '../../generated/components'
+import { TzarHeader } from '@/generated/components'
 
 const getHost = (container: HTMLElement) =>
   container.querySelector('tzar-header') as HTMLElement
