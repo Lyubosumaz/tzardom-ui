@@ -16,17 +16,13 @@ export const HelloWorld: Story = {
     onThemeChange: fn(),
   },
   play: async ({ canvasElement, args }) => {
-    // tzar-button renders in a shadow root, so reach through it directly
-    // rather than relying on Testing Library queries, which don't pierce it.
     const host = canvasElement.querySelector('tzar-button') as HTMLElement
 
     await waitFor(() => {
       expect(host.shadowRoot?.textContent).toContain('Click me!')
     })
 
-    const button = host.shadowRoot?.querySelector(
-      'button',
-    ) as HTMLButtonElement
+    const button = host.shadowRoot?.querySelector('button') as HTMLButtonElement
     button.click()
 
     await waitFor(() => {

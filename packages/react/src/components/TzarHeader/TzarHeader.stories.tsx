@@ -10,8 +10,6 @@ export default meta
 
 type Story = StoryObj<typeof TzarHeader>
 
-// tzar-header renders in a shadow root, so reach through it directly rather
-// than relying on Testing Library queries, which don't pierce it.
 const getHeaderText = (canvasElement: HTMLElement) => {
   const host = canvasElement.querySelector('tzar-header') as HTMLElement
   return host.shadowRoot?.textContent ?? ''

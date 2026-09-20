@@ -20,9 +20,10 @@ export default [
   ...tseslint.configs.recommended,
   {
     files: [
+      'eslint.config.mjs',
+      'scripts/**/*.mjs',
       'packages/react/babel.config.js',
       'packages/react/jest.config.js',
-      'eslint.config.mjs',
       'packages/react/.storybook/**/*.js',
     ],
     languageOptions: {
@@ -72,9 +73,7 @@ export default [
           devDependencies: [
             '**/*.stories.*',
             '**/*.test.*',
-            '**/*.e2e.*',
             '**/.storybook/**/*.*',
-            '**/playwright.config.*',
           ],
           peerDependencies: true,
         },

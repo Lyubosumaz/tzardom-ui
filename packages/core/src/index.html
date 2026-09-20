@@ -11,11 +11,15 @@
     <p>Click count: <span id="count">0</span></p>
     <p>Last theme reported: <span id="theme">(none yet)</span></p>
 
-    <tzr-button label="Click me!"></tzr-button>
+    <tzar-button label="Click me!"></tzar-button>
+
+    <hr style="margin: 2rem 0;" />
+
+    <tzar-header></tzar-header>
 
     <script>
       let count = 0
-      const btn = document.querySelector('tzr-button')
+      const btn = document.querySelector('tzar-button')
       btn.addEventListener('themeChange', (e) => {
         count += 1
         document.getElementById('count').textContent = String(count)
