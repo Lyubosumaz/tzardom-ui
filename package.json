@@ -10,9 +10,8 @@
   "scripts": {
     "setup": "npm install --legacy-peer-deps",
     "build": "npm run build --workspaces --if-present",
-    "clean": "rimraf packages/*/dist packages/*/loader packages/*/www packages/*/.stencil packages/*/src/generated packages/*/test-results packages/*/playwright-report packages/*/storybook-static node_modules packages/*/node_modules package-lock.json",
-    "clean:cache": "rimraf packages/*/node_modules/.cache packages/*/node_modules/.vite packages/*/node_modules/.vite-temp",
-    "kill-ports": "kill-port 3333 6006; pkill -f 'stencil build --dev' 2>/dev/null; pkill -f 'storybook dev' 2>/dev/null; true",
+    "clean": "node scripts/clean.mjs",
+    "kill-ports": "node scripts/kill-ports.mjs",
     "version:bump": "node scripts/bump-version.mjs",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
