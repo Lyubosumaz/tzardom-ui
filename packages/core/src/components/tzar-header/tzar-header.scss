@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.site-header-2 {
+  background-color: #1a1a1a;
+  padding: 0.75rem 1.5rem;
+
+  .site-navigation {
+    > ul {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .nav-container-left,
+    .nav-container-right {
+      ul {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 0.5rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 6px;
+
+      background-color: transparent;
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.2;
+
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+      }
+
+      &:focus-visible {
+        outline: 2px solid #4d90fe;
+        outline-offset: 2px;
+      }
+    }
+  }
+}

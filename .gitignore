@@ -1,2 +1,11 @@
 node_modules
 dist
+www
+loader
+generated
+.stencil
+test-results
+playwright-report
+playwright/.cache
+storybook-static
+coverage

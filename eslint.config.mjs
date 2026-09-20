@@ -1,7 +1,3 @@
-// ESLint 9 flat config for tzardom-ui
-// Replaces the old .eslintrc.json + eslint-config-airbnb-typescript setup,
-// which does not support ESLint 9's flat config format.
-
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import react from 'eslint-plugin-react'
@@ -13,27 +9,42 @@ import globals from 'globals'
 export default [
   {
     ignores: [
-      'dist/**',
-      'storybook-static/**',
-      'node_modules/**',
-      'package-lock.json',
+      '**/dist/**',
+      '**/storybook-static/**',
+      '**/node_modules/**',
+      '**/package-lock.json',
+      'packages/core/www/**',
+      'packages/core/loader/**',
+      'packages/core/.stencil/**',
+      'packages/core/coverage/**',
+      'packages/core/src/components.d.ts',
     ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: [
-      'babel.config.js',
-      'jest.config.js',
       'eslint.config.mjs',
-      '.storybook/**/*.js',
+      'scripts/**/*.mjs',
+      'packages/react/babel.config.js',
+      'packages/react/jest.config.js',
+      'packages/react/.storybook/**/*.ts',
     ],
     languageOptions: {
       globals: globals.node,
     },
   },
   {
-    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    files: ['packages/core/src/**/*.{ts,tsx}'],
+    rules: {
+      // Stencil's classic JSX transform (jsxFactory: "h") means `h` is only
+      // ever referenced implicitly by the JSX compiler, never named directly
+      // in code - downgraded here instead of disabled globally.
+      '@typescript-eslint/no-unused-vars': 'warn',
+    },
+  },
+  {
+    files: ['packages/react/src/**/*.{js,jsx,ts,tsx}'],
     plugins: {
       react,
       'react-hooks': reactHooks,
@@ -42,18 +53,19 @@ export default [
     languageOptions: {
       parserOptions: {
         ecmaFeatures: { jsx: true },
-        project: ['./tsconfig.json'],
+        project: ['./packages/react/tsconfig.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
     settings: {
       react: { version: 'detect' },
+      'import/internal-regex': '^@/',
     },
     rules: {
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
-      'react/jsx-uses-react': 'off',
+      'react/jsx-uses-react': 'error',
       'import/order': [
         'warn',
         {
@@ -80,11 +92,8 @@ export default [
           peerDependencies: true,
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' },
-      ],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-explicit-any': 'error',
     },
   },
   prettierConfig,

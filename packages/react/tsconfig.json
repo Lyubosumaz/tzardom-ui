@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2018",
+    "jsx": "react-jsx",
+
+    /* Modules */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["jest"],
+
+    /* Emit */
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "declarationDir": "types",
+
+    /* Interop Constraints */
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+
+    /* Completeness */
+    "skipLibCheck": true
+  }
+}
