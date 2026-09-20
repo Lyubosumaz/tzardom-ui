@@ -9,7 +9,9 @@ test.describe('tzar-button', () => {
     await expect(button).toContainText('Click me')
   })
 
-  test('emits themeChange with the new theme when clicked', async ({ page }) => {
+  test('emits themeChange with the new theme when clicked', async ({
+    page,
+  }) => {
     await page.setContent('<tzar-button label="Click me"></tzar-button>')
     const themeChangeSpy = await page.spyOnEvent('themeChange')
 

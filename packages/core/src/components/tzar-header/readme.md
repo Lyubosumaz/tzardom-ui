@@ -1,9 +1,6 @@
 # tzar-header
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,7 +8,6 @@
 | ---------- | ----------- | ----------- | --------- | ------- |
 | `isLogged` | `is-logged` |             | `boolean` | `true`  |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

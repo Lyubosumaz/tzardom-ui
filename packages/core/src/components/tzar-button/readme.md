@@ -1,9 +1,6 @@
 # tzar-button
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,14 +8,12 @@
 | -------------------- | --------- | ----------- | -------- | ----------- |
 | `label` _(required)_ | `label`   |             | `string` | `undefined` |
 
-
 ## Events
 
 | Event         | Description | Type                             |
 | ------------- | ----------- | -------------------------------- |
 | `themeChange` |             | `CustomEvent<"dark" \| "light">` |
 
+---
 
-----------------------------------------------
-
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

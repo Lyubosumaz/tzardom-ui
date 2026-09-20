@@ -19,7 +19,9 @@ const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 const bump = process.argv[2]
 
 if (!bump) {
-  console.error('Usage: npm run version <patch|minor|major|premajor|preminor|prepatch|prerelease|<exact version>>')
+  console.error(
+    'Usage: npm run version <patch|minor|major|premajor|preminor|prepatch|prerelease|<exact version>>',
+  )
   process.exit(1)
 }
 
