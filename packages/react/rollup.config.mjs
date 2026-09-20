@@ -18,7 +18,8 @@ const onwarn = (warning, warn) => {
 }
 
 const external = (id) =>
-  /^@tzardom-ui\/core/.test(id) || /^@stencil\/react-output-target/.test(id)
+  /^@tzardom-ui\/(core|types)/.test(id) ||
+  /^@stencil\/react-output-target/.test(id)
 
 const sharedPlugins = [
   depsExternal(),

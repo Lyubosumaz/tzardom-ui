@@ -22,7 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "@stencil/react-output-target": "^1.6.2",
-    "@tzardom-ui/core": "^0.0.1"
+    "@tzardom-ui/core": "^0.0.1",
+    "@tzardom-ui/types": "^0.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ThemeColorMode } from "./components/tzar-button/tzar-button";
-export { ThemeColorMode } from "./components/tzar-button/tzar-button";
+import { ThemeColorMode } from "@tzardom-ui/types";
+export { ThemeColorMode } from "@tzardom-ui/types";
 export namespace Components {
     interface TzarButton {
         "label": string;

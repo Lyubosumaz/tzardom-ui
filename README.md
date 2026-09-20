@@ -3,27 +3,8 @@
 Pet component library, mainly for educational purposes. A multi-framework
 monorepo: components are built once as framework-agnostic web components in
 `@tzardom-ui/core` (Stencil), with thin per-framework wrapper packages generated
-on top.
-
-## Stack
-
-- **Stencil** — compiles components once into Web Components; works natively in
-  React, Vue, Angular, Svelte, or plain HTML.
-- **`@stencil/react-output-target`** — generates `react`'s components from
-  `core`'s build, so they can't drift out of sync.
-- **npm workspaces** — links `core` and `react` as real package dependencies, no
-  manual `npm link`.
-- **Rollup** — bundles `react`'s wrapper into ESM + CJS for publishing.
-- **Vitest** (`@stencil/vitest`) — unit tests for `core`, against compiled
-  output in jsdom.
-- **Playwright** (`@stencil/playwright`) — real-browser e2e for `core`; jsdom
-  can't fully replicate Shadow DOM and Custom Elements.
-- **Jest + Testing Library** — unit tests for `react`'s wrapper, verifying
-  props/events reach the underlying custom element.
-- **Storybook** — component docs and manual QA, with CSF3 `play` functions for
-  interaction tests.
-
-Vue and Angular wrapper packages are planned, not started.
+on top. Types shared across packages (not owned by any single component) live in
+`@tzardom-ui/types`.
 
 ## Structure
 
@@ -32,10 +13,27 @@ tzardom-ui/            root — private workspace manifest (build/test/lint/clea
   packages/
     core/    @tzardom-ui/core   framework-agnostic components (Stencil)
     react/   @tzardom-ui/react  generated React wrappers + Storybook
+    types/   @tzardom-ui/types  shared, generic types used by core and react
 ```
 
-This is an npm workspace — one `npm run setup` at the repo root installs and
-links every package.
+Types local to one component live next to it (`ComponentName.types.ts`); types
+shared across packages (like `ThemeColorMode`) live in `@tzardom-ui/types`
+instead.
+
+### Stack
+
+| Tool                               | Used in          | What it does                                                                                               |
+| ---------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| Stencil                            | `core`           | Compiles components once into Web Components; works natively in React, Vue, Angular, Svelte, or plain HTML |
+| `@stencil/react-output-target`     | `core` → `react` | Generates `react`'s components from `core`'s build, so they can't drift out of sync                        |
+| npm workspaces                     | root             | Links `core`, `react`, and `types` as real package dependencies, no manual `npm link`                      |
+| Rollup                             | `react`          | Bundles `react`'s wrapper into ESM + CJS for publishing                                                    |
+| Vitest (`@stencil/vitest`)         | `core`           | Unit tests, against compiled output in jsdom                                                               |
+| Playwright (`@stencil/playwright`) | `core`           | Real-browser e2e; jsdom can't fully replicate Shadow DOM and Custom Elements                               |
+| Jest + Testing Library             | `react`          | Unit tests for the wrapper, verifying props/events reach the underlying custom element                     |
+| Storybook                          | `react`          | Component docs and manual QA, with CSF3 `play` functions for interaction tests                             |
+
+Vue and Angular wrapper packages are planned, not started.
 
 ## Requirements
 
@@ -55,18 +53,18 @@ peer-dependency tree) can fail the install. `setup` runs
 
 ## Scripts (run from repo root)
 
-| Command                              | What it does                                                                                                                                                                                                                                                                                                             |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run setup`                      | Installs dependencies for every package (`npm install --legacy-peer-deps`)                                                                                                                                                                                                                                               |
-| `npm run build`                      | Builds every package. `core` (Stencil) always builds first — `react` imports its generated output, so this order is enforced via pre-hooks, not just workspace ordering                                                                                                                                                  |
-| `npm test`                           | Runs unit tests in every package: `core` via Vitest (jsdom), `react` via Jest (jsdom)                                                                                                                                                                                                                                    |
-| `npm run test:e2e`                   | Runs real-browser e2e tests in every package that has them (currently just `core`, via Playwright)                                                                                                                                                                                                                       |
-| `npm run lint`                       | Formats with Prettier and lints with ESLint across the whole repo                                                                                                                                                                                                                                                        |
-| `npm run storybook`                  | Starts Storybook for `@tzardom-ui/react`                                                                                                                                                                                                                                                                                 |
-| `npm run storybook:build`            | Builds the static Storybook site                                                                                                                                                                                                                                                                                         |
-| `npm run clean`                      | Removes every build/generated artifact **and** `node_modules` + `package-lock.json` in every package. Run `npm run setup` afterward                                                                                                                                                                                      |
-| `npm run kill-ports`                 | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                                                                                       |
-| `npm run version:bump <bump\|exact>` | Bumps every package's version (e.g. `patch`, `minor`, or an exact version like `1.0.0`), then keeps `react`'s dependency on `core` in sync. Plain `npm version --workspaces` can't do the sync step itself — it tries to query the real npm registry for `@tzardom-ui/core`, which 404s since it's never published there |
+| Command                              | Used in          | What it does                                                                                                                                                                                                                                                                                           |
+| ------------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run setup`                      | all packages     | Installs dependencies (`npm install --legacy-peer-deps`)                                                                                                                                                                                                                                               |
+| `npm run build`                      | `core` → `react` | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks, not just workspace ordering                                                                                                                                            |
+| `npm test`                           | `core`, `react`  | Unit tests: `core` via Vitest (jsdom), `react` via Jest (jsdom)                                                                                                                                                                                                                                        |
+| `npm run test:e2e`                   | `core`           | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                                                                                                                                                |
+| `npm run lint`                       | root             | Formats with Prettier and lints with ESLint across the whole repo                                                                                                                                                                                                                                      |
+| `npm run storybook`                  | `react`          | Starts Storybook                                                                                                                                                                                                                                                                                       |
+| `npm run storybook:build`            | `react`          | Builds the static Storybook site                                                                                                                                                                                                                                                                       |
+| `npm run clean`                      | all packages     | Removes every build/generated artifact **and** `node_modules` + `package-lock.json`. Run `npm run setup` afterward                                                                                                                                                                                     |
+| `npm run kill-ports`                 | `core`, `react`  | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                                                                     |
+| `npm run version:bump <bump\|exact>` | all packages     | Bumps every package's version (e.g. `patch`, `minor`, or an exact version like `1.0.0`), then keeps `react`'s dependency on `core` in sync — `npm version --workspaces` alone can't, since it tries to query the real npm registry for `@tzardom-ui/core`, which 404s since it's never published there |
 
 Scope any command to one package with `--workspace`, e.g.
 `npm run build --workspace=@tzardom-ui/core`.

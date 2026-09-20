@@ -1,23 +1,11 @@
-import { createContext, useReducer, Dispatch, ReactNode } from 'react'
-
-export enum ThemeColorMode2 {
-  LIGHT = 'light',
-  DARK = 'dark',
-}
-
-export enum ThemeActionsType {
-  THEME_COLOR_MODE = 'THEME_COLOR_MODE',
-}
-export type ThemeColorMode = 'light' | 'dark'
-
-type ThemeData = {
-  theme: string
-}
-
-type ThemeAction = {
-  type: ThemeActionsType
-  theme: ThemeColorMode2
-}
+import { createContext, useReducer } from 'react'
+import {
+  ThemeActionsType,
+  ThemeData,
+  ThemeAction,
+  TypeContext,
+  ITzarProviderProps,
+} from './TzarProvider.types'
 
 const themeReducer = (state: ThemeData, action: ThemeAction): ThemeData => {
   switch (action.type) {
@@ -33,16 +21,7 @@ const myTheme = {
   setTheme: (_action: ThemeAction): void => {},
 }
 
-type TypeContext = {
-  theme: string
-  setTheme: Dispatch<ThemeAction>
-}
-
 export const TzarContext = createContext<TypeContext>(myTheme)
-
-interface ITzarProviderProps {
-  children: ReactNode
-}
 
 export const TzarProvider = ({ children }: ITzarProviderProps) => {
   const [tzarThemeMode, setTzarThemeMode] = useReducer(themeReducer, {

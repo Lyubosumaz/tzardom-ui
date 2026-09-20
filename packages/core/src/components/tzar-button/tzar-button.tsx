@@ -1,6 +1,5 @@
 import { Component, Prop, State, Event, EventEmitter, h } from '@stencil/core'
-
-export type ThemeColorMode = 'light' | 'dark'
+import { ThemeColorMode } from '@tzardom-ui/types'
 
 @Component({
   tag: 'tzar-button',

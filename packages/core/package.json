@@ -11,6 +11,9 @@
   "files": [
     "dist/"
   ],
+  "dependencies": {
+    "@tzardom-ui/types": "^0.0.1"
+  },
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",

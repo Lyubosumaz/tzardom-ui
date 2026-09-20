@@ -1,0 +1,10 @@
+{
+  "name": "@tzardom-ui/types",
+  "version": "0.0.1",
+  "description": "Shared, generic types used across the tzardom-ui packages",
+  "license": "MIT",
+  "types": "src/index.ts",
+  "files": [
+    "src"
+  ]
+}
