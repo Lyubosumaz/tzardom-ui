@@ -105,9 +105,9 @@ like or does, edit it in `packages/core`, not here.
 
 Story files use CSF3 with `play` functions for interaction testing, runnable
 interactively from Storybook's Interactions panel. There's no automated e2e
-runner wired up for `react` yet — that's blocked on a Storybook 8 → 10 migration
-(`@storybook/addon-vitest`, the natural fit, needs Storybook ≥10 and conflicts
-with `core`'s Vitest version otherwise).
+runner wired up for `react` yet — `react` was upgraded to Storybook 10, so
+`@storybook/addon-vitest` (the natural fit, needs Storybook ≥10) is no longer
+blocked by a Vitest version conflict with `core`. It just hasn't been added.
 
 ## A gotcha worth knowing
 

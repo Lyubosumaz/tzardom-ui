@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
-import { expect, fn, waitFor } from '@storybook/test'
+import { Meta, StoryObj } from '@storybook/react-webpack5'
+import { expect, fn, waitFor } from 'storybook/test'
 import { TzarButton } from '@/generated/components'
 
 const meta: Meta<typeof TzarButton> = {
