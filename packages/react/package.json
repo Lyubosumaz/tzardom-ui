@@ -9,9 +9,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup --config",
+    "precore-build": "npm run build --workspace=@tzardom-ui/core",
+    "build": "npm run precore-build && rollup --config",
     "test": "jest",
+    "prestorybook": "npm run precore-build",
     "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run precore-build",
     "build-storybook": "storybook build",
     "lint": "prettier --write . && eslint --fix ."
   },
@@ -38,6 +41,7 @@
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^8.6.18",
     "@storybook/react-webpack5": "^8.6.18",
+    "@storybook/test": "^8.6.18",
     "@testing-library/react": "^16.3.3",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.3.0",
@@ -69,7 +73,7 @@
     "typescript-eslint": "^8.70.0"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   }
 }

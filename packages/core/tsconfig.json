@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "es2017", "ESNext.Disposable"],
     "moduleResolution": "bundler",
     "module": "esnext",
     "target": "es2017",
@@ -15,5 +15,10 @@
     "jsxFragmentFactory": "Fragment"
   },
   "include": ["src"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.e2e.ts"]
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.e2e.ts",
+    "src/**/*.e2e.tsx"
+  ]
 }

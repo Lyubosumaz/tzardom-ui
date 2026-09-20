@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property   | Attribute   | Description                              | Type      | Default |
-| ---------- | ----------- | ---------------------------------------- | --------- | ------- |
-| `isLogged` | `is-logged` | Whether to show the logged-in nav items. | `boolean` | `true`  |
+| Property   | Attribute   | Description | Type      | Default |
+| ---------- | ----------- | ----------- | --------- | ------- |
+| `isLogged` | `is-logged` |             | `boolean` | `true`  |
 
 
 ----------------------------------------------

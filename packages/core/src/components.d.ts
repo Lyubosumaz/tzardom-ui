@@ -9,14 +9,10 @@ import { ThemeColorMode } from "./components/tzar-button/tzar-button";
 export { ThemeColorMode } from "./components/tzar-button/tzar-button";
 export namespace Components {
     interface TzarButton {
-        /**
-          * Text shown inside the button.
-         */
         "label": string;
     }
     interface TzarHeader {
         /**
-          * Whether to show the logged-in nav items.
           * @default true
          */
         "isLogged": boolean;
@@ -59,18 +55,11 @@ declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K]?: never };
 
     interface TzarButton {
-        /**
-          * Text shown inside the button.
-         */
         "label": string;
-        /**
-          * Fired when the button is clicked, with the new theme value.
-         */
         "onThemeChange"?: (event: TzarButtonCustomEvent<ThemeColorMode>) => void;
     }
     interface TzarHeader {
         /**
-          * Whether to show the logged-in nav items.
           * @default true
          */
         "isLogged"?: boolean;

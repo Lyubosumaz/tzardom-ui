@@ -1,19 +1,44 @@
-import { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
+import { expect, waitFor } from '@storybook/test'
 import { TzarHeader } from '../../generated/components'
 
-export default {
+const meta: Meta<typeof TzarHeader> = {
   title: 'ReactComponentLibrary/TzarHeader',
   component: TzarHeader,
-} as Meta<typeof TzarHeader>
+}
+export default meta
 
-const Template: StoryFn<typeof TzarHeader> = (args) => <TzarHeader {...args} />
+type Story = StoryObj<typeof TzarHeader>
 
-export const Header = Template.bind({})
-Header.args = {
-  isLogged: true,
+// tzar-header renders in a shadow root, so reach through it directly rather
+// than relying on Testing Library queries, which don't pierce it.
+const getHeaderText = (canvasElement: HTMLElement) => {
+  const host = canvasElement.querySelector('tzar-header') as HTMLElement
+  return host.shadowRoot?.textContent ?? ''
 }
 
-export const LoggedOut = Template.bind({})
-LoggedOut.args = {
-  isLogged: false,
+export const Header: Story = {
+  args: {
+    isLogged: true,
+  },
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      const text = getHeaderText(canvasElement)
+      expect(text).toContain('Forest Runner')
+      expect(text).toContain('Social')
+    })
+  },
+}
+
+export const LoggedOut: Story = {
+  args: {
+    isLogged: false,
+  },
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      const text = getHeaderText(canvasElement)
+      expect(text).toContain('Home')
+      expect(text).toContain('Register')
+    })
+  },
 }

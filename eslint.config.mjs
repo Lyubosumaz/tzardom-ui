@@ -1,7 +1,3 @@
-// ESLint 9 flat config for tzardom-ui
-// Replaces the old .eslintrc.json + eslint-config-airbnb-typescript setup,
-// which does not support ESLint 9's flat config format.
-
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import react from 'eslint-plugin-react'
@@ -76,7 +72,9 @@ export default [
           devDependencies: [
             '**/*.stories.*',
             '**/*.test.*',
+            '**/*.e2e.*',
             '**/.storybook/**/*.*',
+            '**/playwright.config.*',
           ],
           peerDependencies: true,
         },

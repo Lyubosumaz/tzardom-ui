@@ -7,16 +7,16 @@
 
 ## Properties
 
-| Property             | Attribute | Description                   | Type     | Default     |
-| -------------------- | --------- | ----------------------------- | -------- | ----------- |
-| `label` _(required)_ | `label`   | Text shown inside the button. | `string` | `undefined` |
+| Property             | Attribute | Description | Type     | Default     |
+| -------------------- | --------- | ----------- | -------- | ----------- |
+| `label` _(required)_ | `label`   |             | `string` | `undefined` |
 
 
 ## Events
 
-| Event         | Description                                                 | Type                             |
-| ------------- | ----------------------------------------------------------- | -------------------------------- |
-| `themeChange` | Fired when the button is clicked, with the new theme value. | `CustomEvent<"dark" \| "light">` |
+| Event         | Description | Type                             |
+| ------------- | ----------- | -------------------------------- |
+| `themeChange` |             | `CustomEvent<"dark" \| "light">` |
 
 
 ----------------------------------------------

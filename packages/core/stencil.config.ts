@@ -25,4 +25,7 @@ export const config: Config = {
     }),
   ],
   plugins: [sass()],
+  devServer: {
+    address: 'localhost',
+  },
 }

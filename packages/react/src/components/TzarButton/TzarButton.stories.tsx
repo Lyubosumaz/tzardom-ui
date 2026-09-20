@@ -1,14 +1,36 @@
-import { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
+import { expect, fn, waitFor } from '@storybook/test'
 import { TzarButton } from '../../generated/components'
 
-export default {
+const meta: Meta<typeof TzarButton> = {
   title: 'ReactComponentLibrary/TzarButton',
   component: TzarButton,
-} as Meta<typeof TzarButton>
+}
+export default meta
 
-const Template: StoryFn<typeof TzarButton> = (args) => <TzarButton {...args} />
+type Story = StoryObj<typeof TzarButton>
 
-export const HelloWorld = Template.bind({})
-HelloWorld.args = {
-  label: 'Click me!',
+export const HelloWorld: Story = {
+  args: {
+    label: 'Click me!',
+    onThemeChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    // tzar-button renders in a shadow root, so reach through it directly
+    // rather than relying on Testing Library queries, which don't pierce it.
+    const host = canvasElement.querySelector('tzar-button') as HTMLElement
+
+    await waitFor(() => {
+      expect(host.shadowRoot?.textContent).toContain('Click me!')
+    })
+
+    const button = host.shadowRoot?.querySelector(
+      'button',
+    ) as HTMLButtonElement
+    button.click()
+
+    await waitFor(() => {
+      expect(args.onThemeChange).toHaveBeenCalledTimes(1)
+    })
+  },
 }

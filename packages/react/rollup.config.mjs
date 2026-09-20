@@ -12,9 +12,6 @@ const onwarn = (warning, warn) => {
   warn(warning)
 }
 
-// Real runtime dependencies (package.json "dependencies"), not just peers —
-// keep them external so their code isn't duplicated into this bundle, and so
-// @tzardom-ui/core's customElements.define() only ever runs once per page.
 const external = (id) =>
   /^@tzardom-ui\/core/.test(id) || /^@stencil\/react-output-target/.test(id)
 
@@ -31,6 +28,7 @@ const typescriptExclude = [
   '**/__tests__',
   '**/*.test.tsx',
   '**/*.stories.tsx',
+  '**/*.e2e.ts',
   '**/TestDecorator.ts',
 ]
 

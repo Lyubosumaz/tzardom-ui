@@ -6,7 +6,6 @@ import { Component, Prop, Fragment, h } from '@stencil/core'
   shadow: true,
 })
 export class TzarHeader {
-  /** Whether to show the logged-in nav items. */
   @Prop() isLogged: boolean = true
 
   render() {
