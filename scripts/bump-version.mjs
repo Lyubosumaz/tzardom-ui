@@ -29,18 +29,24 @@ try {
 
   const corePkgPath = path.join(rootDir, 'packages/core/package.json')
   const reactPkgPath = path.join(rootDir, 'packages/react/package.json')
+  const typesPkgPath = path.join(rootDir, 'packages/types/package.json')
 
   const coreVersion = JSON.parse(readFileSync(corePkgPath, 'utf8')).version
-  const reactPkg = JSON.parse(readFileSync(reactPkgPath, 'utf8'))
+  const typesVersion = JSON.parse(readFileSync(typesPkgPath, 'utf8')).version
 
-  const newRange = `^${coreVersion}`
-  if (reactPkg.dependencies?.['@tzardom-ui/core'] !== newRange) {
-    reactPkg.dependencies['@tzardom-ui/core'] = newRange
-    writeFileSync(reactPkgPath, `${JSON.stringify(reactPkg, null, 2)}\n`)
-    console.log(
-      `Synced @tzardom-ui/react's dependency on @tzardom-ui/core to ${newRange}`,
-    )
+  const syncDependency = (pkgPath, depName, newRange) => {
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
+    if (pkg.dependencies?.[depName] === newRange) {
+      return
+    }
+    pkg.dependencies[depName] = newRange
+    writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`)
+    console.log(`Synced ${pkg.name}'s dependency on ${depName} to ${newRange}`)
   }
+
+  syncDependency(reactPkgPath, '@tzardom-ui/core', `^${coreVersion}`)
+  syncDependency(reactPkgPath, '@tzardom-ui/types', `^${typesVersion}`)
+  syncDependency(corePkgPath, '@tzardom-ui/types', `^${typesVersion}`)
 } catch (error) {
   console.error('Version bump failed:', error)
   process.exit(1)

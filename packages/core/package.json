@@ -1,6 +1,6 @@
 {
   "name": "@tzardom-ui/core",
-  "version": "0.0.1",
+  "version": "0.1.3",
   "description": "Framework-agnostic components for tzardom-ui, built with Stencil",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -12,7 +12,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@tzardom-ui/types": "^0.0.1"
+    "@tzardom-ui/types": "^0.0.3"
   },
   "scripts": {
     "build": "stencil build",
