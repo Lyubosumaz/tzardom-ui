@@ -1,6 +1,6 @@
 {
   "name": "@tzardom-ui/types",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Shared, generic types used across the tzardom-ui packages",
   "license": "MIT",
   "publishConfig": {

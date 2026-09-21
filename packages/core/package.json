@@ -1,6 +1,6 @@
 {
   "name": "@tzardom-ui/core",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Framework-agnostic components for tzardom-ui, built with Stencil",
   "publishConfig": {
     "access": "public"
@@ -16,7 +16,7 @@
     "loader/"
   ],
   "dependencies": {
-    "@tzardom-ui/types": "^0.0.5"
+    "@tzardom-ui/types": "^0.0.6"
   },
   "scripts": {
     "build": "stencil build",
