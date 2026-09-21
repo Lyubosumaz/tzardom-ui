@@ -129,11 +129,28 @@ Versioning and publishing go through
 `npm publish`.
 
 **Day to day**: when a PR changes `packages/core`, `packages/react`, or
-`packages/types`, run `npx changeset` and follow the prompt — pick which
-package(s) actually changed and the bump type (patch/minor/major). This writes a
-small markdown file under `.changeset/`, not an actual version bump. Commit it
-with the PR. CI (`.github/workflows/ci.yml`) fails a PR that touches a package
-without one.
+`packages/types`, run `npx changeset` (or `npm run changeset`) and follow the
+prompt — pick which package(s) actually changed and the bump type
+(patch/minor/major), then write a one-line summary of the change. This doesn't
+bump any version — it writes a small markdown file under `.changeset/`, e.g.
+`.changeset/silly-lions-jump.md`:
+
+```md
+---
+'@tzardom-ui/core': patch
+---
+
+Fixed TzarButton not toggling theme on Enter key
+```
+
+Commit that file with the rest of the PR. CI (`.github/workflows/ci.yml`) fails
+a PR that touches a package without one — `changeset add --empty` creates an
+empty one for changes that genuinely don't need a release (docs, CI config,
+etc.).
+
+You don't need the interactive prompt — the file above is all `changeset`
+actually produces, so writing it by hand (or asking whoever/whatever made the
+change to write it) works exactly the same.
 
 **Releasing**: once changesets land on `master`, `.github/workflows/release.yml`
 (`changesets/action`) automatically maintains a "Version Packages" PR that
