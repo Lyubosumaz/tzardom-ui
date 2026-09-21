@@ -10,14 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
+      - name: Check LICENSE year
+        run: npm run license:check
+
       - name: Install dependencies
         run: npm run setup
+
+      - name: Check for a changeset
+        if: github.event_name == 'pull_request'
+        run: npx changeset status --since=origin/master
 
       - name: Build
         run: npm run build

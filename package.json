@@ -19,9 +19,13 @@
     "storybook": "npm run storybook --workspace=@tzardom-ui/react",
     "storybook:build": "npm run build-storybook --workspace=@tzardom-ui/react",
     "lint": "prettier --write . && eslint --fix .",
+    "license:check": "node scripts/license-year.mjs",
+    "license:bump": "node scripts/license-year.mjs --fix",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
     "@eslint/js": "^9.39.5",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",

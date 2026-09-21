@@ -3,6 +3,9 @@
   "version": "0.0.5",
   "description": "Shared, generic types used across the tzardom-ui packages",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "types": "src/index.ts",
   "files": [
     "src"
