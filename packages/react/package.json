@@ -1,6 +1,6 @@
 {
   "name": "@tzardom-ui/react",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "My pet component library",
   "publishConfig": {
     "access": "public"
@@ -26,8 +26,8 @@
   "license": "MIT",
   "dependencies": {
     "@stencil/react-output-target": "^1.6.2",
-    "@tzardom-ui/core": "^0.1.5",
-    "@tzardom-ui/types": "^0.0.5"
+    "@tzardom-ui/core": "^0.1.6",
+    "@tzardom-ui/types": "^0.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
