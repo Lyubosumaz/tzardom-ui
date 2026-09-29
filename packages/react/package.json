@@ -19,8 +19,7 @@
     "prestorybook": "pnpm run precore-build",
     "storybook": "storybook dev -p 6006",
     "prebuild-storybook": "pnpm run precore-build",
-    "build-storybook": "storybook build",
-    "lint": "prettier --write . && eslint --fix ."
+    "build-storybook": "storybook build"
   },
   "author": "Lyubosumaz",
   "license": "MIT",
@@ -34,7 +33,6 @@
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-react": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
-    "@eslint/js": "^9.39.5",
     "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
@@ -54,17 +52,10 @@
     "babel-jest": "^30.5.1",
     "babel-loader": "^10.1.1",
     "css-loader": "^7.1.5",
-    "eslint": "^9.39.5",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-storybook": "10.6.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.5.1",
     "jest-environment-jsdom": "^30.5.1",
     "postcss": "^8.5.28",
-    "prettier": "^3.9.8",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "rollup": "^4.63.3",
@@ -75,8 +66,7 @@
     "sass-loader": "^17.0.1",
     "storybook": "^10.6.0",
     "style-loader": "^4.0.0",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.0"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": "^19.3.0",
