@@ -12,9 +12,9 @@
 
 ## Events
 
-| Event         | Description | Type                             |
-| ------------- | ----------- | -------------------------------- |
-| `themeChange` |             | `CustomEvent<"dark" \| "light">` |
+| Event         | Description | Type                                                       |
+| ------------- | ----------- | ---------------------------------------------------------- |
+| `themeChange` |             | `CustomEvent<ThemeColorMode.DARK \| ThemeColorMode.LIGHT>` |
 
 
 ----------------------------------------------

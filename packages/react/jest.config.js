@@ -1,8 +1,9 @@
 module.exports = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
-    '.(css|less|scss)$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@tzardom-ui/types$': '<rootDir>/../types/src/index.ts',
+    '.(css|less|scss)$': 'identity-obj-proxy',
   },
   transformIgnorePatterns: ['node_modules/(?!(@lit/react)/)'],
   collectCoverageFrom: [

@@ -8,11 +8,14 @@ import { ThemeColorMode } from '@tzardom-ui/types'
 })
 export class TzarButton {
   @Prop() label!: string
-  @State() theme: ThemeColorMode = 'light'
+  @State() theme: ThemeColorMode = ThemeColorMode.LIGHT
   @Event() themeChange!: EventEmitter<ThemeColorMode>
 
   private onClick = () => {
-    this.theme = this.theme === 'light' ? 'dark' : 'light'
+    this.theme =
+      this.theme === ThemeColorMode.LIGHT
+        ? ThemeColorMode.DARK
+        : ThemeColorMode.LIGHT
     this.themeChange.emit(this.theme)
   }
 

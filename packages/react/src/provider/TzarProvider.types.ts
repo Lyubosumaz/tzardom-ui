@@ -1,25 +1,21 @@
 import { Dispatch, ReactNode } from 'react'
-
-export enum ThemeColorMode2 {
-  LIGHT = 'light',
-  DARK = 'dark',
-}
+import type { ThemeColorMode } from '@tzardom-ui/types'
 
 export enum ThemeActionsType {
   THEME_COLOR_MODE = 'THEME_COLOR_MODE',
 }
 
 export type ThemeData = {
-  theme: string
+  theme: ThemeColorMode
 }
 
 export type ThemeAction = {
   type: ThemeActionsType
-  theme: ThemeColorMode2
+  theme: ThemeColorMode
 }
 
 export type TypeContext = {
-  theme: string
+  theme: ThemeColorMode
   setTheme: Dispatch<ThemeAction>
 }
 

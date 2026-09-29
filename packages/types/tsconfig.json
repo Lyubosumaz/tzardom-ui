@@ -6,7 +6,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noEmit": true
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist"
   },
   "include": ["src"]
 }

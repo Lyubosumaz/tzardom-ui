@@ -19,9 +19,13 @@
     "@tzardom-ui/types": "^0.0.6"
   },
   "scripts": {
+    "prebuild": "npm run build --workspace=@tzardom-ui/types",
     "build": "stencil build",
+    "prestart": "npm run build --workspace=@tzardom-ui/types",
     "start": "stencil build --dev --watch --serve",
+    "pretest": "npm run build --workspace=@tzardom-ui/types",
     "test": "vitest run --project spec",
+    "pretest:coverage": "npm run build --workspace=@tzardom-ui/types",
     "test:coverage": "vitest run --project spec --coverage",
     "test:e2e": "playwright test"
   },

@@ -1,4 +1,5 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
+import { ThemeColorMode } from '@tzardom-ui/types'
 import { TzarButton } from '@/generated/components'
 
 const getHost = (container: HTMLElement) =>
@@ -32,7 +33,7 @@ describe('TzarButton', () => {
     await waitFor(() => {
       expect(handleThemeChange).toHaveBeenCalledTimes(1)
     })
-    expect(handleThemeChange.mock.calls[0][0].detail).toBe('dark')
+    expect(handleThemeChange.mock.calls[0][0].detail).toBe(ThemeColorMode.DARK)
   })
 
   test('toggles back to light on a second click', async () => {
@@ -54,6 +55,6 @@ describe('TzarButton', () => {
     fireEvent.click(button as HTMLButtonElement)
     await waitFor(() => expect(handleThemeChange).toHaveBeenCalledTimes(2))
 
-    expect(handleThemeChange.mock.calls[1][0].detail).toBe('light')
+    expect(handleThemeChange.mock.calls[1][0].detail).toBe(ThemeColorMode.LIGHT)
   })
 })
