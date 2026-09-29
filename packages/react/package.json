@@ -12,13 +12,13 @@
     "dist"
   ],
   "scripts": {
-    "precore-build": "npm run build --workspace=@tzardom-ui/core",
-    "build": "npm run precore-build && rollup --config",
+    "precore-build": "pnpm --filter @tzardom-ui/core run build",
+    "build": "pnpm run precore-build && rollup --config",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "prestorybook": "npm run precore-build",
+    "prestorybook": "pnpm run precore-build",
     "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "npm run precore-build",
+    "prebuild-storybook": "pnpm run precore-build",
     "build-storybook": "storybook build",
     "lint": "prettier --write . && eslint --fix ."
   },
@@ -26,8 +26,8 @@
   "license": "MIT",
   "dependencies": {
     "@stencil/react-output-target": "^1.6.2",
-    "@tzardom-ui/core": "^0.1.6",
-    "@tzardom-ui/types": "^0.0.6"
+    "@tzardom-ui/core": "workspace:^",
+    "@tzardom-ui/types": "workspace:^"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -13,7 +13,7 @@ export default [
       '**/dist/**',
       '**/storybook-static/**',
       '**/node_modules/**',
-      '**/package-lock.json',
+      '**/pnpm-lock.yaml',
       'packages/core/www/**',
       'packages/core/loader/**',
       'packages/core/.stencil/**',

@@ -51,7 +51,7 @@ try {
 
   if (staleCount > 0 && !shouldFix) {
     console.error(
-      `\n${staleCount} LICENSE file(s) need a year bump. Run \`npm run license:bump\` to fix.`,
+      `\n${staleCount} LICENSE file(s) need a year bump. Run \`pnpm license:bump\` to fix.`,
     )
     process.exit(1)
   }

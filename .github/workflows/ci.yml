@@ -13,28 +13,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
       - name: Check LICENSE year
-        run: npm run license:check
+        run: node scripts/license-year.mjs
 
       - name: Install dependencies
-        run: npm run setup
+        run: pnpm install --frozen-lockfile
 
       - name: Check for a changeset
         if:
           github.event_name == 'pull_request' && github.head_ref !=
           'changeset-release/master'
-        run: npx changeset status --since=origin/master
+        run: pnpm changeset status --since=origin/master
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Test with coverage
-        run: npm run test:coverage
+        run: pnpm run test:coverage
