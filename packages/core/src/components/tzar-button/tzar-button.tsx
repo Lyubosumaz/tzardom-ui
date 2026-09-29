@@ -1,4 +1,5 @@
-import { Component, Prop, State, Event, EventEmitter, h } from '@stencil/core'
+import type { EventEmitter } from '@stencil/core'
+import { Component, Prop, State, Event, h } from '@stencil/core'
 import { ThemeColorMode } from '@tzardom-ui/types'
 
 @Component({

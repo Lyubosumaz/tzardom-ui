@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react-webpack5'
+import type { Meta, StoryObj } from '@storybook/react-webpack5'
 import { expect, waitFor } from 'storybook/test'
 import { TzarHeader } from '@/generated/components'
 
@@ -20,10 +20,10 @@ export const Header: Story = {
     isLogged: true,
   },
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
+    await waitFor(async () => {
       const text = getHeaderText(canvasElement)
-      expect(text).toContain('Forest Runner')
-      expect(text).toContain('Social')
+      await expect(text).toContain('Forest Runner')
+      await expect(text).toContain('Social')
     })
   },
 }
@@ -33,10 +33,10 @@ export const LoggedOut: Story = {
     isLogged: false,
   },
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
+    await waitFor(async () => {
       const text = getHeaderText(canvasElement)
-      expect(text).toContain('Home')
-      expect(text).toContain('Register')
+      await expect(text).toContain('Home')
+      await expect(text).toContain('Register')
     })
   },
 }

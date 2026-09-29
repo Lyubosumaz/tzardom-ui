@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
-import { ThemeColorMode } from '@tzardom-ui/types'
 import { TzarButton } from '@/generated/components'
+import { ThemeColorMode } from '@tzardom-ui/types'
 
 const getHost = (container: HTMLElement) =>
   container.querySelector('tzar-button') as HTMLElement
@@ -16,7 +16,10 @@ describe('TzarButton', () => {
   })
 
   test('fires onThemeChange with the new theme when clicked', async () => {
-    const handleThemeChange = jest.fn()
+    const handleThemeChange = jest.fn<
+      undefined,
+      [CustomEvent<ThemeColorMode>]
+    >()
     const { container } = render(
       <TzarButton label="Click me" onThemeChange={handleThemeChange} />,
     )
@@ -37,7 +40,10 @@ describe('TzarButton', () => {
   })
 
   test('toggles back to light on a second click', async () => {
-    const handleThemeChange = jest.fn()
+    const handleThemeChange = jest.fn<
+      undefined,
+      [CustomEvent<ThemeColorMode>]
+    >()
     const { container } = render(
       <TzarButton label="Click me" onThemeChange={handleThemeChange} />,
     )
@@ -50,10 +56,14 @@ describe('TzarButton', () => {
     })
 
     fireEvent.click(button as HTMLButtonElement)
-    await waitFor(() => expect(handleThemeChange).toHaveBeenCalledTimes(1))
+    await waitFor(() => {
+      expect(handleThemeChange).toHaveBeenCalledTimes(1)
+    })
 
     fireEvent.click(button as HTMLButtonElement)
-    await waitFor(() => expect(handleThemeChange).toHaveBeenCalledTimes(2))
+    await waitFor(() => {
+      expect(handleThemeChange).toHaveBeenCalledTimes(2)
+    })
 
     expect(handleThemeChange.mock.calls[1][0].detail).toBe(ThemeColorMode.LIGHT)
   })

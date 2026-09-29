@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')

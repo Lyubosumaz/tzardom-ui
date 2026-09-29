@@ -1,5 +1,5 @@
-import { useContext } from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
+import { useContext } from 'react'
 import { ThemeColorMode } from '@tzardom-ui/types'
 import { TzarProvider, TzarContext, ThemeActionsType } from './index'
 
@@ -10,7 +10,7 @@ const ThemeConsumer = () => {
     <div>
       <span data-testid="theme">{theme}</span>
       <button
-        onClick={() =>
+        onClick={() => {
           setTheme({
             type: ThemeActionsType.THEME_COLOR_MODE,
             theme:
@@ -18,17 +18,19 @@ const ThemeConsumer = () => {
                 ? ThemeColorMode.LIGHT
                 : ThemeColorMode.DARK,
           })
-        }
+        }}
       >
         toggle
       </button>
       <button
-        onClick={() =>
+        onClick={() => {
           setTheme({
+            // Deliberately invalid, to test the reducer's fallback.
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
             type: 'UNKNOWN' as ThemeActionsType,
             theme: ThemeColorMode.DARK,
           })
-        }
+        }}
       >
         unknown action
       </button>
