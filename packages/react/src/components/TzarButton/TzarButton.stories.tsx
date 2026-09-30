@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react-webpack5'
+import type { Meta, StoryObj } from '@storybook/react-webpack5'
 import { expect, fn, waitFor } from 'storybook/test'
 import { TzarButton } from '@/generated/components'
 
@@ -18,15 +18,15 @@ export const HelloWorld: Story = {
   play: async ({ canvasElement, args }) => {
     const host = canvasElement.querySelector('tzar-button') as HTMLElement
 
-    await waitFor(() => {
-      expect(host.shadowRoot?.textContent).toContain('Click me!')
+    await waitFor(async () => {
+      await expect(host.shadowRoot?.textContent).toContain('Click me!')
     })
 
     const button = host.shadowRoot?.querySelector('button') as HTMLButtonElement
     button.click()
 
-    await waitFor(() => {
-      expect(args.onThemeChange).toHaveBeenCalledTimes(1)
+    await waitFor(async () => {
+      await expect(args.onThemeChange).toHaveBeenCalledTimes(1)
     })
   },
 }

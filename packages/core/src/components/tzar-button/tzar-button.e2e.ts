@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test'
 import { test } from '@stencil/playwright'
+import { ThemeColorMode } from '@tzardom-ui/types'
 
 test.describe('tzar-button', () => {
   test('renders the label', async ({ page }) => {
@@ -17,7 +18,7 @@ test.describe('tzar-button', () => {
 
     await page.locator('tzar-button').click()
 
-    expect(themeChangeSpy).toHaveReceivedEventDetail('dark')
+    expect(themeChangeSpy).toHaveReceivedEventDetail(ThemeColorMode.DARK)
   })
 
   test('toggles back to light on a second click', async ({ page }) => {
@@ -29,6 +30,6 @@ test.describe('tzar-button', () => {
     await button.click()
 
     expect(themeChangeSpy).toHaveReceivedEventTimes(2)
-    expect(themeChangeSpy).toHaveReceivedEventDetail('light')
+    expect(themeChangeSpy).toHaveReceivedEventDetail(ThemeColorMode.LIGHT)
   })
 })
