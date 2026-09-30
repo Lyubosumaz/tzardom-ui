@@ -6,7 +6,7 @@ import { Component, Prop, Fragment, h } from '@stencil/core'
   shadow: true,
 })
 export class TzarHeader {
-  @Prop() isLogged: boolean = true
+  @Prop() isLogged = true
 
   render() {
     return (

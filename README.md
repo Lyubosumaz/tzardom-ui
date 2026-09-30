@@ -26,7 +26,7 @@ instead.
 | ---------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------- |
 | Stencil                            | `core`           | Compiles components once into Web Components; works natively in React, Vue, Angular, Svelte, or plain HTML |
 | `@stencil/react-output-target`     | `core` → `react` | Generates `react`'s components from `core`'s build, so they can't drift out of sync                        |
-| npm workspaces                     | root             | Links `core`, `react`, and `types` as real package dependencies, no manual `npm link`                      |
+| pnpm workspaces                    | root             | Links `core`, `react`, and `types` as real package dependencies (`workspace:^`), no manual linking         |
 | Rollup                             | `react`          | Bundles `react`'s wrapper into ESM + CJS for publishing                                                    |
 | Vitest (`@stencil/vitest`)         | `core`           | Unit tests, against compiled output in jsdom                                                               |
 | Playwright (`@stencil/playwright`) | `core`           | Real-browser e2e; jsdom can't fully replicate Shadow DOM and Custom Elements                               |
@@ -37,45 +37,44 @@ Vue and Angular wrapper packages are planned, not started.
 
 ## Requirements
 
-Developed against Node 22 and npm 10. No hard minimum is enforced; older LTS
-Node versions likely work but aren't verified here.
+Node 22 or newer and [pnpm](https://pnpm.io) 11. The exact pnpm version is
+pinned in `package.json` (`packageManager`), and pnpm switches to it
+automatically. To install pnpm: `npm install -g pnpm`, then run `pnpm setup`
+once.
 
 ## Getting started
 
 ```bash
-npm run setup
+pnpm install
 ```
 
-A bare `npm install` isn't reliable here — a known npm resolver bug
-(`Cannot read properties of null (reading 'edgesOut')`, triggered by `vitest`'s
-peer-dependency tree) can fail the install. `setup` runs
-`npm install --legacy-peer-deps`, which avoids it.
+Only the packages listed under `allowBuilds` in `pnpm-workspace.yaml` may run
+install scripts; if a new dependency needs one, pnpm will say so. Approve it
+with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                   | Used in                  | What it does                                                                                                                                                |
-| ------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run setup`           | all packages             | Installs dependencies (`npm install --legacy-peer-deps`)                                                                                                    |
-| `npm run build`           | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks, not just workspace ordering |
-| `npm test`                | `core`, `react`          | Unit tests: `core` via Vitest (jsdom), `react` via Jest (jsdom)                                                                                             |
-| `npm run test:coverage`   | `core`, `react`          | Same unit tests as `npm test`, with coverage collected. Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html`           |
-| `npm run test:e2e`        | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                     |
-| `npm run lint`            | root                     | Formats with Prettier and lints with ESLint across the whole repo                                                                                           |
-| `npm run storybook`       | `react`                  | Starts Storybook                                                                                                                                            |
-| `npm run storybook:build` | `react`                  | Builds the static Storybook site                                                                                                                            |
-| `npm run clean`           | all packages             | Removes every build/generated artifact **and** `node_modules` + `package-lock.json`. Run `npm run setup` afterward                                          |
-| `npm run kill-ports`      | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                          |
-| `npm run changeset`       | `core`, `react`, `types` | Interactive prompt to record which package(s) you changed and the bump type. See [Publishing](#publishing)                                                  |
-| `npm run license:check`   | root + 3 packages        | Fails if any `LICENSE` file's copyright year is behind the current year. Runs in CI                                                                         |
-| `npm run license:bump`    | root + 3 packages        | Fixes whatever `license:check` flags, by extending the copyright year range to the current year                                                             |
+| Command                 | Used in                  | What it does                                                                                                                                                             |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install`          | all packages             | Installs dependencies for every package                                                                                                                                  |
+| `pnpm build`            | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs   |
+| `pnpm test:coverage`    | `core`, `react`          | Unit tests with coverage: `core` via Vitest (jsdom), `react` via Jest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
+| `pnpm test:e2e`         | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                  |
+| `pnpm lint`             | root                     | Formats with Prettier and lints with ESLint across the whole repo                                                                                                        |
+| `pnpm storybook`        | `react`                  | Starts Storybook                                                                                                                                                         |
+| `pnpm storybook:build`  | `react`                  | Builds the static Storybook site                                                                                                                                         |
+| `pnpm run clean`        | all packages             | Removes every build/generated artifact **and** `node_modules` + `pnpm-lock.yaml`. Run `pnpm install` afterward                                                           |
+| `pnpm kill-ports`       | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                       |
+| `pnpm version:packages` | `core`, `react`, `types` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                           |
+| `pnpm license`          | root + 3 packages        | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                               |
 
-Scope any command to one package with `--workspace`, e.g.
-`npm run build --workspace=@tzardom-ui/core`.
+Scope any command to one package with `--filter` (or `-F`), e.g.
+`pnpm --filter @tzardom-ui/core build`.
 
 ## Working on `@tzardom-ui/core`
 
 ```bash
-npm run start --workspace=@tzardom-ui/core
+pnpm --filter @tzardom-ui/core start
 ```
 
 Starts Stencil's dev server with a live-reloading harness page
@@ -84,10 +83,9 @@ for iterating with zero framework involved.
 
 ### Testing `core`
 
-- `npm test --workspace=@tzardom-ui/core` — unit/spec tests via
-  `@stencil/vitest`, running against the compiled components in a jsdom
-  environment.
-- `npm run test:e2e --workspace=@tzardom-ui/core` — real-browser tests via
+- `pnpm --filter @tzardom-ui/core test` — unit/spec tests via `@stencil/vitest`,
+  running against the compiled components in a jsdom environment.
+- `pnpm --filter @tzardom-ui/core test:e2e` — real-browser tests via
   `@stencil/playwright` (Chromium), against Stencil's own dev server.
 
 Both suites live next to the component they test (`src/components/*/*.spec.tsx`,
@@ -96,7 +94,7 @@ Both suites live next to the component they test (`src/components/*/*.spec.tsx`,
 ## Working on `@tzardom-ui/react`
 
 ```bash
-npm run storybook --workspace=@tzardom-ui/react
+pnpm --filter @tzardom-ui/react storybook
 ```
 
 Opens Storybook with the current components: `TzarButton`, `TzarHeader`. Their
@@ -113,11 +111,11 @@ blocked by a Vitest version conflict with `core`. It just hasn't been added.
 
 ## A gotcha worth knowing
 
-`@tzardom-ui/core`'s `npm start` (`stencil build --dev --watch --serve`) does
-**not** produce the same `dist/` output as a real `npm run build` — dev mode
-skips the full `dist-custom-elements` JS output that `react` needs. If you've
-been running `core`'s dev server and then try to build or run Storybook for
-`react`, you may hit a "module not found" error. `react`'s
+`@tzardom-ui/core`'s `pnpm start` (`stencil build --dev --watch --serve`) does
+**not** produce the same `dist/` output as a real `pnpm build` — dev mode skips
+the full `dist-custom-elements` JS output that `react` needs. If you've been
+running `core`'s dev server and then try to build or run Storybook for `react`,
+you may hit a "module not found" error. `react`'s
 `build`/`storybook`/`build-storybook` scripts all have pre-hooks that force a
 real `core` rebuild first, so this is generally handled automatically — but it's
 worth knowing if you ever bypass those scripts.
@@ -126,47 +124,60 @@ worth knowing if you ever bypass those scripts.
 
 Versioning and publishing go through
 [Changesets](https://github.com/changesets/changesets), not a manual
-`npm publish`.
+`pnpm publish`.
 
-**Day to day**: when a PR changes `packages/core`, `packages/react`, or
-`packages/types`, run `npx changeset` (or `npm run changeset`) and follow the
-prompt — pick which package(s) actually changed and the bump type
-(patch/minor/major), then write a one-line summary of the change. This doesn't
-bump any version — it writes a small markdown file under `.changeset/`, e.g.
-`.changeset/silly-lions-jump.md`:
+**Day to day**: nothing to do. On a work branch, the `post-commit` hook
+(`.githooks/post-commit` → `scripts/changeset-branch.mjs`) keeps
+`.changeset/<branch-name>.md` up to date after every commit: a `patch` bump for
+each package the branch changed since its `release/*` branch, and a summary
+listing the branch's commit messages. It adds the file into the commit you just
+made, so it's always there when you open the PR:
 
 ```md
 ---
 '@tzardom-ui/core': patch
 ---
 
-Fixed TzarButton not toggling theme on Enter key
+Changes in this release:
+
+- fix button focus
 ```
 
-Commit that file with the rest of the PR. CI (`.github/workflows/ci.yml`) fails
-a PR that touches a package without one — `changeset add --empty` creates an
-empty one for changes that genuinely don't need a release (docs, CI config,
-etc.).
+To write your own summary, edit the text under the frontmatter and commit. The
+hook keeps your text from then on and only updates the package list. CI
+(`.github/workflows/ci.yml`) fails a work PR that touches a package without a
+changeset.
 
-You don't need the interactive prompt — the file above is all `changeset`
-actually produces, so writing it by hand (or asking whoever/whatever made the
-change to write it) works exactly the same.
+**Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
+`master`. Every branch runs `ci.yml`; release PRs and `master` add their own
+checks on top:
 
-**Releasing**: once changesets land on `master`, `.github/workflows/release.yml`
-(`changesets/action`) automatically maintains a "Version Packages" PR that
-batches every pending changeset — bumping the right package.json versions,
-updating each package's `CHANGELOG.md`, and removing the changeset files.
-Merging that PR triggers the same workflow to actually run
-`npx changeset publish`, which publishes only the packages with a real version
-change, in the correct dependency order (`types` → `core` → `react`),
-automatically.
+| Workflow      | Runs on              | Checks                                                                                         |
+| ------------- | -------------------- | ---------------------------------------------------------------------------------------------- |
+| `ci.yml`      | PRs into `release/*` | Changeset present (work PRs only), build, lint, unit tests                                     |
+| `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, changesets versioned, LICENSE year, e2e tests |
+| `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm                                                                      |
+
+**Releasing**: once all work PRs are merged into the release branch, run
+`pnpm version:packages` there. It combines every pending changeset — bumping the
+right package.json versions, updating each package's `CHANGELOG.md`, and
+removing the changeset files. It needs the [GitHub CLI](https://cli.github.com)
+logged in (`gh auth login`), because `changelog-github` uses your GitHub token
+to link PRs. Also run `pnpm license`, commit both, and open the PR into
+`master`.
+
+Merging it triggers `.github/workflows/master.yml`, which re-runs `ci.yml` and
+then `changeset publish`. That publishes only the packages with a real version
+change, in the correct dependency order (`types` → `core` → `react`).
+`workspace:^` ranges are replaced with real version ranges (e.g. `^0.1.6`) in
+the published packages.
 
 Nothing cascades by default — `react` depending on `core` doesn't force a
 `react` version bump just because `core` changed, unless `core`'s new version
 actually falls outside `react`'s declared range.
 
-**One-time setup required** (not something either of us can automate): an
-`NPM_TOKEN` repository secret (an npm
+**One-time setup required** (not something either of us can automate): a
+`NODE_AUTH_TOKEN` repository secret (an npm
 [automation token](https://docs.npmjs.com/creating-and-viewing-access-tokens))
-must exist in this repo's GitHub settings before `release.yml` can actually
+must exist in this repo's GitHub settings before `master.yml` can actually
 publish.

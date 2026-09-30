@@ -25,12 +25,14 @@ const config: StorybookConfig = {
     enableCrashReports: false,
   },
 
-  webpackFinal: async (config) => {
+  webpackFinal: (config) => {
     config.resolve = config.resolve ?? {}
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, '../src'),
-    }
+    const srcDir = path.resolve(__dirname, '../src')
+    const alias = config.resolve.alias
+    // Webpack allows aliases as an object or an array; handle both.
+    config.resolve.alias = Array.isArray(alias)
+      ? [...alias, { name: '@', alias: srcDir }]
+      : { ...alias, '@': srcDir }
     return config
   },
 }

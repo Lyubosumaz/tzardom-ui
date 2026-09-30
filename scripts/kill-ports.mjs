@@ -1,5 +1,5 @@
-import kill from 'kill-port'
 import { execSync } from 'node:child_process'
+import kill from 'kill-port'
 import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const ports = [3333, 6006]

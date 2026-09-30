@@ -1,13 +1,29 @@
 {
   "name": "@tzardom-ui/types",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Shared, generic types used across the tzardom-ui packages",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
-  "types": "src/index.ts",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
   "files": [
-    "src"
-  ]
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3"
+  }
 }

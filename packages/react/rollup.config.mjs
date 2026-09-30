@@ -1,21 +1,15 @@
-import resolve from '@rollup/plugin-node-resolve'
-import typescript from '@rollup/plugin-typescript'
-import postcss from 'rollup-plugin-postcss'
-import terser from '@rollup/plugin-terser'
-import depsExternal from 'rollup-plugin-peer-deps-external'
-import alias from '@rollup/plugin-alias'
-
 import { readFileSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import alias from '@rollup/plugin-alias'
+import resolve from '@rollup/plugin-node-resolve'
+import terser from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-typescript'
+import depsExternal from 'rollup-plugin-peer-deps-external'
+import postcss from 'rollup-plugin-postcss'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'))
-
-const onwarn = (warning, warn) => {
-  if (warning.code === 'THIS_IS_UNDEFINED') return
-  warn(warning)
-}
 
 const external = (id) =>
   /^@tzardom-ui\/(core|types)/.test(id) ||
@@ -50,7 +44,6 @@ export default [
       sourcemap: true,
     },
     external,
-    onwarn,
     plugins: [
       ...sharedPlugins,
       typescript({
@@ -72,7 +65,6 @@ export default [
       sourcemap: true,
     },
     external,
-    onwarn,
     plugins: [
       ...sharedPlugins,
       typescript({

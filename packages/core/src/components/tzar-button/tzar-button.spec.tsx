@@ -1,5 +1,6 @@
 import { render, h } from '@stencil/vitest'
 import { describe, it, expect } from 'vitest'
+import { ThemeColorMode } from '@tzardom-ui/types'
 import './tzar-button'
 
 describe('tzar-button', () => {
@@ -18,7 +19,7 @@ describe('tzar-button', () => {
     await waitForChanges()
 
     expect(themeChangeSpy.length).toBe(1)
-    expect(themeChangeSpy.lastEvent?.detail).toBe('dark')
+    expect(themeChangeSpy.lastEvent?.detail).toBe(ThemeColorMode.DARK)
   })
 
   it('toggles back to light on a second click', async () => {
@@ -34,6 +35,6 @@ describe('tzar-button', () => {
     await waitForChanges()
 
     expect(themeChangeSpy.length).toBe(2)
-    expect(themeChangeSpy.lastEvent?.detail).toBe('light')
+    expect(themeChangeSpy.lastEvent?.detail).toBe(ThemeColorMode.LIGHT)
   })
 })
