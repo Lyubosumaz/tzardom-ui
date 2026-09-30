@@ -1,9 +1,11 @@
 name: CI
 
+# Common checks. Runs on work PRs (into release/*) and is reused by
+# release.yml and master.yml.
 on:
-  push:
-    branches: [master]
   pull_request:
+    branches: ['release/*']
+  workflow_call:
 
 jobs:
   ci:
@@ -20,17 +22,13 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - name: Check LICENSE year
-        run: node scripts/license-year.mjs
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Work PRs only: release and master PRs have already been versioned.
       - name: Check for a changeset
-        if:
-          github.event_name == 'pull_request' && github.head_ref !=
-          'changeset-release/master'
-        run: pnpm changeset status --since=origin/master
+        if: startsWith(github.base_ref, 'release/')
+        run: pnpm changeset status --since=origin/${{ github.base_ref }}
 
       - name: Build
         run: pnpm run build

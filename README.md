@@ -48,27 +48,25 @@ once.
 pnpm install
 ```
 
-`pnpm run setup` does the same thing. Only the packages listed under
-`allowBuilds` in `pnpm-workspace.yaml` may run install scripts; if a new
-dependency needs one, pnpm will say so. Approve it with `pnpm approve-builds`.
+Only the packages listed under `allowBuilds` in `pnpm-workspace.yaml` may run
+install scripts; if a new dependency needs one, pnpm will say so. Approve it
+with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                | Used in                  | What it does                                                                                                                                                           |
-| ---------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`         | all packages             | Installs dependencies for every package                                                                                                                                |
-| `pnpm build`           | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs |
-| `pnpm test`            | `core`, `react`          | Unit tests: `core` via Vitest (jsdom), `react` via Jest (jsdom)                                                                                                        |
-| `pnpm test:coverage`   | `core`, `react`          | Same unit tests as `pnpm test`, with coverage collected. Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html`                     |
-| `pnpm test:e2e`        | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                |
-| `pnpm lint`            | root                     | Formats with Prettier and lints with ESLint across the whole repo                                                                                                      |
-| `pnpm storybook`       | `react`                  | Starts Storybook                                                                                                                                                       |
-| `pnpm storybook:build` | `react`                  | Builds the static Storybook site                                                                                                                                       |
-| `pnpm run clean`       | all packages             | Removes every build/generated artifact **and** `node_modules` + `pnpm-lock.yaml`. Run `pnpm install` afterward                                                         |
-| `pnpm kill-ports`      | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                     |
-| `pnpm changeset`       | `core`, `react`, `types` | Interactive prompt to record which package(s) you changed and the bump type. See [Publishing](#publishing)                                                             |
-| `pnpm license:check`   | root + 3 packages        | Fails if any `LICENSE` file's copyright year is behind the current year. Runs in CI                                                                                    |
-| `pnpm license:bump`    | root + 3 packages        | Fixes whatever `license:check` flags, by extending the copyright year range to the current year                                                                        |
+| Command                | Used in                  | What it does                                                                                                                                                             |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install`         | all packages             | Installs dependencies for every package                                                                                                                                  |
+| `pnpm build`           | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs   |
+| `pnpm test:coverage`   | `core`, `react`          | Unit tests with coverage: `core` via Vitest (jsdom), `react` via Jest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
+| `pnpm test:e2e`        | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                  |
+| `pnpm lint`            | root                     | Formats with Prettier and lints with ESLint across the whole repo                                                                                                        |
+| `pnpm storybook`       | `react`                  | Starts Storybook                                                                                                                                                         |
+| `pnpm storybook:build` | `react`                  | Builds the static Storybook site                                                                                                                                         |
+| `pnpm run clean`       | all packages             | Removes every build/generated artifact **and** `node_modules` + `pnpm-lock.yaml`. Run `pnpm install` afterward                                                           |
+| `pnpm kill-ports`      | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                       |
+| `pnpm changeset`       | `core`, `react`, `types` | Interactive prompt to record which package(s) you changed and the bump type. See [Publishing](#publishing)                                                               |
+| `pnpm license`         | root + 3 packages        | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                               |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
 `pnpm --filter @tzardom-ui/core build`.
@@ -143,23 +141,36 @@ Fixed TzarButton not toggling theme on Enter key
 ```
 
 Commit that file with the rest of the PR. CI (`.github/workflows/ci.yml`) fails
-a PR that touches a package without one — `changeset add --empty` creates an
-empty one for changes that genuinely don't need a release (docs, CI config,
+a work PR that touches a package without one — `changeset add --empty` creates
+an empty one for changes that genuinely don't need a release (docs, CI config,
 etc.).
 
 You don't need the interactive prompt — the file above is all `changeset`
 actually produces, so writing it by hand (or asking whoever/whatever made the
 change to write it) works exactly the same.
 
-**Releasing**: once changesets land on `master`, `.github/workflows/release.yml`
-(`changesets/action`) automatically maintains a "Version Packages" PR that
-batches every pending changeset — bumping the right package.json versions,
-updating each package's `CHANGELOG.md`, and removing the changeset files.
-Merging that PR triggers the same workflow to actually run
-`pnpm changeset publish`, which publishes only the packages with a real version
-change, in the correct dependency order (`types` → `core` → `react`),
-automatically. `workspace:^` ranges are replaced with real version ranges (e.g.
-`^0.1.6`) in the published packages.
+**Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
+`master`. Each step runs everything the step before it runs, plus its own
+checks:
+
+| Workflow      | Runs on              | Checks                                                                                         |
+| ------------- | -------------------- | ---------------------------------------------------------------------------------------------- |
+| `ci.yml`      | PRs into `release/*` | Changeset present (work PRs only), build, lint, unit tests                                     |
+| `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, changesets versioned, LICENSE year, e2e tests |
+| `master.yml`  | Pushes to `master`   | `release.yml` + publish to npm                                                                 |
+
+**Releasing**: on the release branch, run `pnpm changeset version`. It batches
+every pending changeset — bumping the right package.json versions, updating each
+package's `CHANGELOG.md`, and removing the changeset files. `changelog-github`
+needs a GitHub token for this:
+`GITHUB_TOKEN=$(gh auth token) pnpm changeset version`. Also run `pnpm license`,
+commit both, and open the PR into `master`.
+
+Merging it triggers `.github/workflows/master.yml`, which re-runs all checks and
+then `pnpm changeset publish`. That publishes only the packages with a real
+version change, in the correct dependency order (`types` → `core` → `react`).
+`workspace:^` ranges are replaced with real version ranges (e.g. `^0.1.6`) in
+the published packages.
 
 Nothing cascades by default — `react` depending on `core` doesn't force a
 `react` version bump just because `core` changed, unless `core`'s new version
@@ -168,5 +179,5 @@ actually falls outside `react`'s declared range.
 **One-time setup required** (not something either of us can automate): an
 `NPM_TOKEN` repository secret (an npm
 [automation token](https://docs.npmjs.com/creating-and-viewing-access-tokens))
-must exist in this repo's GitHub settings before `release.yml` can actually
+must exist in this repo's GitHub settings before `master.yml` can actually
 publish.

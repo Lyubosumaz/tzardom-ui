@@ -6,19 +6,16 @@
   "license": "MIT",
   "packageManager": "pnpm@11.28.0",
   "scripts": {
-    "setup": "pnpm install",
     "clean": "node scripts/clean.mjs",
     "kill-ports": "node scripts/kill-ports.mjs",
     "build": "pnpm -r --if-present run build",
-    "test": "pnpm -r --if-present run test",
     "test:coverage": "pnpm -r --if-present run test:coverage",
     "test:e2e": "pnpm -r --if-present run test:e2e",
     "changeset": "changeset",
     "storybook": "pnpm --filter @tzardom-ui/react run storybook",
     "storybook:build": "pnpm --filter @tzardom-ui/react run build-storybook",
     "lint": "prettier --write . && eslint --fix .",
-    "license:check": "node scripts/license-year.mjs",
-    "license:bump": "node scripts/license-year.mjs --fix",
+    "license": "node scripts/license-year.mjs",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {

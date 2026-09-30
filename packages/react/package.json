@@ -14,7 +14,6 @@
   "scripts": {
     "precore-build": "pnpm --filter @tzardom-ui/core run build",
     "build": "pnpm run precore-build && rollup --config",
-    "test": "jest",
     "test:coverage": "jest --coverage",
     "prestorybook": "pnpm run precore-build",
     "storybook": "storybook dev -p 6006",

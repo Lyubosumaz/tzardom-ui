@@ -21,11 +21,9 @@
   "scripts": {
     "prebuild": "pnpm --filter @tzardom-ui/types run build",
     "prestart": "pnpm --filter @tzardom-ui/types run build",
-    "pretest": "pnpm --filter @tzardom-ui/types run build",
     "pretest:coverage": "pnpm --filter @tzardom-ui/types run build",
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
-    "test": "vitest run --project spec",
     "test:coverage": "vitest run --project spec --coverage",
     "test:e2e": "playwright test"
   },
