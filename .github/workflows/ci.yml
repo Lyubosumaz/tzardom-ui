@@ -1,7 +1,5 @@
 name: CI
 
-# Common checks. Runs on work PRs (into release/*) and is reused by
-# release.yml and master.yml.
 on:
   pull_request:
     branches: ['release/*']
@@ -15,23 +13,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
+      - uses: ./.github/actions/build
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      # Work PRs only: release and master PRs have already been versioned.
       - name: Check for a changeset
         if: startsWith(github.base_ref, 'release/')
         run: pnpm changeset status --since=origin/${{ github.base_ref }}
-
-      - name: Build
-        run: pnpm run build
 
       - name: Lint
         run: pnpm run lint

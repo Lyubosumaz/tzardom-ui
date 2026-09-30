@@ -150,14 +150,14 @@ actually produces, so writing it by hand (or asking whoever/whatever made the
 change to write it) works exactly the same.
 
 **Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
-`master`. Each step runs everything the step before it runs, plus its own
-checks:
+`master`. Every branch runs `ci.yml`; release PRs and `master` add their own
+checks on top:
 
 | Workflow      | Runs on              | Checks                                                                                         |
 | ------------- | -------------------- | ---------------------------------------------------------------------------------------------- |
 | `ci.yml`      | PRs into `release/*` | Changeset present (work PRs only), build, lint, unit tests                                     |
 | `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, changesets versioned, LICENSE year, e2e tests |
-| `master.yml`  | Pushes to `master`   | `release.yml` + publish to npm                                                                 |
+| `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm                                                                      |
 
 **Releasing**: on the release branch, run `pnpm changeset version`. It batches
 every pending changeset — bumping the right package.json versions, updating each
@@ -166,7 +166,7 @@ needs a GitHub token for this:
 `GITHUB_TOKEN=$(gh auth token) pnpm changeset version`. Also run `pnpm license`,
 commit both, and open the PR into `master`.
 
-Merging it triggers `.github/workflows/master.yml`, which re-runs all checks and
+Merging it triggers `.github/workflows/master.yml`, which re-runs `ci.yml` and
 then `pnpm changeset publish`. That publishes only the packages with a real
 version change, in the correct dependency order (`types` → `core` → `react`).
 `workspace:^` ranges are replaced with real version ranges (e.g. `^0.1.6`) in
@@ -176,8 +176,8 @@ Nothing cascades by default — `react` depending on `core` doesn't force a
 `react` version bump just because `core` changed, unless `core`'s new version
 actually falls outside `react`'s declared range.
 
-**One-time setup required** (not something either of us can automate): an
-`NPM_TOKEN` repository secret (an npm
+**One-time setup required** (not something either of us can automate): a
+`NODE_AUTH_TOKEN` repository secret (an npm
 [automation token](https://docs.npmjs.com/creating-and-viewing-access-tokens))
 must exist in this repo's GitHub settings before `master.yml` can actually
 publish.
