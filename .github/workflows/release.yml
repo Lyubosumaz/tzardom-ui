@@ -22,11 +22,11 @@ jobs:
       - name: Check LICENSE year
         run: pnpm license && git diff --exit-code
 
-      - name: Check changesets are versioned
-        run: '! ls .changeset/*.md | grep -v README.md'
-
       - name: Install Playwright browsers
         run: pnpm --filter @tzardom-ui/core exec playwright install --with-deps
 
       - name: Test e2e
         run: pnpm run test:e2e
+
+      - name: Check changesets are versioned
+        run: '! ls .changeset/*.md | grep -v README.md'
