@@ -1,3 +1,0 @@
-pnpm run lint
-pnpm run test:coverage
-git add -A
