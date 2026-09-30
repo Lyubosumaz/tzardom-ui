@@ -11,13 +11,6 @@ import postcss from 'rollup-plugin-postcss'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'))
 
-const onwarn = (warning, warn) => {
-  if (warning.code === 'THIS_IS_UNDEFINED') {
-    return
-  }
-  warn(warning)
-}
-
 const external = (id) =>
   /^@tzardom-ui\/(core|types)/.test(id) ||
   /^@stencil\/react-output-target/.test(id)
@@ -51,7 +44,6 @@ export default [
       sourcemap: true,
     },
     external,
-    onwarn,
     plugins: [
       ...sharedPlugins,
       typescript({
@@ -73,7 +65,6 @@ export default [
       sourcemap: true,
     },
     external,
-    onwarn,
     plugins: [
       ...sharedPlugins,
       typescript({

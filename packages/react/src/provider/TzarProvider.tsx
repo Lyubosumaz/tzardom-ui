@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useMemo, useReducer } from 'react'
 import { ThemeColorMode } from '@tzardom-ui/types'
 import type {
   ThemeData,
@@ -8,20 +8,24 @@ import type {
 } from './TzarProvider.types'
 import { ThemeActionsType } from './TzarProvider.types'
 
+const DEFAULT_THEME: ThemeData = { theme: ThemeColorMode.LIGHT }
+
 const themeReducer = (state: ThemeData, action: ThemeAction): ThemeData => {
-  // `action.type` can only be THEME_COLOR_MODE per the types, but the default
-  // branch still guards against unknown actions at runtime (see the tests).
   switch (action.type) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     case ThemeActionsType.THEME_COLOR_MODE:
       return { ...state, theme: action.theme }
+    case ThemeActionsType.RESET_THEME:
+      return DEFAULT_THEME
     default:
-      return state
+      // Unreachable in typed code, but guards against invalid actions at runtime
+      // (e.g. from plain JavaScript callers).
+      console.warn(
+        'TzarProvider: unknown theme action, resetting theme',
+        action,
+      )
+      return DEFAULT_THEME
   }
 }
-
-// Matches tzar-button's initial state, so both start from the same theme.
-const DEFAULT_THEME: ThemeData = { theme: ThemeColorMode.LIGHT }
 
 const defaultContext: TypeContext = {
   ...DEFAULT_THEME,
@@ -36,14 +40,10 @@ export const TzarProvider = ({ children }: ITzarProviderProps) => {
     DEFAULT_THEME,
   )
 
-  return (
-    <TzarContext.Provider
-      value={{
-        ...tzarThemeMode,
-        setTheme: setTzarThemeMode,
-      }}
-    >
-      {children}
-    </TzarContext.Provider>
+  const value = useMemo(
+    () => ({ ...tzarThemeMode, setTheme: setTzarThemeMode }),
+    [tzarThemeMode],
   )
+
+  return <TzarContext value={value}>{children}</TzarContext>
 }

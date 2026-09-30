@@ -1,15 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { useContext } from 'react'
+import { use } from 'react'
 import { ThemeColorMode } from '@tzardom-ui/types'
 import { TzarProvider, TzarContext, ThemeActionsType } from './index'
 
 const ThemeConsumer = () => {
-  const { theme, setTheme } = useContext(TzarContext)
+  const { theme, setTheme } = use(TzarContext)
 
   return (
     <div>
       <span data-testid="theme">{theme}</span>
       <button
+        type="button"
         onClick={() => {
           setTheme({
             type: ThemeActionsType.THEME_COLOR_MODE,
@@ -23,16 +24,12 @@ const ThemeConsumer = () => {
         toggle
       </button>
       <button
+        type="button"
         onClick={() => {
-          setTheme({
-            // Deliberately invalid, to test the reducer's fallback.
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-assignment
-            type: 'UNKNOWN' as ThemeActionsType,
-            theme: ThemeColorMode.DARK,
-          })
+          setTheme({ type: ThemeActionsType.RESET_THEME })
         }}
       >
-        unknown action
+        reset
       </button>
     </div>
   )
@@ -61,15 +58,17 @@ describe('TzarProvider', () => {
     expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.DARK)
   })
 
-  test('reducer keeps the current state for an unrecognized action type', () => {
+  test('RESET_THEME puts the theme back to the default', () => {
     render(
       <TzarProvider>
         <ThemeConsumer />
       </TzarProvider>,
     )
 
-    fireEvent.click(screen.getByText('unknown action'))
+    fireEvent.click(screen.getByText('toggle'))
+    expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.DARK)
 
+    fireEvent.click(screen.getByText('reset'))
     expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
   })
 

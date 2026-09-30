@@ -45,7 +45,7 @@ export default defineConfig([
     rules: {
       eqeqeq: ['error', 'always'],
       curly: ['error', 'all'],
-      'no-console': 'error',
+      'no-console': ['error', { allow: ['warn', 'error'] }],
       'no-param-reassign': 'error',
       'object-shorthand': 'error',
       'prefer-template': 'error',
@@ -92,7 +92,11 @@ export default defineConfig([
     files: ['**/*.{js,mjs,cjs}'],
     extends: [tseslint.configs.disableTypeChecked],
     languageOptions: {
-      globals: { console: 'readonly', process: 'readonly', module: 'writable' },
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        module: 'writable',
+      },
     },
   },
   {
