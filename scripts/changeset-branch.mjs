@@ -18,7 +18,6 @@ const git = (...args) =>
     encoding: 'utf8',
   }).trim()
 
-// The release branch this work branch came from: the one it is fewest commits ahead of.
 const findBaseBranch = () =>
   git(
     'for-each-ref',
@@ -39,10 +38,18 @@ const isWorkBranch =
   branch && branch !== 'master' && !branch.startsWith('release/')
 const baseBranch = isWorkBranch && findBaseBranch()
 
+const pathsOf = (dir) => [dir, `:(exclude)${dir}/CHANGELOG.md`]
+
 if (baseBranch) {
   const changedPackages = packages.filter(
     ({ dir }) =>
-      git('log', '--format=%h', `${baseBranch}..HEAD`, '--', dir) !== '',
+      git(
+        'log',
+        '--format=%h',
+        `${baseBranch}..HEAD`,
+        '--',
+        ...pathsOf(dir),
+      ) !== '',
   )
 
   if (changedPackages.length > 0) {
@@ -54,7 +61,6 @@ if (baseBranch) {
     const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : ''
     const existingSummary = existing.split(/^---$/m)[2]?.trim()
 
-    // Keep a summary you wrote yourself; regenerate the automatic one.
     const summary =
       existingSummary && !existingSummary.startsWith(summaryIntro)
         ? existingSummary
@@ -65,7 +71,7 @@ if (baseBranch) {
             '--format=- %s',
             `${baseBranch}..HEAD`,
             '--',
-            ...changedPackages.map(({ dir }) => dir),
+            ...changedPackages.flatMap(({ dir }) => pathsOf(dir)),
           )}`
 
     const frontmatter = changedPackages
