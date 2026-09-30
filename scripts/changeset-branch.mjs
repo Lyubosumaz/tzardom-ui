@@ -18,7 +18,6 @@ const git = (...args) =>
     encoding: 'utf8',
   }).trim()
 
-// The release branch this work branch came from: the one it is fewest commits ahead of.
 const findBaseBranch = () =>
   git(
     'for-each-ref',
@@ -62,7 +61,6 @@ if (baseBranch) {
     const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : ''
     const existingSummary = existing.split(/^---$/m)[2]?.trim()
 
-    // Keep a summary you wrote yourself; regenerate the automatic one.
     const summary =
       existingSummary && !existingSummary.startsWith(summaryIntro)
         ? existingSummary
