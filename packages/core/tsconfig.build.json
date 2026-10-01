@@ -1,0 +1,12 @@
+{
+  // Stencil builds with this one (see stencil.config.ts). tsconfig.json also
+  // covers the spec and e2e files, so editors type-check them with these
+  // settings.
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.e2e.ts",
+    "src/**/*.e2e.tsx"
+  ]
+}

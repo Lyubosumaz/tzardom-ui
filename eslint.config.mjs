@@ -26,11 +26,7 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: [
-            'packages/core/*.ts',
-            'packages/core/*.mts',
-            'packages/react/.storybook/*.ts',
-          ],
+          allowDefaultProject: ['packages/core/*.ts', 'packages/core/*.mts'],
         },
         tsconfigRootDir: import.meta.dirname,
       },

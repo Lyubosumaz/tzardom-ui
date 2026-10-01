@@ -4,6 +4,7 @@ import { sass } from '@stencil/sass'
 
 export const config: Config = {
   namespace: 'tzardom-ui-core',
+  tsconfig: 'tsconfig.build.json',
   outputTargets: [
     {
       type: 'dist',

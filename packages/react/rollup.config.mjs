@@ -13,7 +13,8 @@ const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'))
 
 const external = (id) =>
   /^@tzardom-ui\/(core|types)/.test(id) ||
-  /^@stencil\/react-output-target/.test(id)
+  /^@stencil\/react-output-target/.test(id) ||
+  /^lucide-react/.test(id)
 
 const sharedPlugins = [
   depsExternal(),

@@ -17,6 +17,13 @@ export namespace Components {
          */
         "isLogged": boolean;
     }
+    interface TzarIconButton {
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "label": string;
+    }
 }
 export interface TzarButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -46,9 +53,16 @@ declare global {
         prototype: HTMLTzarHeaderElement;
         new (): HTMLTzarHeaderElement;
     };
+    interface HTMLTzarIconButtonElement extends Components.TzarIconButton, HTMLStencilElement {
+    }
+    var HTMLTzarIconButtonElement: {
+        prototype: HTMLTzarIconButtonElement;
+        new (): HTMLTzarIconButtonElement;
+    };
     interface HTMLElementTagNameMap {
         "tzar-button": HTMLTzarButtonElement;
         "tzar-header": HTMLTzarHeaderElement;
+        "tzar-icon-button": HTMLTzarIconButtonElement;
     }
 }
 declare namespace LocalJSX {
@@ -64,6 +78,13 @@ declare namespace LocalJSX {
          */
         "isLogged"?: boolean;
     }
+    interface TzarIconButton {
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "label": string;
+    }
 
     interface TzarButtonAttributes {
         "label": string;
@@ -71,10 +92,15 @@ declare namespace LocalJSX {
     interface TzarHeaderAttributes {
         "isLogged": boolean;
     }
+    interface TzarIconButtonAttributes {
+        "label": string;
+        "disabled": boolean;
+    }
 
     interface IntrinsicElements {
         "tzar-button": Omit<TzarButton, keyof TzarButtonAttributes> & { [K in keyof TzarButton & keyof TzarButtonAttributes]?: TzarButton[K] } & { [K in keyof TzarButton & keyof TzarButtonAttributes as `attr:${K}`]?: TzarButtonAttributes[K] } & { [K in keyof TzarButton & keyof TzarButtonAttributes as `prop:${K}`]?: TzarButton[K] } & OneOf<"label", TzarButton["label"], TzarButtonAttributes["label"]>;
         "tzar-header": Omit<TzarHeader, keyof TzarHeaderAttributes> & { [K in keyof TzarHeader & keyof TzarHeaderAttributes]?: TzarHeader[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `attr:${K}`]?: TzarHeaderAttributes[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `prop:${K}`]?: TzarHeader[K] };
+        "tzar-icon-button": Omit<TzarIconButton, keyof TzarIconButtonAttributes> & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes]?: TzarIconButton[K] } & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes as `attr:${K}`]?: TzarIconButtonAttributes[K] } & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes as `prop:${K}`]?: TzarIconButton[K] } & OneOf<"label", TzarIconButton["label"], TzarIconButtonAttributes["label"]>;
     }
 }
 export { LocalJSX as JSX };
@@ -83,6 +109,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "tzar-button": LocalJSX.IntrinsicElements["tzar-button"] & JSXBase.HTMLAttributes<HTMLTzarButtonElement>;
             "tzar-header": LocalJSX.IntrinsicElements["tzar-header"] & JSXBase.HTMLAttributes<HTMLTzarHeaderElement>;
+            "tzar-icon-button": LocalJSX.IntrinsicElements["tzar-icon-button"] & JSXBase.HTMLAttributes<HTMLTzarIconButtonElement>;
         }
     }
 }

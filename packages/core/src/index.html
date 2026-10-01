@@ -20,6 +20,22 @@
 
     <tzar-header></tzar-header>
 
+    <hr style="margin: 2rem 0" />
+
+    <p>Icon button clicks: <span id="icon-clicks">0</span></p>
+    <tzar-icon-button label="Add">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+    </tzar-icon-button>
+
     <script>
       let count = 0
       const btn = document.querySelector('tzar-button')
@@ -28,6 +44,15 @@
         document.getElementById('count').textContent = String(count)
         document.getElementById('theme').textContent = e.detail
       })
+
+      let iconClicks = 0
+      document
+        .querySelector('tzar-icon-button')
+        .addEventListener('click', () => {
+          iconClicks += 1
+          document.getElementById('icon-clicks').textContent =
+            String(iconClicks)
+        })
     </script>
   </body>
 </html>

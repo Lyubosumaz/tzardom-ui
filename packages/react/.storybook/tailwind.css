@@ -1,0 +1,10 @@
+/* Tailwind for Storybook only. Apps using @tzardom-ui/react bring their own
+   Tailwind and theme; these colors stand in for them here. */
+@import 'tailwindcss';
+
+@source '../src';
+
+@theme {
+  --color-secondary: #0f172a;
+  --color-main-soft: #fdf2ff;
+}
