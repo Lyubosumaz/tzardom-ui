@@ -7,4 +7,6 @@
 @theme {
   --color-secondary: #0f172a;
   --color-main-soft: #fdf2ff;
+  --color-border-subtle: #e5e7eb;
+  --color-background: #f9fafb;
 }

@@ -6,3 +6,4 @@
 Changes in this release:
 
 - migrate toggle theme btn and update the TzarProvider
+- migrate language selection

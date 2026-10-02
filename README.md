@@ -127,6 +127,8 @@ Tailwind, so an app using `@tzardom-ui/react` needs:
 @theme {
   --color-secondary: …; /* text and focus ring */
   --color-main-soft: …; /* hover and focus background */
+  --color-border-subtle: …; /* dropdown menu border */
+  --color-background: …; /* dropdown menu background */
 }
 ```
 
