@@ -21,16 +21,13 @@ Requires React 19 and React DOM 19 as peer dependencies.
 ## Usage
 
 ```tsx
-import { TzarButton, TzarHeader } from '@tzardom-ui/react'
+import { TzarCommonLink, TzarHeader } from '@tzardom-ui/react'
 
 function App() {
   return (
     <>
       <TzarHeader isLogged />
-      <TzarButton
-        label="Click me"
-        onThemeChange={(event) => console.log(event.detail)}
-      />
+      <TzarCommonLink href="/login">Log in</TzarCommonLink>
     </>
   )
 }
@@ -38,12 +35,26 @@ function App() {
 
 ## Components
 
-### `<TzarButton>`
+### `<TzarCommonLink>`
 
-| Prop            | Type                                              | Description                               |
-| --------------- | ------------------------------------------------- | ----------------------------------------- |
-| `label`         | `string`                                          | Text shown inside the button              |
-| `onThemeChange` | `(event: CustomEvent<'light' \| 'dark'>) => void` | Called on click, with the new theme value |
+A pill-shaped link. React only: it renders your app's own link component, so
+routing stays the app's (Next.js `Link`, React Router's `Link`, or a plain `<a>`
+by default).
+
+```tsx
+import Link from 'next/link'
+
+;<TzarCommonLink as={Link} href="/login">
+  Log in
+</TzarCommonLink>
+```
+
+| Prop        | Type                   | Default     | Description                                         |
+| ----------- | ---------------------- | ----------- | --------------------------------------------------- |
+| `as`        | `ElementType`          | `'a'`       | Element or component to render                      |
+| `variant`   | `'outline' \| 'ghost'` | `'outline'` | Bordered pill, or pill on hover only                |
+| `className` | `string`               | —           | Extra classes, added after ours                     |
+| …           |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …) |
 
 ### `<TzarHeader>`
 

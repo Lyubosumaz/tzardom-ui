@@ -100,11 +100,11 @@ Both suites live next to the component they test (`src/components/*/*.spec.tsx`,
 pnpm --filter @tzardom-ui/react storybook
 ```
 
-Opens Storybook with the current components: `TzarButton`, `TzarHeader`. Their
-source under `src/components/*/` is just tests and stories now — the actual
-`TzarButton.tsx`/`TzarHeader.tsx` implementations were removed once `core`'s
-generated wrappers replaced them. If you need to change what a component looks
-like or does, edit it in `packages/core`, not here.
+Opens Storybook with the current components. Behavior and markup live in
+`packages/core` (unstyled Stencil skeletons such as `tzar-icon-button`); the
+React package wraps them in `src/components/*/` with the Tailwind look and
+React-side logic (`TzarThemeToggle`, `TzarLanguageSelect`), or are React-only
+(`TzarCommonLink`). `TzarHeader` is still core's generated wrapper as-is.
 
 Story files use CSF3 with `play` functions for interaction testing, runnable
 interactively from Storybook's Interactions panel. There's no automated e2e

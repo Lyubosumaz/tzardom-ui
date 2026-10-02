@@ -11,13 +11,6 @@
     <script nomodule src="/build/tzardom-ui-core.js"></script>
   </head>
   <body style="font-family: sans-serif; padding: 2rem">
-    <p>Click count: <span id="count">0</span></p>
-    <p>Last theme reported: <span id="theme">(none yet)</span></p>
-
-    <tzar-button label="Click me!"></tzar-button>
-
-    <hr style="margin: 2rem 0" />
-
     <tzar-header></tzar-header>
 
     <hr style="margin: 2rem 0" />
@@ -37,14 +30,6 @@
     </tzar-icon-button>
 
     <script>
-      let count = 0
-      const btn = document.querySelector('tzar-button')
-      btn.addEventListener('themeChange', (e) => {
-        count += 1
-        document.getElementById('count').textContent = String(count)
-        document.getElementById('theme').textContent = e.detail
-      })
-
       let iconClicks = 0
       document
         .querySelector('tzar-icon-button')

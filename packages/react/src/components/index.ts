@@ -1,9 +1,13 @@
 export {
-  TzarButton,
   TzarDropdown,
   TzarHeader,
   TzarIconButton,
 } from '@/generated/components'
+export { TzarCommonLink } from './TzarCommonLink/TzarCommonLink'
+export type {
+  TzarCommonLinkProps,
+  TzarCommonLinkVariant,
+} from './TzarCommonLink/TzarCommonLink'
 export { TzarLanguageSelect } from './TzarLanguageSelect/TzarLanguageSelect'
 export type {
   TzarLanguage,
