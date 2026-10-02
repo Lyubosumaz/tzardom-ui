@@ -1,12 +1,5 @@
-/* Tailwind for Storybook only. Apps using @tzardom-ui/react bring their own
-   Tailwind and theme; these colors stand in for them here. */
+/* Tailwind for Storybook, with the theme team-capacity-dashboard uses. */
 @import 'tailwindcss';
+@import '../themes/team-capacity-dashboard.css';
 
 @source '../src';
-
-@theme {
-  --color-secondary: #0f172a;
-  --color-main-soft: #fdf2ff;
-  --color-border-subtle: #e5e7eb;
-  --color-background: #f9fafb;
-}

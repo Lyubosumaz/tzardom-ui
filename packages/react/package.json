@@ -9,7 +9,8 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "themes"
   ],
   "scripts": {
     "precore-build": "pnpm --filter @tzardom-ui/core run build",

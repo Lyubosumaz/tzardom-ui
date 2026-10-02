@@ -114,25 +114,28 @@ blocked by a Vitest version conflict with `core`. It just hasn't been added.
 
 ### Styling
 
-`core` components ship a bare skeleton (layout and a reset). The look of React
+`core` components ship a bare skeleton (no stylesheet). The look of React
 components such as `TzarThemeToggle` is written in Tailwind v4 classes that
 target the native element inside the shadow DOM through `::part()`, e.g.
 `[&::part(button)]:rounded-full`. Those classes are compiled by the **app's**
-Tailwind, so an app using `@tzardom-ui/react` needs:
+Tailwind, together with one tzardom-ui theme:
 
 ```css
 @import 'tailwindcss';
-@source "../node_modules/@tzardom-ui/react/dist"; /* relative to this file */
-
-@theme {
-  --color-secondary: …; /* text and focus ring */
-  --color-main-soft: …; /* hover and focus background */
-  --color-border-subtle: …; /* dropdown menu border */
-  --color-background: …; /* dropdown menu background */
-}
+@import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
 ```
 
-Storybook gets the same setup from `packages/react/.storybook/tailwind.css`.
+Themes live in `packages/react/themes/`:
+
+- `base.css`: shared by every theme. Maps the palette to Tailwind colors
+  (`bg-background`, `text-secondary`, …), sets the page colors, and tells
+  Tailwind to scan the package's build for classes. Not imported directly.
+- `team-capacity-dashboard.css`: that app's light (`:root`) and dark
+  (`:root[data-theme='dark']`, managed by `TzarProvider`) palettes.
+
+To add a theme, copy `team-capacity-dashboard.css`, rename it after the app, and
+change the values; keep every variable name. Storybook uses the
+team-capacity-dashboard theme.
 
 ## Trying changes in an app
 
@@ -153,6 +156,12 @@ stops everything.
 - Back to the published versions: `pnpm app:unlink` (removes the copies and runs
   `npm install` in the app). The app's `package.json` and lockfile are never
   touched, so there's nothing to revert in git.
+
+Next.js 16 apps run `next dev` on Turbopack, which doesn't notice files that
+appear in `node_modules` while it's running. Edits to files already shipped come
+through live, but when you add a new file to a package's output (a new entry in
+`"files"`, a new theme in `packages/react/themes/`), restart `pnpm app:dev`
+once.
 
 The packages are copied rather than symlinked on purpose. A symlink would make
 the app resolve `react` from `packages/react/node_modules`, which loads a second

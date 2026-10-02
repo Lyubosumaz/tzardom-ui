@@ -7,3 +7,4 @@ Changes in this release:
 
 - migrate toggle theme btn and update the TzarProvider
 - migrate language selection
+- migrate into new themes styles from team-capacity-dashboard

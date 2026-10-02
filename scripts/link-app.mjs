@@ -241,9 +241,16 @@ const dev = () => {
   // Re-copy a package shortly after its build output stops changing.
   const timers = {}
   for (const name of PACKAGES) {
-    const outputs = shipped(pkgJson(name))
     watch(pkgDir(name), { recursive: true }, (_event, file) => {
-      if (!file || !outputs.some((out) => file.startsWith(out))) {
+      // Read the file list on every change, so edits to "files" in
+      // package.json (a new entry like theme.css) are picked up too.
+      let watched
+      try {
+        watched = [...shipped(pkgJson(name)), 'package.json']
+      } catch {
+        return // package.json mid-save; the next event will catch up
+      }
+      if (!file || !watched.some((out) => file.startsWith(out))) {
         return
       }
       clearTimeout(timers[name])
