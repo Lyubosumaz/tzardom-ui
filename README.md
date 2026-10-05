@@ -63,6 +63,9 @@ with `pnpm approve-builds`.
 | `pnpm lint`             | root                     | Formats with Prettier and lints with ESLint across the whole repo                                                                                                        |
 | `pnpm storybook`        | `react`                  | Starts Storybook                                                                                                                                                         |
 | `pnpm storybook:build`  | `react`                  | Builds the static Storybook site                                                                                                                                         |
+| `pnpm app:dev`          | all packages             | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                |
+| `pnpm app:link`         | all packages             | Builds once and copies the packages into the app, without watching                                                                                                       |
+| `pnpm app:unlink`       | all packages             | Puts the app back on the npm-published versions                                                                                                                          |
 | `pnpm run clean`        | all packages             | Removes every build/generated artifact **and** `node_modules` + `pnpm-lock.yaml`. Run `pnpm install` afterward                                                           |
 | `pnpm kill-ports`       | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                       |
 | `pnpm version:packages` | `core`, `react`, `types` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                           |
@@ -97,17 +100,72 @@ Both suites live next to the component they test (`src/components/*/*.spec.tsx`,
 pnpm --filter @tzardom-ui/react storybook
 ```
 
-Opens Storybook with the current components: `TzarButton`, `TzarHeader`. Their
-source under `src/components/*/` is just tests and stories now — the actual
-`TzarButton.tsx`/`TzarHeader.tsx` implementations were removed once `core`'s
-generated wrappers replaced them. If you need to change what a component looks
-like or does, edit it in `packages/core`, not here.
+Opens Storybook with the current components. Behavior and markup live in
+`packages/core` (unstyled Stencil skeletons such as `tzar-icon-button`); the
+React package wraps them in `src/components/*/` with the Tailwind look and
+React-side logic (`TzarThemeToggle`, `TzarLanguageSelect`), or are React-only
+(`TzarCommonLink`).
 
 Story files use CSF3 with `play` functions for interaction testing, runnable
 interactively from Storybook's Interactions panel. There's no automated e2e
 runner wired up for `react` yet — `react` was upgraded to Storybook 10, so
 `@storybook/addon-vitest` (the natural fit, needs Storybook ≥10) is no longer
 blocked by a Vitest version conflict with `core`. It just hasn't been added.
+
+### Styling
+
+`core` components ship a bare skeleton (no stylesheet). The look of React
+components such as `TzarThemeToggle` is written in Tailwind v4 classes that
+target the native element inside the shadow DOM through `::part()`, e.g.
+`[&::part(button)]:rounded-full`. Those classes are compiled by the **app's**
+Tailwind, together with one tzardom-ui theme:
+
+```css
+@import 'tailwindcss';
+@import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
+```
+
+Themes live in `packages/react/themes/`:
+
+- `base.css`: shared by every theme. Maps the palette to Tailwind colors
+  (`bg-background`, `text-secondary`, …), sets the page colors, and tells
+  Tailwind to scan the package's build for classes. Not imported directly.
+- `team-capacity-dashboard.css`: that app's light (`:root`) and dark
+  (`:root[data-theme='dark']`, managed by `TzarProvider`) palettes.
+
+To add a theme, copy `team-capacity-dashboard.css`, rename it after the app, and
+change the values; keep every variable name. Storybook uses the
+team-capacity-dashboard theme.
+
+## Trying changes in an app
+
+```bash
+pnpm app:dev
+```
+
+Builds everything, copies `types`, `core` and `react` into
+`../team-capacity-dashboard/node_modules/@tzardom-ui/`, and starts that app's
+`npm run dev`. After that it watches all three packages: edit a component in
+`packages/core`, and Stencil rebuilds it, Rollup rebuilds the React wrappers,
+and the fresh output is copied into the app, where Next.js picks it up. Ctrl+C
+stops everything.
+
+- Another app: `pnpm app:dev --app ../other-app` (or
+  `TZARDOM_APP=../other-app`).
+- Run the app's dev server yourself: `pnpm app:dev --no-app-server`.
+- Back to the published versions: `pnpm app:unlink` (removes the copies and runs
+  `npm install` in the app). The app's `package.json` and lockfile are never
+  touched, so there's nothing to revert in git.
+
+Next.js 16 apps run `next dev` on Turbopack, which doesn't notice files that
+appear in `node_modules` while it's running. Edits to files already shipped come
+through live, but when you add a new file to a package's output (a new entry in
+`"files"`, a new theme in `packages/react/themes/`), restart `pnpm app:dev`
+once.
+
+The packages are copied rather than symlinked on purpose. A symlink would make
+the app resolve `react` from `packages/react/node_modules`, which loads a second
+copy of React and breaks hooks.
 
 ## A gotcha worth knowing
 

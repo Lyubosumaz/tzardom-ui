@@ -21,4 +21,5 @@ export interface TypeContext {
 
 export interface ITzarProviderProps {
   children: ReactNode
+  storageKey?: string
 }

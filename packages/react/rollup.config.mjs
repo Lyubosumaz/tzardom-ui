@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import alias from '@rollup/plugin-alias'
@@ -9,11 +8,18 @@ import depsExternal from 'rollup-plugin-peer-deps-external'
 import postcss from 'rollup-plugin-postcss'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'))
+
+// One output file per entry: dist/{esm,cjs}/index.js and .../icons.js.
+// Each entry is a public import path, see "exports" in package.json.
+const input = {
+  index: 'src/index.ts', // @tzardom-ui/react
+  icons: 'src/icons.ts', // @tzardom-ui/react/icons
+}
 
 const external = (id) =>
   /^@tzardom-ui\/(core|types)/.test(id) ||
-  /^@stencil\/react-output-target/.test(id)
+  /^@stencil\/react-output-target/.test(id) ||
+  /^lucide-react/.test(id)
 
 const sharedPlugins = [
   depsExternal(),
@@ -37,9 +43,10 @@ const typescriptExclude = [
 
 export default [
   {
-    input: 'src/index.ts',
+    input,
     output: {
-      file: packageJson.module,
+      dir: 'dist/esm',
+      entryFileNames: '[name].js',
       format: 'esm',
       sourcemap: true,
     },
@@ -51,6 +58,7 @@ export default [
         exclude: typescriptExclude,
         compilerOptions: {
           rootDir: 'src',
+          outDir: 'dist/esm',
           declaration: true,
           declarationDir: 'dist/esm/types',
         },
@@ -58,9 +66,10 @@ export default [
     ],
   },
   {
-    input: 'src/index.ts',
+    input,
     output: {
-      file: packageJson.main,
+      dir: 'dist/cjs',
+      entryFileNames: '[name].js',
       format: 'cjs',
       sourcemap: true,
     },
@@ -72,6 +81,7 @@ export default [
         exclude: typescriptExclude,
         compilerOptions: {
           rootDir: 'src',
+          outDir: 'dist/cjs',
           declaration: false,
           declarationDir: undefined,
         },
