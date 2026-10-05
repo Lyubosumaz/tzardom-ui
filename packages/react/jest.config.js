@@ -5,8 +5,6 @@ module.exports = {
     '^@tzardom-ui/types$': '<rootDir>/../types/src/index.ts',
     '.(css|less|scss)$': 'identity-obj-proxy',
   },
-  // @lit/react ships ESM, so let Babel transform it. Matches both npm's
-  // node_modules/@lit/react and pnpm's node_modules/.pnpm/@lit+react@x/ path.
   transformIgnorePatterns: [
     '/node_modules/(?!(\\.pnpm/@lit\\+react|@lit/react)[@/])',
   ],

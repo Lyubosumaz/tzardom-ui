@@ -1,18 +1,3 @@
-// Runs an app (default: ../team-capacity-dashboard) against your local
-// tzardom-ui code instead of the versions published to npm.
-//
-//   pnpm app:link     build once and copy the packages into the app
-//   pnpm app:dev      build, copy, start the app's dev server, then rebuild and
-//                     re-copy on every change in packages/*
-//   pnpm app:unlink   put the app back on its npm versions (runs npm install)
-//
-// Options: --app <path> (or TZARDOM_APP=<path>) to target another app,
-// --no-build to skip the initial build, --no-app-server to not start the
-// app's dev server in app:dev.
-//
-// Packages are copied, not symlinked: a symlink would resolve `react` from
-// packages/react/node_modules and load a second copy of React into the app.
-
 import { spawn, spawnSync } from 'node:child_process'
 import {
   cpSync,
@@ -61,7 +46,6 @@ if (!existsSync(path.join(appDir, 'package.json'))) {
   fail(`No app found at ${appDir}. Pass --app <path> or set TZARDOM_APP.`)
 }
 
-// "workspace:^" means nothing to npm, so swap in the real local versions.
 const resolveWorkspaceRanges = (pkg) => {
   const versions = Object.fromEntries(
     PACKAGES.map((name) => [`@tzardom-ui/${name}`, pkgJson(name).version]),
@@ -100,7 +84,6 @@ const copyPackage = (name) => {
   }
 
   mkdirSync(dest, { recursive: true })
-  // Keep any nested node_modules npm put there; replace everything else.
   for (const item of readdirSync(dest)) {
     if (item !== 'node_modules') {
       rmSync(path.join(dest, item), { recursive: true, force: true })
@@ -143,7 +126,6 @@ const build = () => {
     return
   }
   console.log('Building types → core → react…')
-  // react's build pre-hook builds core, and core's builds types.
   const result = spawnSync(
     'pnpm',
     ['--filter', '@tzardom-ui/react', 'run', 'build'],
@@ -185,7 +167,9 @@ const dev = () => {
       try {
         process.kill(-child.pid, 'SIGTERM')
       } catch {
-        // already gone
+        console.error(
+          `Failed to stop ${child.pid}. It may have already exited.`,
+        )
       }
     }
     console.log(
@@ -209,7 +193,7 @@ const dev = () => {
   const run = (label, cmd, cmdArgs, cwd = root) => {
     const child = spawn(cmd, cmdArgs, {
       cwd,
-      detached: true, // own process group, so stop() takes grandchildren too
+      detached: true,
       stdio: ['ignore', 'pipe', 'pipe'],
       env: { ...process.env, FORCE_COLOR: '1' },
     })
@@ -234,16 +218,12 @@ const dev = () => {
     '--watch',
     '--preserveWatchOutput',
   ])
-  // A full (non --dev) build: react needs core's dist-custom-elements output.
   run('core', 'pnpm', [...filter('core'), 'stencil', 'build', '--watch'])
   run('react', 'pnpm', [...filter('react'), 'rollup', '--config', '--watch'])
 
-  // Re-copy a package shortly after its build output stops changing.
   const timers = {}
   for (const name of PACKAGES) {
     watch(pkgDir(name), { recursive: true }, (_event, file) => {
-      // Read the file list on every change, so edits to "files" in
-      // package.json (a new entry like theme.css) are picked up too.
       let watched
       try {
         watched = [...shipped(pkgJson(name)), 'package.json']
