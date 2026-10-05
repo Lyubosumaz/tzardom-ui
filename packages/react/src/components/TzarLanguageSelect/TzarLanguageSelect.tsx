@@ -1,3 +1,5 @@
+'use client'
+
 import { ChevronDown } from 'lucide-react'
 import type { ComponentProps } from 'react'
 import { useState } from 'react'

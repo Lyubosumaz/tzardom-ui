@@ -1,3 +1,5 @@
+'use client'
+
 import { Moon, Sun } from 'lucide-react'
 import type { ComponentProps } from 'react'
 import { use, useState } from 'react'

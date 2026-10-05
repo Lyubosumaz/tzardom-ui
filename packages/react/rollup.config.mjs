@@ -9,8 +9,6 @@ import postcss from 'rollup-plugin-postcss'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// One output file per entry: dist/{esm,cjs}/index.js and .../icons.js.
-// Each entry is a public import path, see "exports" in package.json.
 const input = {
   index: 'src/index.ts', // @tzardom-ui/react
   icons: 'src/icons.ts', // @tzardom-ui/react/icons
@@ -21,7 +19,36 @@ const external = (id) =>
   /^@stencil\/react-output-target/.test(id) ||
   /^lucide-react/.test(id)
 
+const USE_CLIENT = /^(?:\s|\/\/[^\n]*\n|\/\*[\s\S]*?\*\/)*['"]use client['"]/
+
+const clientModules = new Set()
+
+const preserveUseClient = () => ({
+  name: 'preserve-use-client',
+  onLog(level, log) {
+    // Rollup reports that it dropped 'use client'; banner() below restores it.
+    if (
+      log.code === 'MODULE_LEVEL_DIRECTIVE' &&
+      /use client/.test(log.message)
+    ) {
+      return false
+    }
+  },
+  transform(code, id) {
+    if (USE_CLIENT.test(code)) {
+      clientModules.add(id)
+    }
+    return null
+  },
+  banner(chunk) {
+    return chunk.moduleIds.some((id) => clientModules.has(id))
+      ? "'use client';"
+      : ''
+  },
+})
+
 const sharedPlugins = [
+  preserveUseClient(),
   depsExternal(),
   alias({
     entries: [{ find: '@', replacement: path.resolve(dirname, 'src') }],
@@ -30,7 +57,7 @@ const sharedPlugins = [
     extensions: ['.js', '.ts', '.tsx'],
   }),
   postcss(),
-  terser(),
+  terser({ compress: { directives: false } }),
 ]
 
 const typescriptExclude = [
@@ -47,6 +74,8 @@ export default [
     output: {
       dir: 'dist/esm',
       entryFileNames: '[name].js',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
       format: 'esm',
       sourcemap: true,
     },
@@ -70,6 +99,8 @@ export default [
     output: {
       dir: 'dist/cjs',
       entryFileNames: '[name].js',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
       format: 'cjs',
       sourcemap: true,
     },
