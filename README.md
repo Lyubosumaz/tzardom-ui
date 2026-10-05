@@ -54,23 +54,23 @@ with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                 | Used in                  | What it does                                                                                                                                                             |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm install`          | all packages             | Installs dependencies for every package                                                                                                                                  |
-| `pnpm build`            | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs   |
-| `pnpm test:coverage`    | `core`, `react`          | Unit tests with coverage: `core` and `react` both run on Vitest, inside jsdom. Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
-| `pnpm test:e2e`         | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                  |
-| `pnpm lint`             | root                     | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                        |
-| `pnpm lint:fix`         | root                     | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                        |
-| `pnpm storybook`        | `react`                  | Starts Storybook                                                                                                                                                         |
-| `pnpm storybook:build`  | `react`                  | Builds the static Storybook site                                                                                                                                         |
-| `pnpm app:dev`          | all packages             | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                |
-| `pnpm app:link`         | all packages             | Builds once and copies the packages into the app, without watching                                                                                                       |
-| `pnpm app:unlink`       | all packages             | Puts the app back on the npm-published versions                                                                                                                          |
-| `pnpm run clean`        | all packages             | Removes every build/generated artifact **and** `node_modules` + `pnpm-lock.yaml`. Run `pnpm install` afterward                                                           |
-| `pnpm kill-ports`       | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                       |
-| `pnpm version:packages` | `core`, `react`, `types` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                           |
-| `pnpm license`          | root + 3 packages        | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                               |
+| Command                 | Used in                  | What it does                                                                                                                                                                |
+| ----------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`          | all packages             | Installs dependencies for every package                                                                                                                                     |
+| `pnpm build`            | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs      |
+| `pnpm test:coverage`    | `core`, `react`          | Unit tests with coverage: `core` and `react` both run on Vitest, inside jsdom. Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html`    |
+| `pnpm test:e2e`         | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                     |
+| `pnpm lint`             | root                     | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                           |
+| `pnpm lint:fix`         | root                     | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                           |
+| `pnpm storybook`        | `react`                  | Starts Storybook                                                                                                                                                            |
+| `pnpm storybook:build`  | `react`                  | Builds the static Storybook site                                                                                                                                            |
+| `pnpm app:dev`          | all packages             | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                   |
+| `pnpm app:link`         | all packages             | Builds once and copies the packages into the app, without watching                                                                                                          |
+| `pnpm app:unlink`       | all packages             | Puts the app back on the npm-published versions                                                                                                                             |
+| `pnpm run clean`        | all packages             | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back |
+| `pnpm kill-ports`       | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                          |
+| `pnpm version:packages` | `core`, `react`, `types` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                              |
+| `pnpm license`          | root + 3 packages        | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                  |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
 `pnpm --filter @tzardom-ui/core build`.
