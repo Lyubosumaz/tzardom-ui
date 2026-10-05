@@ -1,4 +1,5 @@
 ---
+'@tzardom-ui/core': patch
 '@tzardom-ui/react': patch
 ---
 
@@ -10,3 +11,4 @@ Changes in this release:
 - switch to vitest in packages/react
 - removing bable and switching to vite from webpack5
 - create type files
+- remove pre builds

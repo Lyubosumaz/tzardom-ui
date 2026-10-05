@@ -128,7 +128,7 @@ const build = () => {
   console.log('Building types → core → react…')
   const result = spawnSync(
     'pnpm',
-    ['--filter', '@tzardom-ui/react', 'run', 'build'],
+    ['--filter', '@tzardom-ui/react...', 'run', 'build'],
     { cwd: root, stdio: 'inherit' },
   )
   if (result.status !== 0) {

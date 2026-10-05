@@ -27,12 +27,11 @@
     "themes"
   ],
   "scripts": {
-    "precore-build": "pnpm --filter @tzardom-ui/core run build",
-    "build": "pnpm run precore-build && rollup --config",
+    "build": "rollup --config",
     "test:coverage": "vitest run --coverage",
-    "prestorybook": "pnpm run precore-build",
+    "prestorybook": "pnpm --filter \"@tzardom-ui/core...\" run build",
     "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "pnpm run precore-build",
+    "prebuild-storybook": "pnpm --filter \"@tzardom-ui/core...\" run build",
     "build-storybook": "storybook build"
   },
   "author": "Lyubosumaz",
