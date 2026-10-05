@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import type { AnchorHTMLAttributes } from 'react'
+import { describe, expect, test } from 'vitest'
 import { TzarCommonLink } from './TzarCommonLink'
 
 describe('TzarCommonLink', () => {

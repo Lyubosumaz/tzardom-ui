@@ -30,7 +30,7 @@ instead.
 | Rollup                             | `react`          | Bundles `react`'s wrapper into ESM + CJS for publishing                                                    |
 | Vitest (`@stencil/vitest`)         | `core`           | Unit tests, against compiled output in jsdom                                                               |
 | Playwright (`@stencil/playwright`) | `core`           | Real-browser e2e; jsdom can't fully replicate Shadow DOM and Custom Elements                               |
-| Jest + Testing Library             | `react`          | Unit tests for the wrapper, verifying props/events reach the underlying custom element                     |
+| Vitest + Testing Library           | `react`          | Unit tests for the wrapper, verifying props/events reach the underlying custom element                     |
 | Storybook                          | `react`          | Component docs and manual QA, with CSF3 `play` functions for interaction tests                             |
 
 Vue and Angular wrapper packages are planned, not started.
@@ -58,7 +58,7 @@ with `pnpm approve-builds`.
 | ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `pnpm install`          | all packages             | Installs dependencies for every package                                                                                                                                  |
 | `pnpm build`            | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs   |
-| `pnpm test:coverage`    | `core`, `react`          | Unit tests with coverage: `core` via Vitest (jsdom), `react` via Jest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
+| `pnpm test:coverage`    | `core`, `react`          | Unit tests with coverage: `core` and `react` both run on Vitest, inside jsdom. Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
 | `pnpm test:e2e`         | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                  |
 | `pnpm lint`             | root                     | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                        |
 | `pnpm lint:fix`         | root                     | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                        |

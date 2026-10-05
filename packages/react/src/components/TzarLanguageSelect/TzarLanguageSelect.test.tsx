@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
+import { describe, expect, test, vi } from 'vitest'
 import { TzarLanguageSelect } from './TzarLanguageSelect'
 
 const LANGUAGES = [
@@ -55,7 +56,7 @@ describe('TzarLanguageSelect', () => {
   })
 
   test('reports the picked language and closes', () => {
-    const handleChange = jest.fn()
+    const handleChange = vi.fn()
     const { container, getByText } = render(
       <TzarLanguageSelect
         languages={LANGUAGES}
