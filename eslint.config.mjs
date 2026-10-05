@@ -102,10 +102,6 @@ export default defineConfig([
     },
   },
   {
-    files: ['packages/react/*.js'],
-    rules: { '@typescript-eslint/no-require-imports': 'off' },
-  },
-  {
     files: ['scripts/**'],
     rules: { 'no-console': 'off' },
   },

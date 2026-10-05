@@ -1,15 +1,15 @@
 import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
 const fromHere = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 export default defineConfig(({ mode }) => ({
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: { '@': fromHere('./src') },
     ...(mode === 'test' ? { conditions: ['browser'] } : {}),
-  },
-  oxc: {
-    jsx: { runtime: 'automatic' },
   },
   test: {
     environment: 'jsdom',

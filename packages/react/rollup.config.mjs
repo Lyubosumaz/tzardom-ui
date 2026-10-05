@@ -5,7 +5,6 @@ import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 import depsExternal from 'rollup-plugin-peer-deps-external'
-import postcss from 'rollup-plugin-postcss'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -56,7 +55,6 @@ const sharedPlugins = [
   resolve({
     extensions: ['.js', '.ts', '.tsx'],
   }),
-  postcss(),
   terser({ compress: { directives: false } }),
 ]
 
