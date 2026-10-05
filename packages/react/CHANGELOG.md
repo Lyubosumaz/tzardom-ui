@@ -1,5 +1,24 @@
 # @tzardom-ui/react
 
+## 0.2.8
+
+### Patch Changes
+
+- [#15](https://github.com/Lyubosumaz/tzardom-ui/pull/15)
+  [`a04c84d`](https://github.com/Lyubosumaz/tzardom-ui/commit/a04c84d61d2bd5f4da667ba326bb9ed0f146d98d)
+  Thanks [@Lyubosumaz](https://github.com/Lyubosumaz)! - Changes in this
+  release:
+
+  - migrate toggle theme btn and update the TzarProvider
+  - migrate language selection
+  - migrate into new themes styles from team-capacity-dashboard
+  - migrate nav link buttons
+  - delete skeleton of this old header component
+
+- Updated dependencies
+  [[`a04c84d`](https://github.com/Lyubosumaz/tzardom-ui/commit/a04c84d61d2bd5f4da667ba326bb9ed0f146d98d)]:
+  - @tzardom-ui/core@0.1.8
+
 ## 0.2.7
 
 ### Patch Changes
