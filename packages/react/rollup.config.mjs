@@ -60,13 +60,7 @@ const sharedPlugins = [
   terser({ compress: { directives: false } }),
 ]
 
-const typescriptExclude = [
-  '**/__tests__',
-  '**/*.test.tsx',
-  '**/*.stories.tsx',
-  '**/*.e2e.ts',
-  '**/TestDecorator.ts',
-]
+const typescriptExclude = ['**/__tests__', '**/*.test.tsx', '**/*.stories.tsx']
 
 export default [
   {
