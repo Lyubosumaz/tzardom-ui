@@ -9,3 +9,4 @@ Changes in this release:
 - remove comments that are extended
 - switch to vitest in packages/react
 - removing bable and switching to vite from webpack5
+- create type files

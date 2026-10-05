@@ -1,22 +1,12 @@
 'use client'
 
 import { Moon, Sun } from 'lucide-react'
-import type { ComponentProps } from 'react'
 import { use, useState } from 'react'
 import { TzarIconButton } from '@/generated/components'
 import { isDefaultTzarContext, TzarContext } from '@/provider/TzarProvider'
 import { ThemeActionsType } from '@/provider/TzarProvider.types'
 import { ThemeColorMode } from '@tzardom-ui/types'
-
-export type TzarThemeToggleProps = Omit<
-  ComponentProps<typeof TzarIconButton>,
-  'label' | 'children' | 'onClick'
-> & {
-  theme?: ThemeColorMode
-  defaultTheme?: ThemeColorMode
-  onThemeChange?: (theme: ThemeColorMode) => void
-  label?: string
-}
+import type { TzarThemeToggleProps } from './TzarThemeToggle.types'
 
 export const TzarThemeToggle = ({
   theme,
