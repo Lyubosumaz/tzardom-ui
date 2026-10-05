@@ -99,26 +99,35 @@ const copyPackage = (name) => {
   return pkg.version
 }
 
-const warnMissingDeps = () => {
-  for (const name of PACKAGES) {
-    for (const dep of Object.keys(pkgJson(name).dependencies ?? {})) {
-      if (dep.startsWith('@tzardom-ui/')) {
-        continue
-      }
-      if (!existsSync(path.join(appDir, 'node_modules', dep, 'package.json'))) {
-        console.warn(
-          `⚠ ${appName} is missing ${dep} (needed by @tzardom-ui/${name}). ` +
-            `Run: npm install ${dep} in ${appName}`,
-        )
-      }
-    }
-  }
-}
+const missingDeps = () =>
+  PACKAGES.flatMap((name) =>
+    Object.entries(pkgJson(name).dependencies ?? {})
+      .filter(([dep]) => !dep.startsWith('@tzardom-ui/'))
+      .filter(
+        ([dep]) =>
+          !existsSync(path.join(appDir, 'node_modules', dep, 'package.json')),
+      )
+      .map(([dep, range]) => `${dep}@${range}`),
+  )
 
 const linkAll = () => {
-  const linked = PACKAGES.map((name) => `${name}@${copyPackage(name)}`)
+  const copy = () => PACKAGES.map((name) => `${name}@${copyPackage(name)}`)
+  let linked = copy()
+
+  const missing = missingDeps()
+  if (missing.length > 0) {
+    console.log(`Installing in ${appName}: ${missing.join(', ')}…`)
+    const result = spawnSync('npm', ['install', '--no-save', ...missing], {
+      cwd: appDir,
+      stdio: 'inherit',
+    })
+    if (result.status !== 0) {
+      fail(`npm install ${missing.join(' ')} failed in ${appName}.`)
+    }
+    linked = copy()
+  }
+
   console.log(`✔ Linked into ${appName}: ${linked.join(', ')}`)
-  warnMissingDeps()
 }
 
 const build = () => {

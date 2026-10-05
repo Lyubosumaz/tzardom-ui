@@ -1,4 +1,5 @@
 import type { ElementType } from 'react'
+import { twMerge } from 'tailwind-merge'
 import type {
   TzarCommonLinkProps,
   TzarCommonLinkVariant,
@@ -22,7 +23,7 @@ export const TzarCommonLink = <C extends ElementType = 'a'>({
   return (
     <Component
       {...rest}
-      className={`${VARIANT_CLASSES[variant]} ${(className as string | undefined) ?? ''}`}
+      className={twMerge(VARIANT_CLASSES[variant], className)}
     />
   )
 }

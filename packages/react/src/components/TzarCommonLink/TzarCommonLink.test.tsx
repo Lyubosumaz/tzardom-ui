@@ -29,15 +29,18 @@ describe('TzarCommonLink', () => {
     ).toBe(true)
   })
 
-  test('adds className after its own classes', () => {
+  test('className overrides a conflicting built-in class', () => {
     render(
-      <TzarCommonLink href="/" className="ml-2">
+      <TzarCommonLink href="/" className="px-5 ml-2">
         Home
       </TzarCommonLink>,
     )
-    const classes = screen.getByRole('link').className.trim().split(' ')
+    const classes = screen.getByRole('link').className.split(' ')
 
-    expect(classes[classes.length - 1]).toBe('ml-2')
+    expect(classes).toContain('px-5')
+    expect(classes).not.toContain('px-3')
+    expect(classes).toContain('ml-2')
+    expect(classes).toContain('py-1')
   })
 
   test('the ghost variant has no border or background', () => {

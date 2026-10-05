@@ -41,7 +41,8 @@
     "@stencil/react-output-target": "^1.6.2",
     "@tzardom-ui/core": "workspace:^",
     "@tzardom-ui/types": "workspace:^",
-    "lucide-react": "^1.7.0"
+    "lucide-react": "^1.7.0",
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^6.0.0",
