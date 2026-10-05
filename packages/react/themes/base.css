@@ -1,0 +1,38 @@
+/*
+ * Shared by every tzardom-ui theme; imported by the theme files in this
+ * folder, not by apps directly. It maps the palette variables to Tailwind
+ * colors (bg-background, text-secondary, border-border-subtle, …), sets the
+ * page background and text color, and points Tailwind at this package's build
+ * so the classes its components use get generated.
+ *
+ * A theme file imports this and defines every variable below on :root (light)
+ * and :root[data-theme='dark'] (dark, managed by TzarProvider).
+ */
+
+@source '../dist';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-border-subtle: var(--border-subtle);
+  --color-main: var(--main);
+  --color-main-soft: var(--main-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-muted: var(--muted);
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+}

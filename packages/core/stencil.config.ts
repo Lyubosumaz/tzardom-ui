@@ -1,9 +1,10 @@
-import { Config } from '@stencil/core'
-import { sass } from '@stencil/sass'
+import type { Config } from '@stencil/core'
 import { reactOutputTarget } from '@stencil/react-output-target'
+import { sass } from '@stencil/sass'
 
 export const config: Config = {
   namespace: 'tzardom-ui-core',
+  tsconfig: 'tsconfig.build.json',
   outputTargets: [
     {
       type: 'dist',

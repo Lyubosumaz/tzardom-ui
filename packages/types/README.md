@@ -6,7 +6,8 @@ Shared, generic TypeScript types used across the
 component live next to it instead — this package only holds types that are
 genuinely shared across more than one package.
 
-Type-only package: no runtime code, nothing to import as a value.
+`ThemeColorMode` is a string enum (`ThemeColorMode.LIGHT` = `'light'`,
+`ThemeColorMode.DARK` = `'dark'`).
 
 ## Install
 
@@ -20,9 +21,9 @@ Usually a transitive dependency — you'll get it automatically via
 ## Usage
 
 ```ts
-import type { ThemeColorMode } from '@tzardom-ui/types'
+import { ThemeColorMode } from '@tzardom-ui/types'
 
-const theme: ThemeColorMode = 'dark'
+const theme: ThemeColorMode = ThemeColorMode.DARK
 ```
 
 ## Part of the tzardom-ui monorepo

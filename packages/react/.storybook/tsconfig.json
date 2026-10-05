@@ -1,0 +1,12 @@
+{
+  // Covers the Storybook config files, which the package tsconfig leaves out
+  // (its default include skips dot-folders).
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "types": []
+  },
+  "include": ["./*.ts", "../src/styles.d.ts"]
+}

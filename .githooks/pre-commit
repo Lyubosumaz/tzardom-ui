@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -e
+IFS=$'\n' # split file lists on newlines only, so paths with spaces stay whole
+
+files=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$files" ] && exit 0
+
+# Half-staged files would sneak unstaged changes into the commit.
+half=$(git diff --name-only -- $files)
+if [ -n "$half" ]; then
+  echo "Stage these files fully first (git add):"
+  echo "$half"
+  exit 1
+fi
+
+pick() { echo "$files" | grep -E "$1" || true; }
+code=$(pick '\.(js|mjs|cjs|ts|tsx|mts)$')
+docs=$(pick '\.(json|md|ya?ml|s?css|html)$')
+hooks=$(pick '^\.githooks/')
+
+[ -n "$code" ] && pnpm exec eslint --fix --max-warnings=0 --no-warn-ignored $code
+[ -n "$code$docs" ] && pnpm exec prettier --write --ignore-unknown $code $docs
+
+# Hook scripts: remove extra blank lines
+for f in $hooks; do
+  awk 'NF { if (gap && seen) print ""; print; gap = 0; seen = 1; next } { gap = 1 }' "$f" > "$f.tmp"
+  cat "$f.tmp" > "$f" && rm "$f.tmp"
+done
+
+git add -- $files
+pnpm run test:coverage

@@ -27,30 +27,11 @@ Register the components once, then use the tags directly:
   defineCustomElements()
 </script>
 
-<tzar-button label="Click me"></tzar-button>
-<tzar-header></tzar-header>
+<tzar-icon-button label="Notifications">🔔</tzar-icon-button>
 ```
 
 If you're consuming this through `@tzardom-ui/react`, none of the above is
 necessary — the React wrapper registers the elements for you.
-
-## Components
-
-### `<tzar-button>`
-
-| Prop    | Type     | Default | Description                  |
-| ------- | -------- | ------- | ---------------------------- |
-| `label` | `string` | —       | Text shown inside the button |
-
-| Event         | Detail                                 | Description                              |
-| ------------- | -------------------------------------- | ---------------------------------------- |
-| `themeChange` | `ThemeColorMode` (`'light' \| 'dark'`) | Fired on click, with the new theme value |
-
-### `<tzar-header>`
-
-| Prop       | Type      | Default | Description                             |
-| ---------- | --------- | ------- | --------------------------------------- |
-| `isLogged` | `boolean` | `true`  | Whether to show the logged-in nav items |
 
 ## Part of the tzardom-ui monorepo
 

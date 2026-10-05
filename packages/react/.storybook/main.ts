@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import path, { dirname } from 'path'
 import type { StorybookConfig } from '@storybook/react-webpack5'
+import tailwindcss from '@tailwindcss/postcss'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -25,12 +26,31 @@ const config: StorybookConfig = {
     enableCrashReports: false,
   },
 
-  webpackFinal: async (config) => {
+  webpackFinal: (config) => {
     config.resolve = config.resolve ?? {}
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, '../src'),
+    const srcDir = path.resolve(__dirname, '../src')
+    const alias = config.resolve.alias
+    // Webpack allows aliases as an object or an array; handle both.
+    config.resolve.alias = Array.isArray(alias)
+      ? [...alias, { name: '@', alias: srcDir }]
+      : { ...alias, '@': srcDir }
+
+    // Run plain .css through Tailwind, for .storybook/tailwind.css.
+    for (const rule of config.module?.rules ?? []) {
+      if (
+        rule &&
+        typeof rule === 'object' &&
+        rule.test instanceof RegExp &&
+        rule.test.test('file.css') &&
+        Array.isArray(rule.use)
+      ) {
+        rule.use.push({
+          loader: fileURLToPath(import.meta.resolve('postcss-loader')),
+          options: { postcssOptions: { plugins: [tailwindcss()] } },
+        })
+      }
     }
+
     return config
   },
 }

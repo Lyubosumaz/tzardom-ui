@@ -21,35 +21,46 @@ Requires React 19 and React DOM 19 as peer dependencies.
 ## Usage
 
 ```tsx
-import { TzarButton, TzarHeader } from '@tzardom-ui/react'
+import { TzarCommonLink } from '@tzardom-ui/react'
 
 function App() {
-  return (
-    <>
-      <TzarHeader isLogged />
-      <TzarButton
-        label="Click me"
-        onThemeChange={(event) => console.log(event.detail)}
-      />
-    </>
-  )
+  return <TzarCommonLink href="/login">Log in</TzarCommonLink>
 }
 ```
 
 ## Components
 
-### `<TzarButton>`
+### `<TzarCommonLink>`
 
-| Prop            | Type                                              | Description                               |
-| --------------- | ------------------------------------------------- | ----------------------------------------- |
-| `label`         | `string`                                          | Text shown inside the button              |
-| `onThemeChange` | `(event: CustomEvent<'light' \| 'dark'>) => void` | Called on click, with the new theme value |
+A pill-shaped link. React only: it renders your app's own link component, so
+routing stays the app's (Next.js `Link`, React Router's `Link`, or a plain `<a>`
+by default).
 
-### `<TzarHeader>`
+```tsx
+import Link from 'next/link'
 
-| Prop       | Type      | Default | Description                             |
-| ---------- | --------- | ------- | --------------------------------------- |
-| `isLogged` | `boolean` | `true`  | Whether to show the logged-in nav items |
+;<TzarCommonLink as={Link} href="/login">
+  Log in
+</TzarCommonLink>
+```
+
+| Prop        | Type                   | Default     | Description                                         |
+| ----------- | ---------------------- | ----------- | --------------------------------------------------- |
+| `as`        | `ElementType`          | `'a'`       | Element or component to render                      |
+| `variant`   | `'outline' \| 'ghost'` | `'outline'` | Bordered pill, or pill on hover only                |
+| `className` | `string`               | —           | Extra classes, added after ours                     |
+| …           |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …) |
+
+## Icons
+
+Icons come from their own entry point, re-exported from the lucide-react version
+the components use:
+
+```tsx
+import { Umbrella } from '@tzardom-ui/react/icons'
+```
+
+Available: `Umbrella`. Add more in `src/icons.ts`.
 
 ## Part of the tzardom-ui monorepo
 

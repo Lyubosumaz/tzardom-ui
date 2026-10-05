@@ -1,2 +1,3 @@
 export { TzarProvider, TzarContext } from './TzarProvider'
-export { ThemeActionsType, ThemeColorMode2 } from './TzarProvider.types'
+export { ThemeActionsType } from './TzarProvider.types'
+export { useTzarTheme } from './useTzarTheme'

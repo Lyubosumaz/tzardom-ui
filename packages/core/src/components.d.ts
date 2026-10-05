@@ -5,84 +5,103 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ThemeColorMode } from "@tzardom-ui/types";
-export { ThemeColorMode } from "@tzardom-ui/types";
 export namespace Components {
-    interface TzarButton {
+    interface TzarDropdown {
+        "label"?: string;
+        /**
+          * @default 'listbox'
+         */
+        "menuRole": string;
+        /**
+          * @default false
+         */
+        "open": boolean;
+    }
+    interface TzarIconButton {
+        /**
+          * @default false
+         */
+        "disabled": boolean;
         "label": string;
     }
-    interface TzarHeader {
-        /**
-          * @default true
-         */
-        "isLogged": boolean;
-    }
 }
-export interface TzarButtonCustomEvent<T> extends CustomEvent<T> {
+export interface TzarDropdownCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLTzarButtonElement;
+    target: HTMLTzarDropdownElement;
 }
 declare global {
-    interface HTMLTzarButtonElementEventMap {
-        "themeChange": ThemeColorMode;
+    interface HTMLTzarDropdownElementEventMap {
+        "openChange": boolean;
     }
-    interface HTMLTzarButtonElement extends Components.TzarButton, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLTzarButtonElementEventMap>(type: K, listener: (this: HTMLTzarButtonElement, ev: TzarButtonCustomEvent<HTMLTzarButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLTzarDropdownElement extends Components.TzarDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTzarDropdownElementEventMap>(type: K, listener: (this: HTMLTzarDropdownElement, ev: TzarDropdownCustomEvent<HTMLTzarDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLTzarButtonElementEventMap>(type: K, listener: (this: HTMLTzarButtonElement, ev: TzarButtonCustomEvent<HTMLTzarButtonElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTzarDropdownElementEventMap>(type: K, listener: (this: HTMLTzarDropdownElement, ev: TzarDropdownCustomEvent<HTMLTzarDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLTzarButtonElement: {
-        prototype: HTMLTzarButtonElement;
-        new (): HTMLTzarButtonElement;
+    var HTMLTzarDropdownElement: {
+        prototype: HTMLTzarDropdownElement;
+        new (): HTMLTzarDropdownElement;
     };
-    interface HTMLTzarHeaderElement extends Components.TzarHeader, HTMLStencilElement {
+    interface HTMLTzarIconButtonElement extends Components.TzarIconButton, HTMLStencilElement {
     }
-    var HTMLTzarHeaderElement: {
-        prototype: HTMLTzarHeaderElement;
-        new (): HTMLTzarHeaderElement;
+    var HTMLTzarIconButtonElement: {
+        prototype: HTMLTzarIconButtonElement;
+        new (): HTMLTzarIconButtonElement;
     };
     interface HTMLElementTagNameMap {
-        "tzar-button": HTMLTzarButtonElement;
-        "tzar-header": HTMLTzarHeaderElement;
+        "tzar-dropdown": HTMLTzarDropdownElement;
+        "tzar-icon-button": HTMLTzarIconButtonElement;
     }
 }
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K]?: never };
 
-    interface TzarButton {
-        "label": string;
-        "onThemeChange"?: (event: TzarButtonCustomEvent<ThemeColorMode>) => void;
-    }
-    interface TzarHeader {
+    interface TzarDropdown {
+        "label"?: string;
         /**
-          * @default true
+          * @default 'listbox'
          */
-        "isLogged"?: boolean;
+        "menuRole"?: string;
+        "onOpenChange"?: (event: TzarDropdownCustomEvent<boolean>) => void;
+        /**
+          * @default false
+         */
+        "open"?: boolean;
+    }
+    interface TzarIconButton {
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "label": string;
     }
 
-    interface TzarButtonAttributes {
+    interface TzarDropdownAttributes {
+        "open": boolean;
         "label": string;
+        "menuRole": string;
     }
-    interface TzarHeaderAttributes {
-        "isLogged": boolean;
+    interface TzarIconButtonAttributes {
+        "label": string;
+        "disabled": boolean;
     }
 
     interface IntrinsicElements {
-        "tzar-button": Omit<TzarButton, keyof TzarButtonAttributes> & { [K in keyof TzarButton & keyof TzarButtonAttributes]?: TzarButton[K] } & { [K in keyof TzarButton & keyof TzarButtonAttributes as `attr:${K}`]?: TzarButtonAttributes[K] } & { [K in keyof TzarButton & keyof TzarButtonAttributes as `prop:${K}`]?: TzarButton[K] } & OneOf<"label", TzarButton["label"], TzarButtonAttributes["label"]>;
-        "tzar-header": Omit<TzarHeader, keyof TzarHeaderAttributes> & { [K in keyof TzarHeader & keyof TzarHeaderAttributes]?: TzarHeader[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `attr:${K}`]?: TzarHeaderAttributes[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `prop:${K}`]?: TzarHeader[K] };
+        "tzar-dropdown": Omit<TzarDropdown, keyof TzarDropdownAttributes> & { [K in keyof TzarDropdown & keyof TzarDropdownAttributes]?: TzarDropdown[K] } & { [K in keyof TzarDropdown & keyof TzarDropdownAttributes as `attr:${K}`]?: TzarDropdownAttributes[K] } & { [K in keyof TzarDropdown & keyof TzarDropdownAttributes as `prop:${K}`]?: TzarDropdown[K] };
+        "tzar-icon-button": Omit<TzarIconButton, keyof TzarIconButtonAttributes> & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes]?: TzarIconButton[K] } & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes as `attr:${K}`]?: TzarIconButtonAttributes[K] } & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes as `prop:${K}`]?: TzarIconButton[K] } & OneOf<"label", TzarIconButton["label"], TzarIconButtonAttributes["label"]>;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "tzar-button": LocalJSX.IntrinsicElements["tzar-button"] & JSXBase.HTMLAttributes<HTMLTzarButtonElement>;
-            "tzar-header": LocalJSX.IntrinsicElements["tzar-header"] & JSXBase.HTMLAttributes<HTMLTzarHeaderElement>;
+            "tzar-dropdown": LocalJSX.IntrinsicElements["tzar-dropdown"] & JSXBase.HTMLAttributes<HTMLTzarDropdownElement>;
+            "tzar-icon-button": LocalJSX.IntrinsicElements["tzar-icon-button"] & JSXBase.HTMLAttributes<HTMLTzarIconButtonElement>;
         }
     }
 }
