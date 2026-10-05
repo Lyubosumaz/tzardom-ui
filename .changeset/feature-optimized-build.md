@@ -12,3 +12,4 @@ Changes in this release:
 - removing bable and switching to vite from webpack5
 - create type files
 - remove pre builds
+- adding pretest script to run lint and typecheck before running tests
