@@ -187,12 +187,11 @@ Versioning and publishing go through
 [Changesets](https://github.com/changesets/changesets), not a manual
 `pnpm publish`.
 
-**Day to day**: nothing to do. On a work branch, the `post-commit` hook
-(`.githooks/post-commit` → `scripts/changeset-branch.mjs`) keeps
-`.changeset/<branch-name>.md` up to date after every commit: a `patch` bump for
-each package the branch changed since its `release/*` branch, and a summary
-listing the branch's commit messages. It adds the file into the commit you just
-made, so it's always there when you open the PR:
+**Day to day**: commit as usual. Before opening a work PR, run
+`pnpm changeset:branch` (`scripts/changeset-branch.mjs`) and commit the file it
+writes, `.changeset/<branch-name>.md`: a `patch` bump for each package the
+branch changed since its `release/*` branch, and a summary listing the branch's
+commit messages:
 
 ```md
 ---
@@ -204,10 +203,15 @@ Changes in this release:
 - fix button focus
 ```
 
-To write your own summary, edit the text under the frontmatter and commit. The
-hook keeps your text from then on and only updates the package list. CI
-(`.github/workflows/ci.yml`) fails a work PR that touches a package without a
-changeset.
+Start tooling-only commit messages with `chore:` (CI, configs, test setup, …).
+They don't count as package changes and aren't listed, so they don't publish a
+release on their own. A branch with only `chore:` commits gets an empty
+changeset, which satisfies CI without a release.
+
+To write your own summary, edit the text under the frontmatter and commit;
+re-running the script keeps it and only updates the package list. Run it again
+after adding commits. CI (`.github/workflows/ci.yml`) fails a work PR that
+touches a package without a changeset, so a missing one can't slip through.
 
 **Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
 `master`. Every branch runs `ci.yml`; release PRs and `master` add their own
