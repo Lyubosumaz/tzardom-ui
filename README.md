@@ -104,7 +104,7 @@ Opens Storybook with the current components. Behavior and markup live in
 `packages/core` (unstyled Stencil skeletons such as `tzar-icon-button`); the
 React package wraps them in `src/components/*/` with the Tailwind look and
 React-side logic (`TzarThemeToggle`, `TzarLanguageSelect`), or are React-only
-(`TzarCommonLink`). `TzarHeader` is still core's generated wrapper as-is.
+(`TzarCommonLink`).
 
 Story files use CSF3 with `play` functions for interaction testing, runnable
 interactively from Storybook's Interactions panel. There's no automated e2e

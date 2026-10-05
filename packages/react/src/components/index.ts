@@ -1,8 +1,4 @@
-export {
-  TzarDropdown,
-  TzarHeader,
-  TzarIconButton,
-} from '@/generated/components'
+export { TzarDropdown, TzarIconButton } from '@/generated/components'
 export { TzarCommonLink } from './TzarCommonLink/TzarCommonLink'
 export type {
   TzarCommonLinkProps,

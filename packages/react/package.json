@@ -8,6 +8,20 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./icons": {
+      "types": "./dist/esm/types/icons.d.ts",
+      "import": "./dist/esm/icons.js",
+      "require": "./dist/cjs/icons.js"
+    },
+    "./themes/*": "./themes/*",
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist",
     "themes"
@@ -35,7 +49,6 @@
     "@babel/preset-react": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@rollup/plugin-alias": "^6.0.0",
-    "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
@@ -44,7 +57,6 @@
     "@storybook/addon-mcp": "^10.6.0",
     "@storybook/addon-webpack5-compiler-babel": "^4.0.1",
     "@storybook/preset-scss": "^1.0.3",
-    "@storybook/react": "^10.6.0",
     "@storybook/react-webpack5": "^10.6.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/react": "^16.3.3",
@@ -62,7 +74,6 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "rollup": "^4.63.5",
-    "rollup-plugin-dts": "^6.5.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.105.0",

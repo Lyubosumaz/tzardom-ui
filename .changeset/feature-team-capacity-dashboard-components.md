@@ -9,3 +9,4 @@ Changes in this release:
 - migrate language selection
 - migrate into new themes styles from team-capacity-dashboard
 - migrate nav link buttons
+- delete skeleton of this old header component

@@ -17,12 +17,6 @@ export namespace Components {
          */
         "open": boolean;
     }
-    interface TzarHeader {
-        /**
-          * @default true
-         */
-        "isLogged": boolean;
-    }
     interface TzarIconButton {
         /**
           * @default false
@@ -53,12 +47,6 @@ declare global {
         prototype: HTMLTzarDropdownElement;
         new (): HTMLTzarDropdownElement;
     };
-    interface HTMLTzarHeaderElement extends Components.TzarHeader, HTMLStencilElement {
-    }
-    var HTMLTzarHeaderElement: {
-        prototype: HTMLTzarHeaderElement;
-        new (): HTMLTzarHeaderElement;
-    };
     interface HTMLTzarIconButtonElement extends Components.TzarIconButton, HTMLStencilElement {
     }
     var HTMLTzarIconButtonElement: {
@@ -67,7 +55,6 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "tzar-dropdown": HTMLTzarDropdownElement;
-        "tzar-header": HTMLTzarHeaderElement;
         "tzar-icon-button": HTMLTzarIconButtonElement;
     }
 }
@@ -86,12 +73,6 @@ declare namespace LocalJSX {
          */
         "open"?: boolean;
     }
-    interface TzarHeader {
-        /**
-          * @default true
-         */
-        "isLogged"?: boolean;
-    }
     interface TzarIconButton {
         /**
           * @default false
@@ -105,9 +86,6 @@ declare namespace LocalJSX {
         "label": string;
         "menuRole": string;
     }
-    interface TzarHeaderAttributes {
-        "isLogged": boolean;
-    }
     interface TzarIconButtonAttributes {
         "label": string;
         "disabled": boolean;
@@ -115,7 +93,6 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "tzar-dropdown": Omit<TzarDropdown, keyof TzarDropdownAttributes> & { [K in keyof TzarDropdown & keyof TzarDropdownAttributes]?: TzarDropdown[K] } & { [K in keyof TzarDropdown & keyof TzarDropdownAttributes as `attr:${K}`]?: TzarDropdownAttributes[K] } & { [K in keyof TzarDropdown & keyof TzarDropdownAttributes as `prop:${K}`]?: TzarDropdown[K] };
-        "tzar-header": Omit<TzarHeader, keyof TzarHeaderAttributes> & { [K in keyof TzarHeader & keyof TzarHeaderAttributes]?: TzarHeader[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `attr:${K}`]?: TzarHeaderAttributes[K] } & { [K in keyof TzarHeader & keyof TzarHeaderAttributes as `prop:${K}`]?: TzarHeader[K] };
         "tzar-icon-button": Omit<TzarIconButton, keyof TzarIconButtonAttributes> & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes]?: TzarIconButton[K] } & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes as `attr:${K}`]?: TzarIconButtonAttributes[K] } & { [K in keyof TzarIconButton & keyof TzarIconButtonAttributes as `prop:${K}`]?: TzarIconButton[K] } & OneOf<"label", TzarIconButton["label"], TzarIconButtonAttributes["label"]>;
     }
 }
@@ -124,7 +101,6 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "tzar-dropdown": LocalJSX.IntrinsicElements["tzar-dropdown"] & JSXBase.HTMLAttributes<HTMLTzarDropdownElement>;
-            "tzar-header": LocalJSX.IntrinsicElements["tzar-header"] & JSXBase.HTMLAttributes<HTMLTzarHeaderElement>;
             "tzar-icon-button": LocalJSX.IntrinsicElements["tzar-icon-button"] & JSXBase.HTMLAttributes<HTMLTzarIconButtonElement>;
         }
     }

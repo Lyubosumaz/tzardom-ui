@@ -21,15 +21,10 @@ Requires React 19 and React DOM 19 as peer dependencies.
 ## Usage
 
 ```tsx
-import { TzarCommonLink, TzarHeader } from '@tzardom-ui/react'
+import { TzarCommonLink } from '@tzardom-ui/react'
 
 function App() {
-  return (
-    <>
-      <TzarHeader isLogged />
-      <TzarCommonLink href="/login">Log in</TzarCommonLink>
-    </>
-  )
+  return <TzarCommonLink href="/login">Log in</TzarCommonLink>
 }
 ```
 
@@ -56,11 +51,16 @@ import Link from 'next/link'
 | `className` | `string`               | —           | Extra classes, added after ours                     |
 | …           |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …) |
 
-### `<TzarHeader>`
+## Icons
 
-| Prop       | Type      | Default | Description                             |
-| ---------- | --------- | ------- | --------------------------------------- |
-| `isLogged` | `boolean` | `true`  | Whether to show the logged-in nav items |
+Icons come from their own entry point, re-exported from the lucide-react version
+the components use:
+
+```tsx
+import { Umbrella } from '@tzardom-ui/react/icons'
+```
+
+Available: `Umbrella`. Add more in `src/icons.ts`.
 
 ## Part of the tzardom-ui monorepo
 

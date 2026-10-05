@@ -28,19 +28,10 @@ Register the components once, then use the tags directly:
 </script>
 
 <tzar-icon-button label="Notifications">🔔</tzar-icon-button>
-<tzar-header></tzar-header>
 ```
 
 If you're consuming this through `@tzardom-ui/react`, none of the above is
 necessary — the React wrapper registers the elements for you.
-
-## Components
-
-### `<tzar-header>`
-
-| Prop       | Type      | Default | Description                             |
-| ---------- | --------- | ------- | --------------------------------------- |
-| `isLogged` | `boolean` | `true`  | Whether to show the logged-in nav items |
 
 ## Part of the tzardom-ui monorepo
 
