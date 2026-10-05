@@ -18,7 +18,8 @@
     "app:link": "node scripts/link-app.mjs",
     "app:dev": "node scripts/link-app.mjs --watch",
     "app:unlink": "node scripts/link-app.mjs --unlink",
-    "lint": "prettier --write . && eslint --fix .",
+    "lint": "prettier --check . && eslint .",
+    "lint:fix": "prettier --write . && eslint --fix .",
     "license": "node scripts/license-year.mjs",
     "prepare": "git config core.hooksPath .githooks"
   },
