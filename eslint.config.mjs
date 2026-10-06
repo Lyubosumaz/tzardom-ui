@@ -12,11 +12,6 @@ export default defineConfig([
     '**/coverage/**',
     '**/storybook-static/**',
     '**/pnpm-lock.yaml',
-    'packages/core/www/**',
-    'packages/core/loader/**',
-    'packages/core/.stencil/**',
-    'packages/core/src/components.d.ts',
-    'packages/react/src/generated/**',
   ]),
 
   js.configs.recommended,
@@ -26,12 +21,7 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: [
-            'packages/core/*.ts',
-            'packages/core/*.mts',
-            'packages/react/*.ts',
-            'packages/react/*.mts',
-          ],
+          allowDefaultProject: ['packages/react/*.ts', 'packages/react/*.mts'],
         },
         tsconfigRootDir: import.meta.dirname,
       },
@@ -77,8 +67,6 @@ export default defineConfig([
           devDependencies: [
             '**/*.stories.*',
             '**/*.test.*',
-            '**/*.spec.*',
-            '**/*.e2e.*',
             '**/.storybook/**',
             '**/*.config.*',
             '**/vitest.setup.*',
@@ -104,22 +92,6 @@ export default defineConfig([
   {
     files: ['scripts/**'],
     rules: { 'no-console': 'off' },
-  },
-  // Stencil
-  {
-    files: ['packages/core/src/**/*.{ts,tsx}'],
-    rules: {
-      '@typescript-eslint/no-unsafe-return': 'off',
-      'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { varsIgnorePattern: '^h$' },
-      ],
-    },
-  },
-  {
-    files: ['packages/core/src/**/*.{spec,e2e}.{ts,tsx}'],
-    extends: [tseslint.configs.disableTypeChecked],
   },
   // React
   {

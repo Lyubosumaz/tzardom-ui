@@ -1,8 +1,8 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
-import { useState } from 'react'
-import { TzarDropdown } from '@/generated/components'
+import { useEffect, useId, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import type { TzarLanguageSelectProps } from './TzarLanguageSelect.types'
 
 export const TzarLanguageSelect = <Code extends string = string>({
@@ -10,10 +10,40 @@ export const TzarLanguageSelect = <Code extends string = string>({
   value,
   onChange,
   label = 'Language',
+  className,
   ...rest
 }: TzarLanguageSelectProps<Code>) => {
   const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const menuId = useId()
   const current = languages.find((lang) => lang.code === value) ?? languages[0]
+
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    const closeOnClickOutside = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        triggerRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('click', closeOnClickOutside)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('click', closeOnClickOutside)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [open])
 
   const handleSelect = (code: Code) => {
     onChange?.(code)
@@ -21,18 +51,27 @@ export const TzarLanguageSelect = <Code extends string = string>({
   }
 
   return (
-    <TzarDropdown
-      {...rest}
-      label={`${label}: ${current.short}`}
-      open={open}
-      onOpenChange={(event) => {
-        setOpen(event.detail)
-      }}
-    >
-      <span slot="trigger">{current.short}</span>
-      <ChevronDown slot="trigger" className="h-3 w-3" aria-hidden="true" />
+    <div {...rest} ref={rootRef} className={twMerge('relative', className)}>
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-label={`${label}: ${current.short}`}
+        aria-expanded={open}
+        aria-controls={menuId}
+        onClick={() => {
+          setOpen(!open)
+        }}
+        className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-secondary hover:bg-main-soft hover:text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:bg-main-soft"
+      >
+        <span>{current.short}</span>
+        <ChevronDown className="h-3 w-3" aria-hidden="true" />
+      </button>
 
-      <ul>
+      <ul
+        id={menuId}
+        hidden={!open}
+        className="absolute right-0 z-10 mt-2 w-32 rounded-md border border-border-subtle bg-background py-1 text-xs shadow-md"
+      >
         {languages.map((lang) => (
           <li key={lang.code}>
             <button
@@ -49,6 +88,6 @@ export const TzarLanguageSelect = <Code extends string = string>({
           </li>
         ))}
       </ul>
-    </TzarDropdown>
+    </div>
   )
 }

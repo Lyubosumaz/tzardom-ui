@@ -22,9 +22,9 @@ export const Uncontrolled: Story = {
     onThemeChange: fn(),
   },
   play: async ({ canvasElement, args }) => {
-    const host = canvasElement.querySelector('tzar-icon-button') as HTMLElement
+    const button = canvasElement.querySelector('button') as HTMLButtonElement
 
-    host.click()
+    button.click()
 
     await waitFor(async () => {
       await expect(args.onThemeChange).toHaveBeenCalledWith(ThemeColorMode.DARK)

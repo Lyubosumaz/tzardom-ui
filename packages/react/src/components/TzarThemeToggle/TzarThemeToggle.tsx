@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from 'lucide-react'
 import { use, useState } from 'react'
-import { TzarIconButton } from '@/generated/components'
+import { twMerge } from 'tailwind-merge'
 import { isDefaultTzarContext, TzarContext } from '@/provider/TzarProvider'
 import { ThemeActionsType } from '@/provider/TzarProvider.types'
 import { ThemeColorMode } from '@tzardom-ui/types'
@@ -13,6 +13,7 @@ export const TzarThemeToggle = ({
   defaultTheme = ThemeColorMode.LIGHT,
   onThemeChange,
   label = 'Toggle theme',
+  className,
   ...rest
 }: TzarThemeToggleProps) => {
   const context = use(TzarContext)
@@ -39,8 +40,17 @@ export const TzarThemeToggle = ({
   }
 
   return (
-    <TzarIconButton {...rest} label={label} onClick={handleClick}>
+    <button
+      {...rest}
+      type="button"
+      aria-label={label}
+      onClick={handleClick}
+      className={twMerge(
+        'inline-flex items-center gap-1.5 rounded-full p-2 text-xs font-medium text-secondary hover:bg-main-soft hover:text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:bg-main-soft',
+        className,
+      )}
+    >
       <Icon className="h-4.5 w-4.5" aria-hidden="true" />
-    </TzarIconButton>
+    </button>
   )
 }
