@@ -62,6 +62,7 @@ with `pnpm approve-builds`.
 | `pnpm test:e2e`         | `core`                     | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                                                                                                                                                          |
 | `pnpm lint`             | root                       | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                                                                                                                |
 | `pnpm lint:fix`         | root                       | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                                                                                                                |
+| `pnpm start`            | `core`                     | Starts Stencil's dev server with a harness page that shows every `core` component. See [Working on `@tzardom-ui/core`](#working-on-tzardom-uicore)                                                                                                                                                               |
 | `pnpm storybook`        | `react`                    | Starts Storybook                                                                                                                                                                                                                                                                                                 |
 | `pnpm storybook:build`  | `react`                    | Builds the static Storybook site                                                                                                                                                                                                                                                                                 |
 | `pnpm app:dev`          | all packages               | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                                                                                                        |
@@ -81,7 +82,7 @@ package; add `...` to build its dependencies first, each once:
 ## Working on `@tzardom-ui/core`
 
 ```bash
-pnpm --filter @tzardom-ui/core start
+pnpm start
 ```
 
 Starts Stencil's dev server with a live-reloading harness page

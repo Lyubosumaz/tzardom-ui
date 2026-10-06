@@ -133,14 +133,11 @@ describe('TzarThemeToggle', () => {
     })
   })
 
-  test('className overrides a conflicting built-in class, part variants too', () => {
+  test('passes className to the element, so apps can adjust it', () => {
     const { container } = render(
       <TzarThemeToggle className="[&::part(button)]:p-4" />,
     )
-    const classes = getHost(container).className.split(' ')
 
-    expect(classes).toContain('[&::part(button)]:p-4')
-    expect(classes).not.toContain('[&::part(button)]:p-2')
-    expect(classes).toContain('[&::part(button)]:rounded-full')
+    expect(getHost(container).className).toBe('[&::part(button)]:p-4')
   })
 })

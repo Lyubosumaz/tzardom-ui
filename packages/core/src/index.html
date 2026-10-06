@@ -9,30 +9,124 @@
     />
     <script type="module" src="/build/tzardom-ui-core.esm.js"></script>
     <script nomodule src="/build/tzardom-ui-core.js"></script>
+    <link rel="stylesheet" href="/themes/team-capacity-dashboard.css" />
   </head>
   <body style="font-family: sans-serif; padding: 2rem">
-    <p>Icon button clicks: <span id="icon-clicks">0</span></p>
-    <tzar-icon-button label="Add">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        aria-hidden="true"
-      >
-        <path d="M12 5v14M5 12h14" />
-      </svg>
-    </tzar-icon-button>
+    <main>
+      <h1>tzardom-ui core</h1>
+
+      <section aria-labelledby="icon-button-heading">
+        <h2 id="icon-button-heading">tzar-icon-button</h2>
+        <p>Clicks: <output id="icon-clicks">0</output></p>
+        <tzar-icon-button id="add-button" label="Add">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </tzar-icon-button>
+
+        <p>Switches this page between the theme's light and dark colors.</p>
+        <tzar-icon-button id="theme-toggle" label="Toggle theme">
+          <svg
+            id="moon-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+          </svg>
+          <svg
+            id="sun-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            style="display: none"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+            />
+          </svg>
+        </tzar-icon-button>
+      </section>
+
+      <section aria-labelledby="dropdown-heading">
+        <h2 id="dropdown-heading">tzar-dropdown</h2>
+        <p>Open: <output id="dropdown-open">false</output></p>
+        <tzar-dropdown label="Language: EN">
+          <span slot="trigger">EN</span>
+          <svg
+            slot="trigger"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+          <ul>
+            <li>
+              <button type="button" aria-current="true">EN English</button>
+            </li>
+            <li>
+              <button type="button" aria-current="false">BG Bulgarian</button>
+            </li>
+          </ul>
+        </tzar-dropdown>
+      </section>
+    </main>
 
     <script>
       let iconClicks = 0
+      document.getElementById('add-button').addEventListener('click', () => {
+        iconClicks += 1
+        document.getElementById('icon-clicks').textContent = String(iconClicks)
+      })
+
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        const isDark = document.documentElement.dataset.theme === 'dark'
+        if (isDark) {
+          delete document.documentElement.dataset.theme
+        } else {
+          document.documentElement.dataset.theme = 'dark'
+        }
+        document.getElementById('moon-icon').style.display = isDark
+          ? ''
+          : 'none'
+        document.getElementById('sun-icon').style.display = isDark ? 'none' : ''
+      })
+
       document
-        .querySelector('tzar-icon-button')
-        .addEventListener('click', () => {
-          iconClicks += 1
-          document.getElementById('icon-clicks').textContent =
-            String(iconClicks)
+        .querySelector('tzar-dropdown')
+        .addEventListener('openChange', (event) => {
+          document.getElementById('dropdown-open').textContent = String(
+            event.detail,
+          )
         })
     </script>
   </body>

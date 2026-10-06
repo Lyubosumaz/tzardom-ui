@@ -2,7 +2,6 @@
 
 import { Moon, Sun } from 'lucide-react'
 import { use, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
 import { TzarIconButton } from '@/generated/components'
 import { isDefaultTzarContext, TzarContext } from '@/provider/TzarProvider'
 import { ThemeActionsType } from '@/provider/TzarProvider.types'
@@ -14,7 +13,6 @@ export const TzarThemeToggle = ({
   defaultTheme = ThemeColorMode.LIGHT,
   onThemeChange,
   label = 'Toggle theme',
-  className,
   ...rest
 }: TzarThemeToggleProps) => {
   const context = use(TzarContext)
@@ -41,15 +39,7 @@ export const TzarThemeToggle = ({
   }
 
   return (
-    <TzarIconButton
-      {...rest}
-      className={twMerge(
-        '[&::part(button)]:border-0 [&::part(button)]:bg-transparent [&::part(button)]:inline-flex [&::part(button)]:items-center [&::part(button)]:gap-1.5 [&::part(button)]:rounded-full [&::part(button)]:p-2 [&::part(button)]:text-xs [&::part(button)]:font-medium [&::part(button)]:text-secondary [&::part(button)]:hover:bg-main-soft [&::part(button)]:hover:text-secondary [&::part(button)]:transition-colors [&::part(button)]:focus-visible:outline-none [&::part(button)]:focus-visible:ring-2 [&::part(button)]:focus-visible:ring-secondary [&::part(button)]:focus-visible:bg-main-soft',
-        className,
-      )}
-      label={label}
-      onClick={handleClick}
-    >
+    <TzarIconButton {...rest} label={label} onClick={handleClick}>
       <Icon className="h-4.5 w-4.5" aria-hidden="true" />
     </TzarIconButton>
   )

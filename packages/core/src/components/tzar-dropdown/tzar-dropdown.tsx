@@ -3,13 +3,13 @@ import { Component, Element, Event, Listen, Prop, h } from '@stencil/core'
 
 @Component({
   tag: 'tzar-dropdown',
+  styleUrl: '../../tailwind.css',
   shadow: true,
 })
 export class TzarDropdown {
   @Element() el!: HTMLElement
   @Prop({ mutable: true, reflect: true }) open = false
   @Prop() label?: string
-  @Prop() menuRole = 'listbox'
   @Event() openChange!: EventEmitter<boolean>
 
   private setOpen(open: boolean) {
@@ -40,22 +40,28 @@ export class TzarDropdown {
   }
 
   render() {
-    return [
-      <button
-        type="button"
-        part="trigger"
-        aria-haspopup={this.menuRole}
-        aria-expanded={this.open ? 'true' : 'false'}
-        aria-label={this.label}
-        onClick={this.onTriggerClick}
-      >
-        <slot name="trigger" />
-      </button>,
-      this.open && (
-        <div part="menu" role={this.menuRole}>
+    return (
+      <div class="relative inline-block">
+        <button
+          type="button"
+          part="trigger"
+          class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-secondary hover:bg-main-soft hover:text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:bg-main-soft"
+          aria-expanded={this.open ? 'true' : 'false'}
+          aria-controls="menu"
+          aria-label={this.label}
+          onClick={this.onTriggerClick}
+        >
+          <slot name="trigger" />
+        </button>
+        <div
+          id="menu"
+          part="menu"
+          class="absolute right-0 z-10 mt-2 w-32 rounded-md border border-border-subtle bg-background py-1 text-xs shadow-md"
+          hidden={!this.open}
+        >
           <slot />
         </div>
-      ),
-    ]
+      </div>
+    )
   }
 }
