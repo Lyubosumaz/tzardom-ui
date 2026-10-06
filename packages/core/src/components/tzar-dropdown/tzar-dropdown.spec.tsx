@@ -5,10 +5,10 @@ import './tzar-dropdown'
 const getTrigger = (root: HTMLElement) =>
   root.shadowRoot?.querySelector('[part="trigger"]') as HTMLButtonElement
 const getMenu = (root: HTMLElement) =>
-  root.shadowRoot?.querySelector('[part="menu"]')
+  root.shadowRoot?.querySelector('[part="menu"]') as HTMLDivElement
 
 describe('tzar-dropdown', () => {
-  it('starts closed with the trigger content slotted', async () => {
+  it('starts closed, with the trigger pointing at the hidden menu', async () => {
     const { root } = await render(
       <tzar-dropdown>
         <span slot="trigger">EN</span>
@@ -16,9 +16,11 @@ describe('tzar-dropdown', () => {
       </tzar-dropdown>,
     )
 
-    expect(getMenu(root)).toBeNull()
+    expect(getMenu(root).hidden).toBe(true)
     expect(getTrigger(root).getAttribute('aria-expanded')).toBe('false')
-    expect(getTrigger(root).getAttribute('aria-haspopup')).toBe('listbox')
+    expect(getTrigger(root).getAttribute('aria-controls')).toBe(
+      getMenu(root).id,
+    )
   })
 
   it('opens on trigger click and emits openChange', async () => {
@@ -28,7 +30,7 @@ describe('tzar-dropdown', () => {
     getTrigger(root).click()
     await waitForChanges()
 
-    expect(getMenu(root)?.getAttribute('role')).toBe('listbox')
+    expect(getMenu(root).hidden).toBe(false)
     expect(getTrigger(root).getAttribute('aria-expanded')).toBe('true')
     expect(root.hasAttribute('open')).toBe(true)
     expect(openChangeSpy.lastEvent?.detail).toBe(true)
@@ -43,7 +45,7 @@ describe('tzar-dropdown', () => {
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
     await waitForChanges()
 
-    expect(getMenu(root)).toBeNull()
+    expect(getMenu(root).hidden).toBe(true)
     expect(openChangeSpy.lastEvent?.detail).toBe(false)
   })
 
@@ -56,11 +58,11 @@ describe('tzar-dropdown', () => {
 
     ;(root.querySelector('.option') as HTMLButtonElement).click()
     await waitForChanges()
-    expect(getMenu(root)).toBeTruthy()
+    expect(getMenu(root).hidden).toBe(false)
 
     document.body.click()
     await waitForChanges()
-    expect(getMenu(root)).toBeNull()
+    expect(getMenu(root).hidden).toBe(true)
   })
 
   it('uses the label as the trigger accessible name', async () => {

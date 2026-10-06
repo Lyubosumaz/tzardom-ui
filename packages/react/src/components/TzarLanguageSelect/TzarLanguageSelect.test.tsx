@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, within } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { TzarLanguageSelect } from './TzarLanguageSelect'
 
@@ -8,7 +8,7 @@ const LANGUAGES = [
   { code: 'ka', short: 'KA', label: 'Georgian' },
 ] as const
 
-type Host = HTMLElement & { open?: boolean }
+type Host = HTMLElement & { open?: boolean; label?: string }
 
 const getHost = (container: HTMLElement) =>
   container.querySelector('tzar-dropdown') as Host
@@ -40,19 +40,30 @@ describe('TzarLanguageSelect', () => {
     ).toBe('EN')
   })
 
+  test('names the trigger with the label and the visible code', () => {
+    const { container } = render(
+      <TzarLanguageSelect languages={LANGUAGES} value="bg" label="Език" />,
+    )
+
+    expect(getHost(container).label).toBe('Език: BG')
+  })
+
   test('lists every language and marks the current one', () => {
-    const { getAllByRole } = render(
+    const { getByRole } = render(
       <TzarLanguageSelect languages={LANGUAGES} value="ka" />,
     )
-    const options = getAllByRole('option', { hidden: true })
+    const items = within(getByRole('list', { hidden: true })).getAllByRole(
+      'button',
+      { hidden: true },
+    )
 
-    expect(options.map((o) => o.textContent)).toEqual([
+    expect(items.map((item) => item.textContent)).toEqual([
       'ENEnglish',
       'BGBulgarian',
       'KAGeorgian',
     ])
-    expect(options[2].getAttribute('aria-selected')).toBe('true')
-    expect(options[0].getAttribute('aria-selected')).toBe('false')
+    expect(items[2].getAttribute('aria-current')).toBe('true')
+    expect(items[0].getAttribute('aria-current')).toBe('false')
   })
 
   test('reports the picked language and closes', () => {
