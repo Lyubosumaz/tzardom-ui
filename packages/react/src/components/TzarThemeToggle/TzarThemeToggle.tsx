@@ -41,7 +41,6 @@ export const TzarThemeToggle = ({
 
   return (
     <button
-      {...rest}
       type="button"
       aria-label={label}
       onClick={handleClick}
@@ -49,6 +48,7 @@ export const TzarThemeToggle = ({
         'inline-flex items-center gap-1.5 rounded-full p-2 text-xs font-medium text-secondary hover:bg-main-soft hover:text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:bg-main-soft',
         className,
       )}
+      {...rest}
     >
       <Icon className="h-4.5 w-4.5" aria-hidden="true" />
     </button>

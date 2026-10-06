@@ -19,12 +19,12 @@
       "import": "./dist/esm/icons.js",
       "require": "./dist/cjs/icons.js"
     },
-    "./themes/*": "./themes/*",
+    "./tailwind.css": "./tailwind.css",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "themes"
+    "tailwind.css"
   ],
   "scripts": {
     "build": "rollup --config",
@@ -52,6 +52,7 @@
     "@storybook/react-vite": "^10.6.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/react": "^16.3.3",
+    "@tzardom-ui/themes": "workspace:^",
     "@types/node": "^22",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

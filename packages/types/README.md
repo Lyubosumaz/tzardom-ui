@@ -28,7 +28,8 @@ const theme: ThemeColorMode = ThemeColorMode.DARK
 
 ## Part of the tzardom-ui monorepo
 
-| Package                                                                | What it is       |
-| ---------------------------------------------------------------------- | ---------------- |
-| [`@tzardom-ui/react`](https://www.npmjs.com/package/@tzardom-ui/react) | React components |
-| `@tzardom-ui/types`                                                    | This package     |
+| Package                                                                  | What it is         |
+| ------------------------------------------------------------------------ | ------------------ |
+| [`@tzardom-ui/react`](https://www.npmjs.com/package/@tzardom-ui/react)   | React components   |
+| [`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes) | Color themes (CSS) |
+| `@tzardom-ui/types`                                                      | This package       |

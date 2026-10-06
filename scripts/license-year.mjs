@@ -9,6 +9,7 @@ const currentYear = new Date().getFullYear()
 const licenseFiles = [
   'LICENSE',
   'packages/react/LICENSE',
+  'packages/themes/LICENSE',
   'packages/types/LICENSE',
 ].map((relativePath) => path.join(rootDir, relativePath))
 

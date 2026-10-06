@@ -14,7 +14,7 @@ import { clearTimeout, setTimeout } from 'node:timers'
 import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const PACKAGES = ['types', 'react']
+const PACKAGES = ['types', 'themes', 'react']
 const DEBOUNCE_MS = 400
 
 const args = process.argv.slice(2)

@@ -6,18 +6,22 @@ built with semantic HTML and styled with Tailwind CSS v4.
 ## Install
 
 ```bash
-npm install @tzardom-ui/react
+npm install @tzardom-ui/react @tzardom-ui/themes
 ```
 
 Requires React 19 and React DOM 19 as peer dependencies.
 
 ## Usage
 
-Import Tailwind and one tzardom-ui theme in your app's CSS:
+In your app's CSS, import Tailwind, then one theme from
+[`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes), then
+this package's `tailwind.css`, which makes your Tailwind generate the classes
+the components use:
 
 ```css
 @import 'tailwindcss';
-@import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
+@import '@tzardom-ui/themes/team-capacity-dashboard.css';
+@import '@tzardom-ui/react/tailwind.css';
 ```
 
 Then use the components:
@@ -91,7 +95,8 @@ Available: `Umbrella`. Add more in `src/icons.ts`.
 
 ## Part of the tzardom-ui monorepo
 
-| Package                                                                | What it is              |
-| ---------------------------------------------------------------------- | ----------------------- |
-| `@tzardom-ui/react`                                                    | This package            |
-| [`@tzardom-ui/types`](https://www.npmjs.com/package/@tzardom-ui/types) | Shared TypeScript types |
+| Package                                                                  | What it is              |
+| ------------------------------------------------------------------------ | ----------------------- |
+| `@tzardom-ui/react`                                                      | This package            |
+| [`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes) | Color themes (CSS)      |
+| [`@tzardom-ui/types`](https://www.npmjs.com/package/@tzardom-ui/types)   | Shared TypeScript types |
