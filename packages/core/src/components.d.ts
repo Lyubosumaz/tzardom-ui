@@ -9,10 +9,6 @@ export namespace Components {
     interface TzarDropdown {
         "label"?: string;
         /**
-          * @default 'listbox'
-         */
-        "menuRole": string;
-        /**
           * @default false
          */
         "open": boolean;
@@ -63,10 +59,6 @@ declare namespace LocalJSX {
 
     interface TzarDropdown {
         "label"?: string;
-        /**
-          * @default 'listbox'
-         */
-        "menuRole"?: string;
         "onOpenChange"?: (event: TzarDropdownCustomEvent<boolean>) => void;
         /**
           * @default false
@@ -84,7 +76,6 @@ declare namespace LocalJSX {
     interface TzarDropdownAttributes {
         "open": boolean;
         "label": string;
-        "menuRole": string;
     }
     interface TzarIconButtonAttributes {
         "label": string;

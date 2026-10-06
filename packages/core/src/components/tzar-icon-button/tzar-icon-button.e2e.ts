@@ -23,6 +23,16 @@ test.describe('tzar-icon-button', () => {
     expect(clickSpy).toHaveReceivedEventTimes(1)
   })
 
+  test('passes focus from the host to its button', async ({ page }) => {
+    await page.setContent(
+      '<tzar-icon-button label="Star"><span>★</span></tzar-icon-button>',
+    )
+
+    await page.locator('tzar-icon-button').focus()
+
+    await expect(page.getByRole('button', { name: 'Star' })).toBeFocused()
+  })
+
   test('does not fire click when disabled', async ({ page }) => {
     await page.setContent(
       '<tzar-icon-button label="Star" disabled><span>★</span></tzar-icon-button>',
