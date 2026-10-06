@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { TzarProvider, useTzarTheme } from '@/provider'
 import { ThemeColorMode } from '@tzardom-ui/types'
 import { TzarThemeToggle } from './TzarThemeToggle'
@@ -21,7 +22,7 @@ describe('TzarThemeToggle', () => {
   })
 
   test('switches to dark on click and reports it', () => {
-    const handleThemeChange = jest.fn()
+    const handleThemeChange = vi.fn()
     const { container } = render(
       <TzarThemeToggle onThemeChange={handleThemeChange} />,
     )
@@ -34,7 +35,7 @@ describe('TzarThemeToggle', () => {
   })
 
   test('follows the theme prop when one is passed', () => {
-    const handleThemeChange = jest.fn()
+    const handleThemeChange = vi.fn()
     const { container, rerender } = render(
       <TzarThemeToggle
         theme={ThemeColorMode.DARK}
@@ -67,7 +68,7 @@ describe('TzarThemeToggle', () => {
     })
 
     test('changes the provider theme on click', () => {
-      const handleThemeChange = jest.fn()
+      const handleThemeChange = vi.fn()
       const { container, getByTestId } = render(
         <TzarProvider>
           <TzarThemeToggle onThemeChange={handleThemeChange} />
@@ -112,7 +113,7 @@ describe('TzarThemeToggle', () => {
     })
 
     test('with a theme prop, only reports the change', () => {
-      const handleThemeChange = jest.fn()
+      const handleThemeChange = vi.fn()
       const { container, getByTestId } = render(
         <TzarProvider>
           <TzarThemeToggle
@@ -130,5 +131,16 @@ describe('TzarThemeToggle', () => {
         ThemeColorMode.LIGHT,
       )
     })
+  })
+
+  test('className overrides a conflicting built-in class, part variants too', () => {
+    const { container } = render(
+      <TzarThemeToggle className="[&::part(button)]:p-4" />,
+    )
+    const classes = getHost(container).className.split(' ')
+
+    expect(classes).toContain('[&::part(button)]:p-4')
+    expect(classes).not.toContain('[&::part(button)]:p-2')
+    expect(classes).toContain('[&::part(button)]:rounded-full')
   })
 })

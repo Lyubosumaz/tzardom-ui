@@ -44,12 +44,12 @@ import Link from 'next/link'
 </TzarCommonLink>
 ```
 
-| Prop        | Type                   | Default     | Description                                         |
-| ----------- | ---------------------- | ----------- | --------------------------------------------------- |
-| `as`        | `ElementType`          | `'a'`       | Element or component to render                      |
-| `variant`   | `'outline' \| 'ghost'` | `'outline'` | Bordered pill, or pill on hover only                |
-| `className` | `string`               | —           | Extra classes, added after ours                     |
-| …           |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …) |
+| Prop        | Type                   | Default     | Description                                                        |
+| ----------- | ---------------------- | ----------- | ------------------------------------------------------------------ |
+| `as`        | `ElementType`          | `'a'`       | Element or component to render                                     |
+| `variant`   | `'outline' \| 'ghost'` | `'outline'` | Bordered pill, or pill on hover only                               |
+| `className` | `string`               | —           | Extra classes; on a conflict (e.g. `px-5` vs our `px-3`) yours win |
+| …           |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …)                |
 
 ## Icons
 

@@ -26,7 +26,12 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['packages/core/*.ts', 'packages/core/*.mts'],
+          allowDefaultProject: [
+            'packages/core/*.ts',
+            'packages/core/*.mts',
+            'packages/react/*.ts',
+            'packages/react/*.mts',
+          ],
         },
         tsconfigRootDir: import.meta.dirname,
       },
@@ -76,6 +81,7 @@ export default defineConfig([
             '**/*.e2e.*',
             '**/.storybook/**',
             '**/*.config.*',
+            '**/vitest.setup.*',
             'scripts/**',
             'eslint.config.mjs',
           ],
@@ -94,10 +100,6 @@ export default defineConfig([
         module: 'writable',
       },
     },
-  },
-  {
-    files: ['packages/react/*.js'],
-    rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
   {
     files: ['scripts/**'],

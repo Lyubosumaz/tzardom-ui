@@ -19,7 +19,6 @@
     "@tzardom-ui/types": "workspace:^"
   },
   "scripts": {
-    "prebuild": "pnpm --filter @tzardom-ui/types run build",
     "prestart": "pnpm --filter @tzardom-ui/types run build",
     "pretest:coverage": "pnpm --filter @tzardom-ui/types run build",
     "build": "stencil build",

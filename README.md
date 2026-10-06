@@ -30,7 +30,7 @@ instead.
 | Rollup                             | `react`          | Bundles `react`'s wrapper into ESM + CJS for publishing                                                    |
 | Vitest (`@stencil/vitest`)         | `core`           | Unit tests, against compiled output in jsdom                                                               |
 | Playwright (`@stencil/playwright`) | `core`           | Real-browser e2e; jsdom can't fully replicate Shadow DOM and Custom Elements                               |
-| Jest + Testing Library             | `react`          | Unit tests for the wrapper, verifying props/events reach the underlying custom element                     |
+| Vitest + Testing Library           | `react`          | Unit tests for the wrapper, verifying props/events reach the underlying custom element                     |
 | Storybook                          | `react`          | Component docs and manual QA, with CSF3 `play` functions for interaction tests                             |
 
 Vue and Angular wrapper packages are planned, not started.
@@ -54,25 +54,29 @@ with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                 | Used in                  | What it does                                                                                                                                                             |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm install`          | all packages             | Installs dependencies for every package                                                                                                                                  |
-| `pnpm build`            | `core` → `react`         | Builds every package; `core` (Stencil) always builds first since `react` imports its generated output — enforced via pre-hooks and pnpm's dependency-ordered `-r` runs   |
-| `pnpm test:coverage`    | `core`, `react`          | Unit tests with coverage: `core` via Vitest (jsdom), `react` via Jest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
-| `pnpm test:e2e`         | `core`                   | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                  |
-| `pnpm lint`             | root                     | Formats with Prettier and lints with ESLint across the whole repo                                                                                                        |
-| `pnpm storybook`        | `react`                  | Starts Storybook                                                                                                                                                         |
-| `pnpm storybook:build`  | `react`                  | Builds the static Storybook site                                                                                                                                         |
-| `pnpm app:dev`          | all packages             | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                |
-| `pnpm app:link`         | all packages             | Builds once and copies the packages into the app, without watching                                                                                                       |
-| `pnpm app:unlink`       | all packages             | Puts the app back on the npm-published versions                                                                                                                          |
-| `pnpm run clean`        | all packages             | Removes every build/generated artifact **and** `node_modules` + `pnpm-lock.yaml`. Run `pnpm install` afterward                                                           |
-| `pnpm kill-ports`       | `core`, `react`          | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                       |
-| `pnpm version:packages` | `core`, `react`, `types` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                           |
-| `pnpm license`          | root + 3 packages        | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                               |
+| Command                 | Used in                    | What it does                                                                                                                                                                                                                                                                                                     |
+| ----------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`          | all packages               | Installs dependencies for every package                                                                                                                                                                                                                                                                          |
+| `pnpm build`            | `types` → `core` → `react` | Builds every package once, in dependency order (`pnpm -r`), so `core` (Stencil) is built before `react`, which imports its generated output                                                                                                                                                                      |
+| `pnpm test:coverage`    | `core`, `react`            | Unit tests with coverage: `core` and `react` both via Vitest (jsdom). Each first builds what it imports (`core`: `types`; `react`: `types` and `core`, for its generated wrappers), so it also works on a fresh clone. Runs as part of the pre-commit hook. HTML report at `packages/<name>/coverage/index.html` |
+| `pnpm test:e2e`         | `core`                     | Real-browser e2e tests (currently only `core` has them, via Playwright)                                                                                                                                                                                                                                          |
+| `pnpm lint`             | root                       | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                                                                                                                |
+| `pnpm lint:fix`         | root                       | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                                                                                                                |
+| `pnpm storybook`        | `react`                    | Starts Storybook                                                                                                                                                                                                                                                                                                 |
+| `pnpm storybook:build`  | `react`                    | Builds the static Storybook site                                                                                                                                                                                                                                                                                 |
+| `pnpm app:dev`          | all packages               | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                                                                                                        |
+| `pnpm app:link`         | all packages               | Builds once and copies the packages into the app, without watching                                                                                                                                                                                                                                               |
+| `pnpm app:unlink`       | all packages               | Puts the app back on the npm-published versions                                                                                                                                                                                                                                                                  |
+| `pnpm run clean`        | all packages               | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                                                                                                      |
+| `pnpm kill-ports`       | `core`, `react`            | Frees ports `3333` (Stencil dev server) and `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                                                                               |
+| `pnpm version:packages` | `core`, `react`, `types`   | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                                                                                                                                                                   |
+| `pnpm license`          | root + 3 packages          | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                                                                                                       |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
-`pnpm --filter @tzardom-ui/core build`.
+`pnpm --filter @tzardom-ui/core build`. A package's `build` only builds that
+package; add `...` to build its dependencies first, each once:
+`pnpm --filter "@tzardom-ui/react..." build` builds `types`, `core`, then
+`react`.
 
 ## Working on `@tzardom-ui/core`
 
@@ -172,11 +176,10 @@ copy of React and breaks hooks.
 `@tzardom-ui/core`'s `pnpm start` (`stencil build --dev --watch --serve`) does
 **not** produce the same `dist/` output as a real `pnpm build` — dev mode skips
 the full `dist-custom-elements` JS output that `react` needs. If you've been
-running `core`'s dev server and then try to build or run Storybook for `react`,
-you may hit a "module not found" error. `react`'s
-`build`/`storybook`/`build-storybook` scripts all have pre-hooks that force a
-real `core` rebuild first, so this is generally handled automatically — but it's
-worth knowing if you ever bypass those scripts.
+running `core`'s dev server and then build `react` on its own, you may hit a
+"module not found" error: run `pnpm --filter "@tzardom-ui/react..." build` (or
+the root `pnpm build`) to rebuild `core` properly first. `react`'s `storybook`
+and `build-storybook` do that for `core` automatically, through their pre-hooks.
 
 ## Publishing
 
@@ -184,12 +187,11 @@ Versioning and publishing go through
 [Changesets](https://github.com/changesets/changesets), not a manual
 `pnpm publish`.
 
-**Day to day**: nothing to do. On a work branch, the `post-commit` hook
-(`.githooks/post-commit` → `scripts/changeset-branch.mjs`) keeps
-`.changeset/<branch-name>.md` up to date after every commit: a `patch` bump for
-each package the branch changed since its `release/*` branch, and a summary
-listing the branch's commit messages. It adds the file into the commit you just
-made, so it's always there when you open the PR:
+**Day to day**: commit as usual. Before opening a work PR, run
+`pnpm changeset:branch` (`scripts/changeset-branch.mjs`) and commit the file it
+writes, `.changeset/<branch-name>.md`: a `patch` bump for each package the
+branch changed since its `release/*` branch, and a summary listing the branch's
+commit messages:
 
 ```md
 ---
@@ -201,10 +203,15 @@ Changes in this release:
 - fix button focus
 ```
 
-To write your own summary, edit the text under the frontmatter and commit. The
-hook keeps your text from then on and only updates the package list. CI
-(`.github/workflows/ci.yml`) fails a work PR that touches a package without a
-changeset.
+Start tooling-only commit messages with `chore:` (CI, configs, test setup, …).
+They don't count as package changes and aren't listed, so they don't publish a
+release on their own. A branch with only `chore:` commits gets an empty
+changeset, which satisfies CI without a release.
+
+To write your own summary, edit the text under the frontmatter and commit;
+re-running the script keeps it and only updates the package list. Run it again
+after adding commits. CI (`.github/workflows/ci.yml`) fails a work PR that
+touches a package without a changeset, so a missing one can't slip through.
 
 **Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
 `master`. Every branch runs `ci.yml`; release PRs and `master` add their own

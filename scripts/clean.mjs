@@ -3,7 +3,6 @@ import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const targets = [
   'node_modules',
-  'pnpm-lock.yaml',
   'packages/*/node_modules',
   'packages/*/dist',
   'packages/*/loader',
@@ -18,7 +17,7 @@ const targets = [
 try {
   await rimraf(targets, { glob: true })
   console.log(
-    'Cleaned build artifacts, generated files, node_modules and pnpm-lock.yaml',
+    'Cleaned build artifacts, generated files and node_modules (pnpm-lock.yaml kept)',
   )
 } catch (error) {
   console.error('Clean failed:', error)

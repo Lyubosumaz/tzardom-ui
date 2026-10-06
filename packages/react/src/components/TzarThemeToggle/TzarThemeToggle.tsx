@@ -1,20 +1,13 @@
+'use client'
+
 import { Moon, Sun } from 'lucide-react'
-import type { ComponentProps } from 'react'
 import { use, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { TzarIconButton } from '@/generated/components'
 import { isDefaultTzarContext, TzarContext } from '@/provider/TzarProvider'
 import { ThemeActionsType } from '@/provider/TzarProvider.types'
 import { ThemeColorMode } from '@tzardom-ui/types'
-
-export type TzarThemeToggleProps = Omit<
-  ComponentProps<typeof TzarIconButton>,
-  'label' | 'children' | 'onClick'
-> & {
-  theme?: ThemeColorMode
-  defaultTheme?: ThemeColorMode
-  onThemeChange?: (theme: ThemeColorMode) => void
-  label?: string
-}
+import type { TzarThemeToggleProps } from './TzarThemeToggle.types'
 
 export const TzarThemeToggle = ({
   theme,
@@ -50,7 +43,10 @@ export const TzarThemeToggle = ({
   return (
     <TzarIconButton
       {...rest}
-      className={`[&::part(button)]:border-0 [&::part(button)]:bg-transparent [&::part(button)]:inline-flex [&::part(button)]:items-center [&::part(button)]:gap-1.5 [&::part(button)]:rounded-full [&::part(button)]:p-2 [&::part(button)]:text-xs [&::part(button)]:font-medium [&::part(button)]:text-secondary [&::part(button)]:hover:bg-main-soft [&::part(button)]:hover:text-secondary [&::part(button)]:transition-colors [&::part(button)]:focus-visible:outline-none [&::part(button)]:focus-visible:ring-2 [&::part(button)]:focus-visible:ring-secondary [&::part(button)]:focus-visible:bg-main-soft ${className ?? ''}`}
+      className={twMerge(
+        '[&::part(button)]:border-0 [&::part(button)]:bg-transparent [&::part(button)]:inline-flex [&::part(button)]:items-center [&::part(button)]:gap-1.5 [&::part(button)]:rounded-full [&::part(button)]:p-2 [&::part(button)]:text-xs [&::part(button)]:font-medium [&::part(button)]:text-secondary [&::part(button)]:hover:bg-main-soft [&::part(button)]:hover:text-secondary [&::part(button)]:transition-colors [&::part(button)]:focus-visible:outline-none [&::part(button)]:focus-visible:ring-2 [&::part(button)]:focus-visible:ring-secondary [&::part(button)]:focus-visible:bg-main-soft',
+        className,
+      )}
       label={label}
       onClick={handleClick}
     >
