@@ -1,5 +1,27 @@
 # @tzardom-ui/react
 
+## 0.2.9
+
+### Patch Changes
+
+- [#17](https://github.com/Lyubosumaz/tzardom-ui/pull/17)
+  [`6a193aa`](https://github.com/Lyubosumaz/tzardom-ui/commit/6a193aa663254550a5a499da7a3f807237985f95)
+  Thanks [@Lyubosumaz](https://github.com/Lyubosumaz)! - Changes in this
+  release:
+
+  - keep 'use client' per component for Next.js Server Components
+  - removed the two dead excludes
+  - remove comments that are extended
+  - switch to vitest in packages/react
+  - removing bable and switching to vite from webpack5
+  - create type files
+  - remove pre builds
+  - adding pretest script to run lint and typecheck before running tests
+
+- Updated dependencies
+  [[`6a193aa`](https://github.com/Lyubosumaz/tzardom-ui/commit/6a193aa663254550a5a499da7a3f807237985f95)]:
+  - @tzardom-ui/core@0.1.9
+
 ## 0.2.8
 
 ### Patch Changes

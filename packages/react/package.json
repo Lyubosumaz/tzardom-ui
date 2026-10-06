@@ -1,6 +1,6 @@
 {
   "name": "@tzardom-ui/react",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "My pet component library",
   "publishConfig": {
     "access": "public"
