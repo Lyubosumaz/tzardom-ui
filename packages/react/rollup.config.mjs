@@ -1,22 +1,14 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-import alias from '@rollup/plugin-alias'
 import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 import depsExternal from 'rollup-plugin-peer-deps-external'
-
-const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const input = {
   index: 'src/index.ts', // @tzardom-ui/react
   icons: 'src/icons.ts', // @tzardom-ui/react/icons
 }
 
-const external = (id) =>
-  /^@tzardom-ui\/types/.test(id) ||
-  /^lucide-react/.test(id) ||
-  /^tailwind-merge/.test(id)
+const external = (id) => /^lucide-react/.test(id) || /^tailwind-merge/.test(id)
 
 const USE_CLIENT = /^(?:\s|\/\/[^\n]*\n|\/\*[\s\S]*?\*\/)*['"]use client['"]/
 
@@ -49,16 +41,13 @@ const preserveUseClient = () => ({
 const sharedPlugins = [
   preserveUseClient(),
   depsExternal(),
-  alias({
-    entries: [{ find: '@', replacement: path.resolve(dirname, 'src') }],
-  }),
   resolve({
     extensions: ['.js', '.ts', '.tsx'],
   }),
   terser({ compress: { directives: false } }),
 ]
 
-const typescriptExclude = ['**/__tests__', '**/*.test.tsx', '**/*.stories.tsx']
+const typescriptExclude = ['**/__tests__', '**/*.test.tsx']
 
 export default [
   {

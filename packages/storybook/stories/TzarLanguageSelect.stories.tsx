@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { TzarLanguageSelect } from '@tzardom-ui/react'
 import { useState } from 'react'
 import { fn } from 'storybook/test'
-import { TzarLanguageSelect } from './TzarLanguageSelect'
 
 const LANGUAGES = [
   { code: 'en', short: 'EN', label: 'English' },

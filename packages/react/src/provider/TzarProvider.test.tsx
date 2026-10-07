@@ -1,8 +1,12 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { use } from 'react'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { ThemeColorMode } from '@tzardom-ui/types'
-import { TzarProvider, TzarContext, ThemeActionsType } from './index'
+import {
+  TzarProvider,
+  TzarContext,
+  ThemeActionsType,
+  ThemeColorMode,
+} from './index'
 
 const ThemeConsumer = () => {
   const { theme, setTheme } = use(TzarContext)

@@ -1,5 +1,0 @@
-/* Tailwind for Storybook, with the theme team-capacity-dashboard uses. */
-@import 'tailwindcss';
-@import '@tzardom-ui/themes/team-capacity-dashboard.css';
-
-@source '../src';

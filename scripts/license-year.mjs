@@ -6,12 +6,9 @@ import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 const currentYear = new Date().getFullYear()
 
-const licenseFiles = [
-  'LICENSE',
-  'packages/react/LICENSE',
-  'packages/themes/LICENSE',
-  'packages/types/LICENSE',
-].map((relativePath) => path.join(rootDir, relativePath))
+const licenseFiles = ['LICENSE', 'packages/react/LICENSE'].map((relativePath) =>
+  path.join(rootDir, relativePath),
+)
 
 const COPYRIGHT_PATTERN = /Copyright \(c\) (\d{4})(?:-(\d{4}))? (.+)/
 
