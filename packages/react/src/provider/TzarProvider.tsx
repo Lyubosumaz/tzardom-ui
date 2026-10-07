@@ -8,14 +8,13 @@ import {
   useReducer,
   useRef,
 } from 'react'
-import { ThemeColorMode } from '@tzardom-ui/types'
 import type {
   ThemeData,
   ThemeAction,
   TypeContext,
   ITzarProviderProps,
 } from './TzarProvider.types'
-import { ThemeActionsType } from './TzarProvider.types'
+import { ThemeActionsType, ThemeColorMode } from './TzarProvider.types'
 
 const DEFAULT_THEME: ThemeData = { theme: ThemeColorMode.LIGHT }
 

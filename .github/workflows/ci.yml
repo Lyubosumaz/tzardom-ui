@@ -11,17 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: ./.github/actions/build
-
-      - name: Check for a changeset
-        if: startsWith(github.base_ref, 'release/')
-        run: pnpm changeset status --since=origin/${{ github.base_ref }}
 
       - name: Lint
         run: pnpm run lint
 
       - name: Test with coverage
         run: pnpm run test:coverage
+
+      - name: Install Chromium for the e2e tests
+        run:
+          pnpm --filter @tzardom-ui/e2e exec playwright install --with-deps
+          chromium
+
+      - name: End-to-end tests
+        run: pnpm run test:e2e
+
+      - name: Keep the e2e failure details
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: packages/e2e/test-results

@@ -1,0 +1,10 @@
+/*
+ * Makes the app's Tailwind generate the classes these components use, by
+ * scanning the package's build. Import it after Tailwind and a theme:
+ *
+ *   @import 'tailwindcss';
+ *   @import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
+ *   @import '@tzardom-ui/react/tailwind.css';
+ */
+
+@source './dist';

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    // Types for '@tzardom-ui/react' come from its source, like in
+    // vite.config.mts, so type checking needs no build either.
+    "paths": {
+      "@tzardom-ui/react": ["../react/src/index.ts"]
+    },
+    "types": ["node"],
+    "isolatedModules": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["stories", ".storybook/*.ts", "vite.config.mts", "styles.d.ts"]
+}

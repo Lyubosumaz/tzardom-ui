@@ -1,5 +1,4 @@
-import type { ComponentProps } from 'react'
-import type { TzarDropdown } from '@/generated/components'
+import type { ComponentPropsWithoutRef } from 'react'
 
 export interface TzarLanguage<Code extends string = string> {
   code: Code
@@ -8,8 +7,8 @@ export interface TzarLanguage<Code extends string = string> {
 }
 
 export type TzarLanguageSelectProps<Code extends string = string> = Omit<
-  ComponentProps<typeof TzarDropdown>,
-  'children' | 'open' | 'onOpenChange' | 'onChange' | 'label'
+  ComponentPropsWithoutRef<'div'>,
+  'children' | 'onChange'
 > & {
   languages: readonly TzarLanguage<Code>[]
   value: Code

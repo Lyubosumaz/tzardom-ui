@@ -14,7 +14,7 @@ import { clearTimeout, setTimeout } from 'node:timers'
 import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const PACKAGES = ['types', 'core', 'react']
+const PACKAGES = ['react']
 const DEBOUNCE_MS = 400
 
 const args = process.argv.slice(2)
@@ -134,7 +134,7 @@ const build = () => {
   if (has('--no-build')) {
     return
   }
-  console.log('Building types → core → react…')
+  console.log('Building types → react…')
   const result = spawnSync(
     'pnpm',
     ['--filter', '@tzardom-ui/react...', 'run', 'build'],
@@ -219,15 +219,6 @@ const dev = () => {
   }
 
   const filter = (name) => ['--filter', `@tzardom-ui/${name}`, 'exec']
-  run('types', 'pnpm', [
-    ...filter('types'),
-    'tsc',
-    '-p',
-    'tsconfig.json',
-    '--watch',
-    '--preserveWatchOutput',
-  ])
-  run('core', 'pnpm', [...filter('core'), 'stencil', 'build', '--watch'])
   run('react', 'pnpm', [...filter('react'), 'rollup', '--config', '--watch'])
 
   const timers = {}

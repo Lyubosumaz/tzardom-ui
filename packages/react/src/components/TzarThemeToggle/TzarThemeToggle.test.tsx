@@ -1,52 +1,42 @@
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { TzarProvider, useTzarTheme } from '@/provider'
-import { ThemeColorMode } from '@tzardom-ui/types'
+import { ThemeColorMode, TzarProvider, useTzarTheme } from '../../provider'
 import { TzarThemeToggle } from './TzarThemeToggle'
 
-const getHost = (container: HTMLElement) =>
-  container.querySelector('tzar-icon-button') as HTMLElement
+const getToggle = () => screen.getByRole('button', { name: 'Toggle theme' })
 
-const iconName = (host: HTMLElement) =>
-  host.querySelector('svg')?.classList.contains('lucide-sun') ? 'sun' : 'moon'
+const iconName = (button: HTMLElement) =>
+  button.querySelector('svg')?.classList.contains('lucide-sun') ? 'sun' : 'moon'
 
 describe('TzarThemeToggle', () => {
   test('shows the moon in light mode and labels the button', () => {
-    const { container } = render(<TzarThemeToggle />)
-    const host = getHost(container)
+    render(<TzarThemeToggle />)
 
-    expect(iconName(host)).toBe('moon')
-    expect((host as HTMLElement & { label?: string }).label).toBe(
-      'Toggle theme',
-    )
+    expect(iconName(getToggle())).toBe('moon')
   })
 
   test('switches to dark on click and reports it', () => {
     const handleThemeChange = vi.fn()
-    const { container } = render(
-      <TzarThemeToggle onThemeChange={handleThemeChange} />,
-    )
-    const host = getHost(container)
+    render(<TzarThemeToggle onThemeChange={handleThemeChange} />)
 
-    fireEvent.click(host)
+    fireEvent.click(getToggle())
 
     expect(handleThemeChange).toHaveBeenCalledWith(ThemeColorMode.DARK)
-    expect(iconName(host)).toBe('sun')
+    expect(iconName(getToggle())).toBe('sun')
   })
 
   test('follows the theme prop when one is passed', () => {
     const handleThemeChange = vi.fn()
-    const { container, rerender } = render(
+    const { rerender } = render(
       <TzarThemeToggle
         theme={ThemeColorMode.DARK}
         onThemeChange={handleThemeChange}
       />,
     )
-    const host = getHost(container)
 
-    expect(iconName(host)).toBe('sun')
+    expect(iconName(getToggle())).toBe('sun')
 
-    fireEvent.click(host)
+    fireEvent.click(getToggle())
     expect(handleThemeChange).toHaveBeenCalledWith(ThemeColorMode.LIGHT)
 
     rerender(
@@ -55,7 +45,7 @@ describe('TzarThemeToggle', () => {
         onThemeChange={handleThemeChange}
       />,
     )
-    expect(iconName(host)).toBe('moon')
+    expect(iconName(getToggle())).toBe('moon')
   })
 
   describe('inside a TzarProvider', () => {
@@ -69,20 +59,19 @@ describe('TzarThemeToggle', () => {
 
     test('changes the provider theme on click', () => {
       const handleThemeChange = vi.fn()
-      const { container, getByTestId } = render(
+      render(
         <TzarProvider>
           <TzarThemeToggle onThemeChange={handleThemeChange} />
           <ProviderTheme />
         </TzarProvider>,
       )
-      const host = getHost(container)
 
-      fireEvent.click(host)
+      fireEvent.click(getToggle())
 
-      expect(getByTestId('provider-theme').textContent).toBe(
+      expect(screen.getByTestId('provider-theme').textContent).toBe(
         ThemeColorMode.DARK,
       )
-      expect(iconName(host)).toBe('sun')
+      expect(iconName(getToggle())).toBe('sun')
       expect(handleThemeChange).toHaveBeenCalledWith(ThemeColorMode.DARK)
     })
 
@@ -100,21 +89,21 @@ describe('TzarThemeToggle', () => {
           </button>
         )
       }
-      const { container, getByText } = render(
+      render(
         <TzarProvider>
           <TzarThemeToggle />
           <SetDark />
         </TzarProvider>,
       )
 
-      fireEvent.click(getByText('dark'))
+      fireEvent.click(screen.getByText('dark'))
 
-      expect(iconName(getHost(container))).toBe('sun')
+      expect(iconName(getToggle())).toBe('sun')
     })
 
     test('with a theme prop, only reports the change', () => {
       const handleThemeChange = vi.fn()
-      const { container, getByTestId } = render(
+      render(
         <TzarProvider>
           <TzarThemeToggle
             theme={ThemeColorMode.LIGHT}
@@ -124,20 +113,21 @@ describe('TzarThemeToggle', () => {
         </TzarProvider>,
       )
 
-      fireEvent.click(getHost(container))
+      fireEvent.click(getToggle())
 
       expect(handleThemeChange).toHaveBeenCalledWith(ThemeColorMode.DARK)
-      expect(getByTestId('provider-theme').textContent).toBe(
+      expect(screen.getByTestId('provider-theme').textContent).toBe(
         ThemeColorMode.LIGHT,
       )
     })
   })
 
-  test('passes className to the element, so apps can adjust it', () => {
-    const { container } = render(
-      <TzarThemeToggle className="[&::part(button)]:p-4" />,
-    )
+  test('className overrides a conflicting built-in class', () => {
+    render(<TzarThemeToggle className="p-4" />)
+    const classes = getToggle().className.split(' ')
 
-    expect(getHost(container).className).toBe('[&::part(button)]:p-4')
+    expect(classes).toContain('p-4')
+    expect(classes).not.toContain('p-2')
+    expect(classes).toContain('rounded-full')
   })
 })
