@@ -105,3 +105,12 @@ sets their light values on `:root` and dark values on
 
 To add a theme, copy `themes/team-capacity-dashboard.css`, name it after the
 app, and change the values, keeping every variable name.
+
+## Upgrading from 0.2
+
+- `@tzardom-ui/core` is gone: `TzarThemeToggle` and `TzarLanguageSelect` are
+  plain React components now, and `TzarIconButton` and `TzarDropdown` are
+  removed.
+- Keep `@import '@tzardom-ui/react/themes/team-capacity-dashboard.css'` and add
+  `@import '@tzardom-ui/react/tailwind.css'` right after it, so your Tailwind
+  generates the classes the components use.

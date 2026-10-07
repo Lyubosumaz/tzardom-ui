@@ -20,8 +20,8 @@ jobs:
 
       - uses: ./.github/actions/build
 
+      - name: Check the version is new on npm
+        run: node scripts/check-version.mjs
+
       - name: Check LICENSE year
         run: pnpm license && git diff --exit-code
-
-      - name: Check changesets are versioned
-        run: '! ls .changeset/*.md | grep -v README.md'

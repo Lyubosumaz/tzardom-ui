@@ -47,21 +47,20 @@ with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                 | Used in        | What it does                                                                                                                                                                                                                    |
-| ----------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`          | all packages   | Installs dependencies for every package                                                                                                                                                                                         |
-| `pnpm build`            | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                                                                             |
-| `pnpm test:coverage`    | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                                                                           |
-| `pnpm test:e2e`         | `e2e`          | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs in CI after the unit tests, but not in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
-| `pnpm lint`             | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                               |
-| `pnpm lint:fix`         | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                               |
-| `pnpm app:dev`          | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                       |
-| `pnpm app:link`         | all packages   | Builds once and copies the packages into the app, without watching                                                                                                                                                              |
-| `pnpm app:unlink`       | all packages   | Puts the app back on the npm-published versions                                                                                                                                                                                 |
-| `pnpm run clean`        | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                     |
-| `pnpm kill-ports`       | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                               |
-| `pnpm version:packages` | `react`        | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                                                                                  |
-| `pnpm license`          | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                      |
+| Command              | Used in        | What it does                                                                                                                                                                                                                    |
+| -------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`       | all packages   | Installs dependencies for every package                                                                                                                                                                                         |
+| `pnpm build`         | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                                                                             |
+| `pnpm test:coverage` | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                                                                           |
+| `pnpm test:e2e`      | `e2e`          | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs in CI after the unit tests, but not in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
+| `pnpm lint`          | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                               |
+| `pnpm lint:fix`      | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                               |
+| `pnpm app:dev`       | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                       |
+| `pnpm app:link`      | all packages   | Builds once and copies the packages into the app, without watching                                                                                                                                                              |
+| `pnpm app:unlink`    | all packages   | Puts the app back on the npm-published versions                                                                                                                                                                                 |
+| `pnpm run clean`     | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                     |
+| `pnpm kill-ports`    | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                               |
+| `pnpm license`       | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                      |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
 `pnpm --filter @tzardom-ui/react build`.
@@ -167,61 +166,33 @@ copy of React and breaks hooks.
 
 ## Publishing
 
-Versioning and publishing go through
-[Changesets](https://github.com/changesets/changesets), not a manual
-`pnpm publish`.
-
-**Day to day**: commit as usual. Before opening a work PR, run
-`pnpm changeset:branch` (`scripts/changeset-branch.mjs`) and commit the file it
-writes, `.changeset/<branch-name>.md`: a `patch` bump for each package the
-branch changed since its `release/*` branch, and a summary listing the branch's
-commit messages:
-
-```md
----
-'@tzardom-ui/react': patch
----
-
-Changes in this release:
-
-- fix button focus
-```
-
-Start tooling-only commit messages with `chore:` (CI, configs, test setup, …).
-They don't count as package changes and aren't listed, so they don't publish a
-release on their own. A branch with only `chore:` commits gets an empty
-changeset, which satisfies CI without a release.
-
-To write your own summary, edit the text under the frontmatter and commit;
-re-running the script keeps it and only updates the package list. Run it again
-after adding commits. CI (`.github/workflows/ci.yml`) fails a work PR that
-touches a package without a changeset, so a missing one can't slip through.
+The `"version"` in `packages/react/package.json` decides what gets published.
+You change it by hand on the release branch; merging into `master` publishes it.
 
 **Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
-`master`. Every branch runs `ci.yml`; release PRs and `master` add their own
-checks on top:
+`master`. Every branch runs `ci.yml`; PRs into `master` and pushes to `master`
+add their own checks on top:
 
-| Workflow      | Runs on              | Checks                                                                              |
-| ------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| `ci.yml`      | PRs into `release/*` | Changeset present (work PRs only), build, lint, unit tests, e2e tests               |
-| `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, changesets versioned, LICENSE year |
-| `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm                                                           |
+| Workflow      | Runs on              | Checks                                                                                   |
+| ------------- | -------------------- | ---------------------------------------------------------------------------------------- |
+| `ci.yml`      | PRs into `release/*` | Build, lint, unit tests, e2e tests                                                       |
+| `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, the version is new on npm, LICENSE year |
+| `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm and create the GitHub release, if the version is new           |
 
-**Releasing**: once all work PRs are merged into the release branch, run
-`pnpm version:packages` there. It combines every pending changeset — bumping the
-right package.json versions, updating each package's `CHANGELOG.md`, and
-removing the changeset files. It needs the [GitHub CLI](https://cli.github.com)
-logged in (`gh auth login`), because `changelog-github` uses your GitHub token
-to link PRs. Also run `pnpm license`, commit both, and open the PR into
-`master`.
+**Releasing**:
 
-Merging it triggers `.github/workflows/master.yml`, which re-runs `ci.yml` and
-then `changeset publish`. That publishes only the packages with a real version
-change. `workspace:^` ranges are replaced with real version ranges (e.g.
-`^0.1.6`) in the published packages.
+1. On the release branch, change `"version"` in `packages/react/package.json`:
+   the last number for fixes (0.2.9 → 0.2.10), the middle one for new features
+   or breaking changes while below 1.0 (0.2.9 → 0.3.0). Run `pnpm license` and
+   commit both.
+2. Open the PR into `master`. `release.yml` fails it if npm already has that
+   version, so a release can't be forgotten (`scripts/check-version.mjs`).
+3. Merge it. `master.yml` publishes the package to npm and creates the GitHub
+   release `v<version>`, whose notes GitHub writes from the PRs merged since the
+   previous release. If npm already has the version, it publishes nothing
+   (`scripts/publish.mjs`).
 
-**One-time setup required** (not something either of us can automate): a
-`NODE_AUTH_TOKEN` repository secret (an npm
-[automation token](https://docs.npmjs.com/creating-and-viewing-access-tokens))
-must exist in this repo's GitHub settings before `master.yml` can actually
-publish.
+**One-time setup** in the repo's GitHub settings (not something either of us can
+automate): a `NODE_AUTH_TOKEN` repository secret, an npm
+[automation token](https://docs.npmjs.com/creating-and-viewing-access-tokens),
+for publishing.

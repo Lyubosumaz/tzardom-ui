@@ -11,14 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: ./.github/actions/build
-
-      - name: Check for a changeset
-        if: startsWith(github.base_ref, 'release/')
-        run: pnpm changeset status --since=origin/${{ github.base_ref }}
 
       - name: Lint
         run: pnpm run lint
