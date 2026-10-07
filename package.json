@@ -10,6 +10,7 @@
     "kill-ports": "node scripts/kill-ports.mjs",
     "build": "pnpm -r --if-present run build",
     "test:coverage": "pnpm -r --if-present run test:coverage",
+    "test:e2e": "pnpm -r --if-present run test:e2e",
     "changeset": "changeset",
     "changeset:branch": "node scripts/changeset-branch.mjs",
     "version:packages": "GITHUB_TOKEN=$(gh auth token) changeset version",

@@ -1,0 +1,14 @@
+{
+  "name": "@tzardom-ui/e2e",
+  "version": "0.0.0",
+  "private": true,
+  "description": "End-to-end tests for the tzardom-ui React components, run in a real browser against Storybook (not published)",
+  "scripts": {
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.0",
+    "@types/node": "^22",
+    "typescript": "~6.0.3"
+  }
+}

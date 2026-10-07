@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ThemeColorMode, TzarThemeToggle } from '@tzardom-ui/react'
+import {
+  ThemeColorMode,
+  TzarProvider,
+  TzarThemeToggle,
+} from '@tzardom-ui/react'
 import { expect, fn, waitFor } from 'storybook/test'
 
 const meta: Meta<typeof TzarThemeToggle> = {
@@ -35,4 +39,16 @@ export const Dark: Story = {
   args: {
     theme: ThemeColorMode.DARK,
   },
+}
+
+// Inside a TzarProvider: the theme goes on <html data-theme> and is saved, so
+// it survives a reload. The e2e tests use this story.
+export const WithProvider: Story = {
+  decorators: [
+    (Story) => (
+      <TzarProvider storageKey="tzardom-storybook-theme">
+        <Story />
+      </TzarProvider>
+    ),
+  ],
 }

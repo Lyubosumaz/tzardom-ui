@@ -10,6 +10,7 @@ tzardom-ui/            root — private workspace manifest (build/test/lint/clea
   packages/
     react/      @tzardom-ui/react       React components + color themes (published)
     storybook/  @tzardom-ui/storybook   Storybook for the components (private)
+    e2e/        @tzardom-ui/e2e         end-to-end tests in a real browser (private)
 ```
 
 Each component's types live next to it (`ComponentName.types.ts`). The theme
@@ -24,6 +25,7 @@ types (`ThemeColorMode`) live with `TzarProvider`, in
 | Tailwind CSS v4          | `react`     | Styles the components; the app's own Tailwind compiles the classes                         |
 | Rollup                   | `react`     | Bundles `react` into ESM + CJS for publishing                                              |
 | Vitest + Testing Library | `react`     | Unit tests for the components and the provider, in jsdom                                   |
+| Playwright               | `e2e`       | End-to-end tests in a real browser, run against Storybook                                  |
 | Storybook                | `storybook` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
 
 ## Requirements
@@ -45,20 +47,21 @@ with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                 | Used in        | What it does                                                                                                                                                                |
-| ----------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`          | all packages   | Installs dependencies for every package                                                                                                                                     |
-| `pnpm build`            | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                         |
-| `pnpm test:coverage`    | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                       |
-| `pnpm lint`             | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                           |
-| `pnpm lint:fix`         | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                           |
-| `pnpm app:dev`          | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                   |
-| `pnpm app:link`         | all packages   | Builds once and copies the packages into the app, without watching                                                                                                          |
-| `pnpm app:unlink`       | all packages   | Puts the app back on the npm-published versions                                                                                                                             |
-| `pnpm run clean`        | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back |
-| `pnpm kill-ports`       | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                           |
-| `pnpm version:packages` | `react`        | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                              |
-| `pnpm license`          | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                  |
+| Command                 | Used in        | What it does                                                                                                                                                                                                                    |
+| ----------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`          | all packages   | Installs dependencies for every package                                                                                                                                                                                         |
+| `pnpm build`            | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                                                                             |
+| `pnpm test:coverage`    | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                                                                           |
+| `pnpm test:e2e`         | `e2e`          | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs in CI after the unit tests, but not in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
+| `pnpm lint`             | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                               |
+| `pnpm lint:fix`         | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                               |
+| `pnpm app:dev`          | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                       |
+| `pnpm app:link`         | all packages   | Builds once and copies the packages into the app, without watching                                                                                                                                                              |
+| `pnpm app:unlink`       | all packages   | Puts the app back on the npm-published versions                                                                                                                                                                                 |
+| `pnpm run clean`        | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                     |
+| `pnpm kill-ports`       | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                               |
+| `pnpm version:packages` | `react`        | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                                                                                  |
+| `pnpm license`          | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                      |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
 `pnpm --filter @tzardom-ui/react build`.
@@ -104,6 +107,33 @@ Themes live in `packages/react/themes/`:
 To add a theme, copy `team-capacity-dashboard.css`, rename it after the app, and
 change the values (keep every variable name). Storybook uses the
 team-capacity-dashboard theme.
+
+## End-to-end tests
+
+`packages/e2e` holds Playwright tests that open the Storybook stories in a real
+Chromium and check what the jsdom unit tests can't: the theme and Tailwind
+colors actually applied, keyboard use and focus, and the theme surviving a page
+reload.
+
+The first time, download the browser:
+
+```bash
+pnpm --filter @tzardom-ui/e2e exec playwright install chromium
+```
+
+Then run the tests from the repo root:
+
+```bash
+pnpm test:e2e
+```
+
+Playwright starts Storybook itself, or uses the one already running on
+port 6006. Each test opens one story by its id (see `tests/storyUrl.ts`), so
+renaming a story or its title means updating the tests too.
+
+CI runs them after the unit tests. When one fails there, the run keeps
+Playwright's `test-results` folder (what the page looked like at the failure) as
+a downloadable artifact.
 
 ## Trying changes in an app
 
@@ -173,7 +203,7 @@ checks on top:
 
 | Workflow      | Runs on              | Checks                                                                              |
 | ------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| `ci.yml`      | PRs into `release/*` | Changeset present (work PRs only), build, lint, unit tests                          |
+| `ci.yml`      | PRs into `release/*` | Changeset present (work PRs only), build, lint, unit tests, e2e tests               |
 | `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, changesets versioned, LICENSE year |
 | `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm                                                           |
 

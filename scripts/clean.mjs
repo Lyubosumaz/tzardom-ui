@@ -7,6 +7,7 @@ const targets = [
   'packages/*/dist',
   'packages/*/coverage',
   'packages/*/storybook-static',
+  'packages/*/test-results',
 ]
 
 try {

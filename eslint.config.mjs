@@ -64,6 +64,7 @@ export default defineConfig([
           devDependencies: [
             '**/*.stories.*',
             '**/*.test.*',
+            '**/*.spec.*',
             '**/.storybook/**',
             '**/*.config.*',
             '**/vitest.setup.*',

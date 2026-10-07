@@ -25,3 +25,18 @@ jobs:
 
       - name: Test with coverage
         run: pnpm run test:coverage
+
+      - name: Install Chromium for the e2e tests
+        run:
+          pnpm --filter @tzardom-ui/e2e exec playwright install --with-deps
+          chromium
+
+      - name: End-to-end tests
+        run: pnpm run test:e2e
+
+      - name: Keep the e2e failure details
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: packages/e2e/test-results
