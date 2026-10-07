@@ -19,27 +19,24 @@
       "import": "./dist/esm/icons.js",
       "require": "./dist/cjs/icons.js"
     },
-    "./themes/*": "./themes/*",
+    "./tailwind.css": "./tailwind.css",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "themes"
+    "tailwind.css"
   ],
   "scripts": {
     "build": "rollup --config",
-    "pretest:coverage": "pnpm --filter \"@tzardom-ui/core...\" run build",
     "test:coverage": "vitest run --coverage",
-    "prestorybook": "pnpm --filter \"@tzardom-ui/core...\" run build",
+    "prestorybook": "pnpm --filter @tzardom-ui/types run build",
     "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "pnpm --filter \"@tzardom-ui/core...\" run build",
+    "prebuild-storybook": "pnpm --filter @tzardom-ui/types run build",
     "build-storybook": "storybook build"
   },
   "author": "Lyubosumaz",
   "license": "MIT",
   "dependencies": {
-    "@stencil/react-output-target": "^1.6.2",
-    "@tzardom-ui/core": "workspace:^",
     "@tzardom-ui/types": "workspace:^",
     "lucide-react": "^1.7.0",
     "tailwind-merge": "^3.7.0"
@@ -55,6 +52,7 @@
     "@storybook/react-vite": "^10.6.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/react": "^16.3.3",
+    "@tzardom-ui/themes": "workspace:^",
     "@types/node": "^22",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

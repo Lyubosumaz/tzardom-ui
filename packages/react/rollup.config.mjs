@@ -14,8 +14,7 @@ const input = {
 }
 
 const external = (id) =>
-  /^@tzardom-ui\/(core|types)/.test(id) ||
-  /^@stencil\/react-output-target/.test(id) ||
+  /^@tzardom-ui\/types/.test(id) ||
   /^lucide-react/.test(id) ||
   /^tailwind-merge/.test(id)
 

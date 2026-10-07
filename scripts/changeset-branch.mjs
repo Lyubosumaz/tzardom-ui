@@ -9,7 +9,7 @@ const toolingOnly = /^chore(\([^)]*\))?!?:/i
 
 const packages = [
   { name: '@tzardom-ui/types', dir: 'packages/types' },
-  { name: '@tzardom-ui/core', dir: 'packages/core' },
+  { name: '@tzardom-ui/themes', dir: 'packages/themes' },
   { name: '@tzardom-ui/react', dir: 'packages/react' },
 ]
 

@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process'
 import kill from 'kill-port'
 import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
-const ports = [3333, 6006]
+const ports = [6006]
 
 for (const port of ports) {
   try {
@@ -19,7 +19,7 @@ for (const port of ports) {
 
 // pkill is macOS/Linux-only; this repo's dev tooling is macOS-only anyway.
 if (process.platform !== 'win32') {
-  const patterns = ['stencil build --dev', 'storybook dev']
+  const patterns = ['storybook dev']
   for (const pattern of patterns) {
     try {
       execSync(`pkill -f '${pattern}'`, { stdio: 'ignore' })
