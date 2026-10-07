@@ -1,5 +1,5 @@
-name: Build
-description: Set up pnpm and Node, install dependencies and build all packages
+name: Setup
+description: Install pnpm, Node and the project's dependencies
 
 runs:
   using: composite
@@ -14,7 +14,3 @@ runs:
     - name: Install dependencies
       shell: bash
       run: pnpm install --frozen-lockfile
-
-    - name: Build
-      shell: bash
-      run: pnpm run build

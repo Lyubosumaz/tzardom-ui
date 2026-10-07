@@ -9,19 +9,66 @@ jobs:
     name: CI
     uses: ./.github/workflows/ci.yml
 
+  e2e:
+    name: End-to-end tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Read the Playwright version
+        id: playwright
+        run:
+          echo "version=$(pnpm --filter @tzardom-ui/e2e exec playwright
+          --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        id: chromium-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key:
+            chromium-${{ runner.os }}-playwright-${{
+            steps.playwright.outputs.version }}
+
+      - name: Download Chromium
+        if: steps.chromium-cache.outputs.cache-hit != 'true'
+        run:
+          pnpm --filter @tzardom-ui/e2e exec playwright install --with-deps
+          chromium
+
+      - name: Install Chromium's system libraries
+        if: steps.chromium-cache.outputs.cache-hit == 'true'
+        run: pnpm --filter @tzardom-ui/e2e exec playwright install-deps chromium
+
+      - name: End-to-end tests
+        run: pnpm run test:e2e
+
+      - name: Keep the e2e failure details
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: packages/e2e/test-results
+
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Only release/* branches can merge into master
         if: "!startsWith(github.head_ref, 'release/')"
-        run: exit 1
+        run: |
+          echo "Only release/* branches can merge into master."
+          exit 1
 
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/build
+      - uses: ./.github/actions/setup
 
-      - name: Check the version is new on npm
-        run: node scripts/check-version.mjs
+      - name: The root version matches the release branch
+        run: node scripts/check-release-version.mjs
 
-      - name: Check LICENSE year
-        run: pnpm license && git diff --exit-code
+      - name: The react version is higher than on master
+        run: node scripts/check-react-version.mjs
+
+      - name: The LICENSE years are up to date
+        run: node scripts/license-year.mjs && git diff --exit-code

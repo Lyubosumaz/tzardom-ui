@@ -47,20 +47,20 @@ with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command              | Used in        | What it does                                                                                                                                                                                                                    |
-| -------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`       | all packages   | Installs dependencies for every package                                                                                                                                                                                         |
-| `pnpm build`         | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                                                                             |
-| `pnpm test:coverage` | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                                                                           |
-| `pnpm test:e2e`      | `e2e`          | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs in CI after the unit tests, but not in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
-| `pnpm lint`          | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                               |
-| `pnpm lint:fix`      | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                               |
-| `pnpm app:dev`       | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                       |
-| `pnpm app:link`      | all packages   | Builds once and copies the packages into the app, without watching                                                                                                                                                              |
-| `pnpm app:unlink`    | all packages   | Puts the app back on the npm-published versions                                                                                                                                                                                 |
-| `pnpm run clean`     | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                     |
-| `pnpm kill-ports`    | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                               |
-| `pnpm license`       | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                      |
+| Command              | Used in        | What it does                                                                                                                                                                                                                                         |
+| -------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`       | all packages   | Installs dependencies for every package                                                                                                                                                                                                              |
+| `pnpm build`         | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                                                                                                  |
+| `pnpm test:coverage` | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                                                                                                |
+| `pnpm test:e2e`      | `e2e`          | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs on PRs into `master` (`release.yml`), not on work PRs or in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
+| `pnpm lint`          | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                                                    |
+| `pnpm lint:fix`      | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                                                    |
+| `pnpm app:dev`       | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                                            |
+| `pnpm app:link`      | all packages   | Builds once and copies the packages into the app, without watching                                                                                                                                                                                   |
+| `pnpm app:unlink`    | all packages   | Puts the app back on the npm-published versions                                                                                                                                                                                                      |
+| `pnpm run clean`     | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                                          |
+| `pnpm kill-ports`    | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                                                    |
+| `pnpm license`       | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                                           |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
 `pnpm --filter @tzardom-ui/react build`.
@@ -130,9 +130,10 @@ Playwright starts Storybook itself, or uses the one already running on
 port 6006. Each test opens one story by its id (see `tests/storyUrl.ts`), so
 renaming a story or its title means updating the tests too.
 
-CI runs them after the unit tests. When one fails there, the run keeps
-Playwright's `test-results` folder (what the page looked like at the failure) as
-a downloadable artifact.
+On GitHub they run on release PRs into `master` (`release.yml`), next to CI. The
+Chromium download is cached per Playwright version. When one fails there, the
+run keeps Playwright's `test-results` folder (what the page looked like at the
+failure) as a downloadable artifact.
 
 ## Trying changes in an app
 
@@ -166,31 +167,42 @@ copy of React and breaks hooks.
 
 ## Publishing
 
-The `"version"` in `packages/react/package.json` decides what gets published.
-You change it by hand on the release branch; merging into `master` publishes it.
+There are two versions, both changed by hand on the release branch:
+
+- **The root `package.json` version names the release** and matches its branch:
+  `release/0.3.0` has `"version": "0.3.0"`. Nothing is published under it.
+- **The `packages/react/package.json` version is what npm gets.** On release,
+  `@tzardom-ui/react` is published if npm doesn't have that version yet. It's
+  the only package published; `storybook` and `e2e` are private.
+
+So release 0.3.0 might publish `@tzardom-ui/react` 0.4.0.
 
 **Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
-`master`. Every branch runs `ci.yml`; PRs into `master` and pushes to `master`
-add their own checks on top:
+`master`. Three workflows follow it, one step each:
 
-| Workflow      | Runs on              | Checks                                                                                   |
-| ------------- | -------------------- | ---------------------------------------------------------------------------------------- |
-| `ci.yml`      | PRs into `release/*` | Build, lint, unit tests, e2e tests                                                       |
-| `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, the version is new on npm, LICENSE year |
-| `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm and create the GitHub release, if the version is new           |
+| Workflow      | Runs on                               | Does                                                                                                                                     |
+| ------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `ci.yml`      | PRs into `release/*`                  | Build, lint, unit tests                                                                                                                  |
+| `release.yml` | PRs from `release/*` into `master`    | `ci.yml` and the e2e tests, then checks: the root version matches the branch, the react version is higher than on `master`, LICENSE year |
+| `master.yml`  | A `release/*` PR merged into `master` | Build, then publish `@tzardom-ui/react` and its GitHub release if its version was bumped. No CI again: the PR already passed             |
+
+Every job installs pnpm, Node and the dependencies through
+`.github/actions/setup`.
 
 **Releasing**:
 
-1. On the release branch, change `"version"` in `packages/react/package.json`:
-   the last number for fixes (0.2.9 → 0.2.10), the middle one for new features
-   or breaking changes while below 1.0 (0.2.9 → 0.3.0). Run `pnpm license` and
-   commit both.
-2. Open the PR into `master`. `release.yml` fails it if npm already has that
-   version, so a release can't be forgotten (`scripts/check-version.mjs`).
-3. Merge it. `master.yml` publishes the package to npm and creates the GitHub
-   release `v<version>`, whose notes GitHub writes from the PRs merged since the
-   previous release. If npm already has the version, it publishes nothing
-   (`scripts/publish.mjs`).
+1. When you create `release/x.y.z`, set the root `package.json` version to
+   `x.y.z`. `release.yml` checks it (`scripts/check-release-version.mjs`).
+2. Before merging into `master`, bump `"version"` in
+   `packages/react/package.json`: the last number for fixes (0.3.0 → 0.3.1), the
+   middle one for new features or breaking changes while below 1.0 (0.3.0 →
+   0.4.0). `release.yml` fails the PR into `master` if it isn't higher than on
+   `master` (`scripts/check-react-version.mjs`). Run `pnpm license` and commit.
+3. Merge the PR into `master`. `master.yml` runs `scripts/publish.mjs`, which
+   publishes `@tzardom-ui/react` if npm doesn't have its version yet and creates
+   the GitHub release `v<version>`, with notes GitHub writes from the PRs merged
+   since the previous release. If the version wasn't bumped, nothing is
+   published.
 
 **One-time setup** in the repo's GitHub settings (not something either of us can
 automate): a `NODE_AUTH_TOKEN` repository secret, an npm
