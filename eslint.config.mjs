@@ -30,9 +30,6 @@ export default defineConfig([
       reportUnusedDisableDirectives: 'error',
     },
     plugins: { import: importPlugin },
-    settings: {
-      'import/internal-regex': '^@/',
-    },
     rules: {
       eqeqeq: ['error', 'always'],
       curly: ['error', 'all'],
@@ -95,7 +92,7 @@ export default defineConfig([
   },
   // React
   {
-    files: ['packages/react/**/*.{ts,tsx}'],
+    files: ['packages/*/**/*.{ts,tsx}'],
     extends: [
       react.configs.flat.recommended,
       react.configs.flat['jsx-runtime'],

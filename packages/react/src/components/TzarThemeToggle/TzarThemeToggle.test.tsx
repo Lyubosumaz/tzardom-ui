@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { ThemeColorMode, TzarProvider, useTzarTheme } from '@/provider'
+import { ThemeColorMode, TzarProvider, useTzarTheme } from '../../provider'
 import { TzarThemeToggle } from './TzarThemeToggle'
 
 const getToggle = () => screen.getByRole('button', { name: 'Toggle theme' })

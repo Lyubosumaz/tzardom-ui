@@ -8,9 +8,6 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "rootDir": "./src",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
 
     /* Emit */
     "declaration": true,

@@ -3,10 +3,9 @@ import { fileURLToPath } from 'node:url'
 import type { StorybookConfig } from '@storybook/react-vite'
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
 
   addons: [
-    getAbsolutePath('@storybook/addon-links'),
     getAbsolutePath('@storybook/addon-mcp'),
     getAbsolutePath('@storybook/addon-docs'),
   ],

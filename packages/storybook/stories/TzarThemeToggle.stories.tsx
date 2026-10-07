@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { ThemeColorMode, TzarThemeToggle } from '@tzardom-ui/react'
 import { expect, fn, waitFor } from 'storybook/test'
-import { ThemeColorMode } from '@/provider'
-import { TzarThemeToggle } from './TzarThemeToggle'
 
 const meta: Meta<typeof TzarThemeToggle> = {
   title: 'ReactComponentLibrary/TzarThemeToggle',

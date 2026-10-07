@@ -30,9 +30,7 @@
   ],
   "scripts": {
     "build": "rollup --config",
-    "test:coverage": "vitest run --coverage",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "test:coverage": "vitest run --coverage"
   },
   "author": "Lyubosumaz",
   "license": "MIT",
@@ -41,15 +39,9 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
-    "@storybook/addon-docs": "^10.6.0",
-    "@storybook/addon-links": "^10.6.0",
-    "@storybook/addon-mcp": "^10.6.0",
-    "@storybook/react-vite": "^10.6.1",
-    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^22",
     "@types/react": "^19.3.0",
@@ -61,8 +53,6 @@
     "react-dom": "^19.3.0",
     "rollup": "^4.63.5",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "storybook": "^10.6.0",
-    "tailwindcss": "^4.2.2",
     "typescript": "~6.0.3",
     "vite": "^8.3.1",
     "vitest": "^4.1.11"

@@ -8,7 +8,8 @@ with semantic HTML and styled with Tailwind CSS v4, plus color themes for them.
 ```
 tzardom-ui/            root — private workspace manifest (build/test/lint/clean scripts)
   packages/
-    react/   @tzardom-ui/react   React components, color themes + Storybook
+    react/      @tzardom-ui/react       React components + color themes (published)
+    storybook/  @tzardom-ui/storybook   Storybook for the components (private)
 ```
 
 Each component's types live next to it (`ComponentName.types.ts`). The theme
@@ -17,13 +18,13 @@ types (`ThemeColorMode`) live with `TzarProvider`, in
 
 ### Stack
 
-| Tool                     | Used in | What it does                                                                               |
-| ------------------------ | ------- | ------------------------------------------------------------------------------------------ |
-| pnpm workspaces          | root    | One install and lockfile for the root tooling and `packages/react`; root scripts run in it |
-| Tailwind CSS v4          | `react` | Styles the components; the app's own Tailwind compiles the classes                         |
-| Rollup                   | `react` | Bundles `react` into ESM + CJS for publishing                                              |
-| Vitest + Testing Library | `react` | Unit tests for the components and the provider, in jsdom                                   |
-| Storybook                | `react` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
+| Tool                     | Used in     | What it does                                                                               |
+| ------------------------ | ----------- | ------------------------------------------------------------------------------------------ |
+| pnpm workspaces          | root        | One install and lockfile for the root tooling and `packages/react`; root scripts run in it |
+| Tailwind CSS v4          | `react`     | Styles the components; the app's own Tailwind compiles the classes                         |
+| Rollup                   | `react`     | Bundles `react` into ESM + CJS for publishing                                              |
+| Vitest + Testing Library | `react`     | Unit tests for the components and the provider, in jsdom                                   |
+| Storybook                | `storybook` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
 
 ## Requirements
 
@@ -55,7 +56,7 @@ with `pnpm approve-builds`.
 | `pnpm app:link`         | all packages   | Builds once and copies the packages into the app, without watching                                                                                                          |
 | `pnpm app:unlink`       | all packages   | Puts the app back on the npm-published versions                                                                                                                             |
 | `pnpm run clean`        | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back |
-| `pnpm kill-ports`       | `react`        | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                           |
+| `pnpm kill-ports`       | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                           |
 | `pnpm version:packages` | `react`        | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                              |
 | `pnpm license`          | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                  |
 
@@ -64,15 +65,19 @@ Scope any command to one package with `--filter` (or `-F`), e.g.
 
 ## Working on `@tzardom-ui/react`
 
+Each component lives in `packages/react/src/components/<Name>/`, next to its
+types and tests. To see the components, open Storybook:
+
 ```bash
-pnpm --filter @tzardom-ui/react storybook
+pnpm --filter @tzardom-ui/storybook storybook
 ```
 
-Opens Storybook with the current components. Each component lives in
-`src/components/<Name>/`, next to its types, tests and stories.
-
-Story files use CSF3 with `play` functions for interaction testing, runnable
-from Storybook's Interactions panel.
+Storybook is its own private package, `packages/storybook`, so the react package
+doesn't carry Storybook's dependencies. It shows the components straight from
+`packages/react/src`, so edits show up without building the package. The stories
+are in `packages/storybook/stories/`, one file per component, and use CSF3 with
+`play` functions for interaction testing, runnable from Storybook's Interactions
+panel.
 
 ### Styling
 

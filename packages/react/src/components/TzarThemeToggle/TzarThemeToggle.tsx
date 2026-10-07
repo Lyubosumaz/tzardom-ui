@@ -3,8 +3,11 @@
 import { Moon, Sun } from 'lucide-react'
 import { use, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { isDefaultTzarContext, TzarContext } from '@/provider/TzarProvider'
-import { ThemeActionsType, ThemeColorMode } from '@/provider/TzarProvider.types'
+import { isDefaultTzarContext, TzarContext } from '../../provider/TzarProvider'
+import {
+  ThemeActionsType,
+  ThemeColorMode,
+} from '../../provider/TzarProvider.types'
 import type { TzarThemeToggleProps } from './TzarThemeToggle.types'
 
 export const TzarThemeToggle = ({

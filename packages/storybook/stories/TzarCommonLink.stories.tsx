@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { TzarCommonLink } from './TzarCommonLink'
+import { TzarCommonLink } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarCommonLink> = {
   title: 'ReactComponentLibrary/TzarCommonLink',
