@@ -40,8 +40,7 @@ values, keeping every variable name. Then add the file to `files` in
 
 ## Part of the tzardom-ui monorepo
 
-| Package                                                                | What it is              |
-| ---------------------------------------------------------------------- | ----------------------- |
-| [`@tzardom-ui/react`](https://www.npmjs.com/package/@tzardom-ui/react) | React components        |
-| `@tzardom-ui/themes`                                                   | This package            |
-| [`@tzardom-ui/types`](https://www.npmjs.com/package/@tzardom-ui/types) | Shared TypeScript types |
+| Package                                                                | What it is       |
+| ---------------------------------------------------------------------- | ---------------- |
+| [`@tzardom-ui/react`](https://www.npmjs.com/package/@tzardom-ui/react) | React components |
+| `@tzardom-ui/themes`                                                   | This package     |

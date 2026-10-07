@@ -10,7 +10,6 @@ const licenseFiles = [
   'LICENSE',
   'packages/react/LICENSE',
   'packages/themes/LICENSE',
-  'packages/types/LICENSE',
 ].map((relativePath) => path.join(rootDir, relativePath))
 
 const COPYRIGHT_PATTERN = /Copyright \(c\) (\d{4})(?:-(\d{4}))? (.+)/

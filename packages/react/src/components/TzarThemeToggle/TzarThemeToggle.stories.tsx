@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, fn, waitFor } from 'storybook/test'
-import { ThemeColorMode } from '@tzardom-ui/types'
+import { ThemeColorMode } from '@/provider'
 import { TzarThemeToggle } from './TzarThemeToggle'
 
 const meta: Meta<typeof TzarThemeToggle> = {

@@ -31,7 +31,7 @@ export default defineConfig([
     },
     plugins: { import: importPlugin },
     settings: {
-      'import/internal-regex': '^@(/|tzardom-ui/)',
+      'import/internal-regex': '^@/',
     },
     rules: {
       eqeqeq: ['error', 'always'],

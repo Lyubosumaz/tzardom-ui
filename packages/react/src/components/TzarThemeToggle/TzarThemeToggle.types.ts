@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react'
-import type { ThemeColorMode } from '@tzardom-ui/types'
+import type { ThemeColorMode } from '@/provider/TzarProvider.types'
 
 export type TzarThemeToggleProps = Omit<
   ComponentPropsWithoutRef<'button'>,

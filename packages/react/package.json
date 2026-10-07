@@ -29,15 +29,12 @@
   "scripts": {
     "build": "rollup --config",
     "test:coverage": "vitest run --coverage",
-    "prestorybook": "pnpm --filter @tzardom-ui/types run build",
     "storybook": "storybook dev -p 6006",
-    "prebuild-storybook": "pnpm --filter @tzardom-ui/types run build",
     "build-storybook": "storybook build"
   },
   "author": "Lyubosumaz",
   "license": "MIT",
   "dependencies": {
-    "@tzardom-ui/types": "workspace:^",
     "lucide-react": "^1.7.0",
     "tailwind-merge": "^3.7.0"
   },

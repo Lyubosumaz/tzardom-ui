@@ -13,7 +13,6 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
-    alias: { '@tzardom-ui/types': fromHere('../types/src/index.ts') },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],

@@ -14,7 +14,7 @@ import { clearTimeout, setTimeout } from 'node:timers'
 import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const PACKAGES = ['types', 'themes', 'react']
+const PACKAGES = ['themes', 'react']
 const DEBOUNCE_MS = 400
 
 const args = process.argv.slice(2)
@@ -219,14 +219,6 @@ const dev = () => {
   }
 
   const filter = (name) => ['--filter', `@tzardom-ui/${name}`, 'exec']
-  run('types', 'pnpm', [
-    ...filter('types'),
-    'tsc',
-    '-p',
-    'tsconfig.json',
-    '--watch',
-    '--preserveWatchOutput',
-  ])
   run('react', 'pnpm', [...filter('react'), 'rollup', '--config', '--watch'])
 
   const timers = {}

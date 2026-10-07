@@ -13,10 +13,7 @@ const input = {
   icons: 'src/icons.ts', // @tzardom-ui/react/icons
 }
 
-const external = (id) =>
-  /^@tzardom-ui\/types/.test(id) ||
-  /^lucide-react/.test(id) ||
-  /^tailwind-merge/.test(id)
+const external = (id) => /^lucide-react/.test(id) || /^tailwind-merge/.test(id)
 
 const USE_CLIENT = /^(?:\s|\/\/[^\n]*\n|\/\*[\s\S]*?\*\/)*['"]use client['"]/
 

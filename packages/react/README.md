@@ -95,8 +95,7 @@ Available: `Umbrella`. Add more in `src/icons.ts`.
 
 ## Part of the tzardom-ui monorepo
 
-| Package                                                                  | What it is              |
-| ------------------------------------------------------------------------ | ----------------------- |
-| `@tzardom-ui/react`                                                      | This package            |
-| [`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes) | Color themes (CSS)      |
-| [`@tzardom-ui/types`](https://www.npmjs.com/package/@tzardom-ui/types)   | Shared TypeScript types |
+| Package                                                                  | What it is         |
+| ------------------------------------------------------------------------ | ------------------ |
+| `@tzardom-ui/react`                                                      | This package       |
+| [`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes) | Color themes (CSS) |

@@ -2,8 +2,7 @@
 
 Pet component library, mainly for educational purposes: React components built
 with semantic HTML and styled with Tailwind CSS v4. The color themes live in
-`@tzardom-ui/themes`, and types shared across packages (not owned by any single
-component) in `@tzardom-ui/types`.
+`@tzardom-ui/themes`.
 
 ## Structure
 
@@ -12,22 +11,21 @@ tzardom-ui/            root — private workspace manifest (build/test/lint/clea
   packages/
     react/   @tzardom-ui/react   React components + Storybook
     themes/  @tzardom-ui/themes  color themes (CSS) for the components
-    types/   @tzardom-ui/types   shared, generic types used by react
 ```
 
-Types local to one component live next to it (`ComponentName.types.ts`); types
-shared across packages (like `ThemeColorMode`) live in `@tzardom-ui/types`
-instead.
+Each component's types live next to it (`ComponentName.types.ts`). The theme
+types (`ThemeColorMode`) live with `TzarProvider`, in
+`src/provider/TzarProvider.types.ts`.
 
 ### Stack
 
-| Tool                     | Used in | What it does                                                                                        |
-| ------------------------ | ------- | --------------------------------------------------------------------------------------------------- |
-| pnpm workspaces          | root    | Links `react`, `themes` and `types` as real package dependencies (`workspace:^`), no manual linking |
-| Tailwind CSS v4          | `react` | Styles the components; the app's own Tailwind compiles the classes                                  |
-| Rollup                   | `react` | Bundles `react` into ESM + CJS for publishing                                                       |
-| Vitest + Testing Library | `react` | Unit tests for the components and the provider, in jsdom                                            |
-| Storybook                | `react` | Component docs and manual QA, with CSF3 `play` functions for interaction tests                      |
+| Tool                     | Used in | What it does                                                                               |
+| ------------------------ | ------- | ------------------------------------------------------------------------------------------ |
+| pnpm workspaces          | root    | Links `react` and `themes` as real package dependencies (`workspace:^`), no manual linking |
+| Tailwind CSS v4          | `react` | Styles the components; the app's own Tailwind compiles the classes                         |
+| Rollup                   | `react` | Bundles `react` into ESM + CJS for publishing                                              |
+| Vitest + Testing Library | `react` | Unit tests for the components and the provider, in jsdom                                   |
+| Storybook                | `react` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
 
 ## Requirements
 
@@ -48,25 +46,23 @@ with `pnpm approve-builds`.
 
 ## Scripts (run from repo root)
 
-| Command                 | Used in                    | What it does                                                                                                                                                                |
-| ----------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`          | all packages               | Installs dependencies for every package                                                                                                                                     |
-| `pnpm build`            | `types` → `react`          | Builds every package once, in dependency order (`pnpm -r`), so `types` is built before `react`, which imports it                                                            |
-| `pnpm test:coverage`    | `react`                    | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                       |
-| `pnpm lint`             | root                       | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                           |
-| `pnpm lint:fix`         | root                       | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                           |
-| `pnpm app:dev`          | all packages               | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                   |
-| `pnpm app:link`         | all packages               | Builds once and copies the packages into the app, without watching                                                                                                          |
-| `pnpm app:unlink`       | all packages               | Puts the app back on the npm-published versions                                                                                                                             |
-| `pnpm run clean`        | all packages               | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back |
-| `pnpm kill-ports`       | `react`                    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                           |
-| `pnpm version:packages` | `react`, `themes`, `types` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                              |
-| `pnpm license`          | root + 3 packages          | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                  |
+| Command                 | Used in           | What it does                                                                                                                                                                |
+| ----------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install`          | all packages      | Installs dependencies for every package                                                                                                                                     |
+| `pnpm build`            | `react`           | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                         |
+| `pnpm test:coverage`    | `react`           | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                       |
+| `pnpm lint`             | root              | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                           |
+| `pnpm lint:fix`         | root              | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                           |
+| `pnpm app:dev`          | all packages      | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                   |
+| `pnpm app:link`         | all packages      | Builds once and copies the packages into the app, without watching                                                                                                          |
+| `pnpm app:unlink`       | all packages      | Puts the app back on the npm-published versions                                                                                                                             |
+| `pnpm run clean`        | all packages      | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back |
+| `pnpm kill-ports`       | `react`           | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                           |
+| `pnpm version:packages` | `react`, `themes` | Release branch only: turns pending changesets into version bumps and changelogs. See [Publishing](#publishing)                                                              |
+| `pnpm license`          | root + 2 packages | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                  |
 
 Scope any command to one package with `--filter` (or `-F`), e.g.
-`pnpm --filter @tzardom-ui/react build`. A package's `build` only builds that
-package; add `...` to build its dependencies first, each once:
-`pnpm --filter "@tzardom-ui/react..." build` builds `types`, then `react`.
+`pnpm --filter @tzardom-ui/react build`.
 
 ## Working on `@tzardom-ui/react`
 
@@ -113,9 +109,9 @@ theme.
 pnpm app:dev
 ```
 
-Builds everything, copies `types`, `themes` and `react` into
+Builds everything, copies `themes` and `react` into
 `../team-capacity-dashboard/node_modules/@tzardom-ui/`, and starts that app's
-`npm run dev`. After that it watches all three packages: edit a component in
+`npm run dev`. After that it watches both packages: edit a component in
 `packages/react`, and Rollup rebuilds it and the fresh output is copied into the
 app, where Next.js picks it up. Theme edits are copied over directly. Ctrl+C
 stops everything.
@@ -188,13 +184,8 @@ to link PRs. Also run `pnpm license`, commit both, and open the PR into
 
 Merging it triggers `.github/workflows/master.yml`, which re-runs `ci.yml` and
 then `changeset publish`. That publishes only the packages with a real version
-change, in the correct dependency order (`types` → `react`). `workspace:^`
-ranges are replaced with real version ranges (e.g. `^0.1.6`) in the published
-packages.
-
-Nothing cascades by default — `react` depending on `types` doesn't force a
-`react` version bump just because `types` changed, unless `types`'s new version
-actually falls outside `react`'s declared range.
+change. `workspace:^` ranges are replaced with real version ranges (e.g.
+`^0.1.6`) in the published packages.
 
 **One-time setup required** (not something either of us can automate): a
 `NODE_AUTH_TOKEN` repository secret (an npm
