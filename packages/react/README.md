@@ -6,21 +6,20 @@ built with semantic HTML and styled with Tailwind CSS v4.
 ## Install
 
 ```bash
-npm install @tzardom-ui/react @tzardom-ui/themes
+npm install @tzardom-ui/react
 ```
 
 Requires React 19 and React DOM 19 as peer dependencies.
 
 ## Usage
 
-In your app's CSS, import Tailwind, then one theme from
-[`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes), then
-this package's `tailwind.css`, which makes your Tailwind generate the classes
-the components use:
+In your app's CSS, import Tailwind, then one of this package's
+[themes](#themes), then its `tailwind.css`, which makes your Tailwind generate
+the classes the components use:
 
 ```css
 @import 'tailwindcss';
-@import '@tzardom-ui/themes/team-capacity-dashboard.css';
+@import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
 @import '@tzardom-ui/react/tailwind.css';
 ```
 
@@ -93,9 +92,16 @@ import { Umbrella } from '@tzardom-ui/react/icons'
 
 Available: `Umbrella`. Add more in `src/icons.ts`.
 
-## Part of the tzardom-ui monorepo
+## Themes
 
-| Package                                                                  | What it is         |
-| ------------------------------------------------------------------------ | ------------------ |
-| `@tzardom-ui/react`                                                      | This package       |
-| [`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes) | Color themes (CSS) |
+| File                                 | For                     |
+| ------------------------------------ | ----------------------- |
+| `themes/team-capacity-dashboard.css` | team-capacity-dashboard |
+
+Each theme names the colors for Tailwind (`bg-background`, `text-secondary`, …),
+sets their light values on `:root` and dark values on
+`:root[data-theme='dark']`, and sets the page's background and text color.
+`TzarProvider` switches between light and dark.
+
+To add a theme, copy `themes/team-capacity-dashboard.css`, name it after the
+app, and change the values, keeping every variable name.

@@ -7,10 +7,7 @@ const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 const summaryIntro = 'Changes in this release:'
 const toolingOnly = /^chore(\([^)]*\))?!?:/i
 
-const packages = [
-  { name: '@tzardom-ui/themes', dir: 'packages/themes' },
-  { name: '@tzardom-ui/react', dir: 'packages/react' },
-]
+const packages = [{ name: '@tzardom-ui/react', dir: 'packages/react' }]
 
 const git = (...args) =>
   execFileSync('git', ['--no-optional-locks', ...args], {
