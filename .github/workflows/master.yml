@@ -1,4 +1,4 @@
-name: Publish
+name: CD
 
 on:
   pull_request:
@@ -9,6 +9,7 @@ concurrency: publish
 
 jobs:
   publish:
+    name: Publish
     if:
       github.event.pull_request.merged && startsWith(github.head_ref,
       'release/')

@@ -130,10 +130,10 @@ Playwright starts Storybook itself, or uses the one already running on
 port 6006. Each test opens one story by its id (see `tests/storyUrl.ts`), so
 renaming a story or its title means updating the tests too.
 
-On GitHub they run on release PRs into `master` (`release.yml`), next to CI. The
-Chromium download is cached per Playwright version. When one fails there, the
-run keeps Playwright's `test-results` folder (what the page looked like at the
-failure) as a downloadable artifact.
+On GitHub they run on release PRs into `master`, in the Extensive code check
+(`release.yml`). The Chromium download is cached per Playwright version. When
+one fails there, the run keeps Playwright's `test-results` folder (what the page
+looked like at the failure) as a downloadable artifact.
 
 ## Trying changes in an app
 
@@ -180,11 +180,11 @@ So release 0.3.0 might publish `@tzardom-ui/react` 0.4.0.
 **Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
 `master`. Three workflows follow it, one step each:
 
-| Workflow      | Runs on                               | Does                                                                                                                                     |
-| ------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `ci.yml`      | PRs into `release/*`                  | Build, lint, unit tests                                                                                                                  |
-| `release.yml` | PRs from `release/*` into `master`    | `ci.yml` and the e2e tests, then checks: the root version matches the branch, the react version is higher than on `master`, LICENSE year |
-| `master.yml`  | A `release/*` PR merged into `master` | Build, then publish `@tzardom-ui/react` and its GitHub release if its version was bumped. No CI again: the PR already passed             |
+| Workflow      | Runs on                               | Does                                                                                                                                                                                      |
+| ------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ci.yml`      | PRs into `release/*`                  | Code check: build, lint, unit tests                                                                                                                                                       |
+| `release.yml` | PRs from `release/*` into `master`    | `ci.yml`, plus the Extensive code check: only `release/*` may target `master`, the root version matches the branch, the react version is higher than on `master`, LICENSE year, e2e tests |
+| `master.yml`  | A `release/*` PR merged into `master` | Build, then publish `@tzardom-ui/react` and its GitHub release if its version was bumped. No CI again: the PR already passed                                                              |
 
 Every job installs pnpm, Node and the dependencies through
 `.github/actions/setup`.

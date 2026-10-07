@@ -9,13 +9,28 @@ jobs:
     name: CI
     uses: ./.github/workflows/ci.yml
 
-  e2e:
-    name: End-to-end tests
+  extensive:
+    name: Extensive code check
     runs-on: ubuntu-latest
     steps:
+      - name: Only release/* branches can merge into master
+        if: "!startsWith(github.head_ref, 'release/')"
+        run: |
+          echo "Only release/* branches can merge into master."
+          exit 1
+
       - uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
+
+      - name: The root version matches the release branch
+        run: node scripts/check-release-version.mjs
+
+      - name: The react version is higher than on master
+        run: node scripts/check-react-version.mjs
+
+      - name: The LICENSE years are up to date
+        run: node scripts/license-year.mjs && git diff --exit-code
 
       - name: Read the Playwright version
         id: playwright
@@ -50,25 +65,3 @@ jobs:
         with:
           name: e2e-test-results
           path: packages/e2e/test-results
-
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Only release/* branches can merge into master
-        if: "!startsWith(github.head_ref, 'release/')"
-        run: |
-          echo "Only release/* branches can merge into master."
-          exit 1
-
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/actions/setup
-
-      - name: The root version matches the release branch
-        run: node scripts/check-release-version.mjs
-
-      - name: The react version is higher than on master
-        run: node scripts/check-react-version.mjs
-
-      - name: The LICENSE years are up to date
-        run: node scripts/license-year.mjs && git diff --exit-code
