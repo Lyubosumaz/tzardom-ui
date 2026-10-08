@@ -51,7 +51,7 @@ types (`ThemeColorMode`) live with `TzarProvider`, in
 | Rollup                   | `react`     | Builds `react` into ESM for publishing                                                     |
 | Vitest + Testing Library | `react`     | Unit tests for the components and the provider, in jsdom                                   |
 | Playwright               | `e2e`       | End-to-end tests in a real browser, run against Storybook                                  |
-| Storybook                | `storybook` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
+| Storybook                | `storybook` | Component docs and manual QA; the e2e tests run against it                                 |
 
 ## Requirements
 
@@ -102,9 +102,9 @@ pnpm --filter @tzardom-ui/storybook storybook
 Storybook is its own private package, `packages/storybook`, so the react package
 doesn't carry Storybook's dependencies. It shows the components straight from
 `packages/react/src`, so edits show up without building the package. The stories
-are in `packages/storybook/src/stories/`, one file per component, and use CSF3
-with `play` functions for interaction testing, runnable from Storybook's
-Interactions panel.
+are in `packages/storybook/src/stories/`, one file per component, written in
+CSF3. Every story runs inside a `TzarProvider` (set in `.storybook/preview.ts`),
+and the e2e tests open them in a real browser.
 
 ### Styling
 

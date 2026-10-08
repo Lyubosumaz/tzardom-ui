@@ -105,6 +105,34 @@ import Link from 'next/link'
 | `className`   | `string`               | —           | Extra classes; on a conflict (e.g. `px-5` vs our `px-3`) yours win |
 | …             |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …)                |
 
+### `<TzarProvider>` and `useTzarTheme()`
+
+`TzarProvider` holds the theme, light or dark, and puts it on
+`<html data-theme="…">`, which the [themes](#themes) read. With `storageKey` it
+also saves the theme in `localStorage`, so it survives a reload. Wrap your app
+in it once, near the root:
+
+```tsx
+import { TzarProvider } from '@tzardom-ui/react'
+
+;<TzarProvider storageKey="theme">{children}</TzarProvider>
+```
+
+| Prop         | Type        | Default | Description                                         |
+| ------------ | ----------- | ------- | --------------------------------------------------- |
+| `storageKey` | `string`    | —       | The `localStorage` key; without it nothing is saved |
+| `children`   | `ReactNode` | —       | Your app                                            |
+
+Inside it, `useTzarTheme()` reads and changes the theme. Outside a provider it
+throws.
+
+```tsx
+import { ThemeColorMode, useTzarTheme } from '@tzardom-ui/react'
+
+const { theme, setTheme, resetTheme } = useTzarTheme()
+setTheme(ThemeColorMode.DARK) // resetTheme() goes back to light
+```
+
 ### `<TzarThemeToggle>`
 
 An icon button that switches between light and dark: a moon in light mode, a sun
@@ -179,6 +207,15 @@ app, and change the values, keeping every variable name.
 - `@tzardom-ui/core` is gone: `TzarThemeToggle` and `TzarLanguageSelect` are
   plain React components now, and `TzarIconButton` and `TzarDropdown` are
   removed.
+- It's ESM only: the CommonJS build is gone, so `require('@tzardom-ui/react')`
+  no longer works.
+- `@tzardom-ui/react/icons` is gone. Import icons from `lucide-react`;
+  `TzarBrand` has its umbrella built in.
+- `TzarThemeToggle` must be inside a `TzarProvider` (it throws outside one), and
+  its `theme`, `defaultTheme` and `onThemeChange` props are gone: it shows and
+  changes the provider's theme.
+- `TzarContext` isn't exported anymore; use `useTzarTheme()`.
+- Every component needs a `data-testid`; see [Test ids](#test-ids).
 - Keep `@import '@tzardom-ui/react/themes/team-capacity-dashboard.css'` and add
   `@import '@tzardom-ui/react/tailwind.css'` right after it, so your Tailwind
   generates the classes the components use.

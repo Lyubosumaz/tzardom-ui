@@ -39,7 +39,6 @@ export default defineConfig([
       'object-shorthand': 'error',
       'prefer-template': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
       'import/first': 'error',
       'import/no-duplicates': 'error',
       'import/no-mutable-exports': 'error',

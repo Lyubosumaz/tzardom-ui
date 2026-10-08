@@ -21,7 +21,7 @@
     "themes"
   ],
   "scripts": {
-    "build": "rm -rf dist && rollup --config",
+    "build": "rollup --config",
     "test:coverage": "vitest run --coverage"
   },
   "author": "Lyubosumaz",

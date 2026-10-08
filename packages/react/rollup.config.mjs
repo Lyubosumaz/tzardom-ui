@@ -1,7 +1,6 @@
+import { rmSync } from 'node:fs'
 import typescript from '@rollup/plugin-typescript'
 
-// Rollup drops 'use client' (MODULE_LEVEL_DIRECTIVE warning); this adds it
-// back per file, as Rollup's maintainers suggest in rollup/rollup#4699.
 const keepUseClient = () => {
   const clientFiles = new Set()
 
@@ -24,6 +23,13 @@ const keepUseClient = () => {
   }
 }
 
+const emptyDist = () => ({
+  name: 'empty-dist',
+  renderStart() {
+    rmSync('dist', { recursive: true, force: true })
+  },
+})
+
 export default {
   input: 'src/index.ts',
   external: [
@@ -39,7 +45,15 @@ export default {
     preserveModulesRoot: 'src',
     sourcemap: true,
   },
+  onLog(level, log, handler) {
+    if (log.code === 'UNRESOLVED_IMPORT') {
+      handler('error', log)
+    } else {
+      handler(level, log)
+    }
+  },
   plugins: [
+    emptyDist(),
     keepUseClient(),
     typescript({
       tsconfig: './tsconfig.json',
