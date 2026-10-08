@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { LOGIN_LINK, TEST_ID } from '@tzardom-ui/mocks'
 import type { AnchorHTMLAttributes } from 'react'
 import { describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '../../testIdPrefixes'
+import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
 import { TzarCommonLink } from './TzarCommonLink'
 
 const LINK_ID = `${TEST_ID_PREFIXES.commonLink}-${TEST_ID}`

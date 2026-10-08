@@ -1,6 +1,6 @@
 import { Umbrella } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
-import { TEST_ID_PREFIXES } from '../../testIdPrefixes'
+import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
 import type { TzarBrandProps } from './TzarBrand.types'
 
 export const TzarBrand = ({

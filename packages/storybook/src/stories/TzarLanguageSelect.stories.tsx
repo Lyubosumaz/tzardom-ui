@@ -4,7 +4,7 @@ import { TzarLanguageSelect } from '@tzardom-ui/react'
 import { useState } from 'react'
 import { fn } from 'storybook/test'
 
-const [english] = LANGUAGES
+const [first] = LANGUAGES
 
 const meta: Meta<typeof TzarLanguageSelect> = {
   title: 'ReactComponentLibrary/TzarLanguageSelect',
@@ -12,7 +12,7 @@ const meta: Meta<typeof TzarLanguageSelect> = {
   args: {
     'data-testid': TEST_ID,
     languages: LANGUAGES,
-    value: english.code,
+    value: first.code,
     onChange: fn(),
   },
   decorators: [
@@ -31,7 +31,7 @@ export const Default: Story = {}
 
 export const Interactive: Story = {
   render: (args) => {
-    const [value, setValue] = useState<string>(english.code)
+    const [value, setValue] = useState<string>(first.code)
     return (
       <TzarLanguageSelect
         {...args}

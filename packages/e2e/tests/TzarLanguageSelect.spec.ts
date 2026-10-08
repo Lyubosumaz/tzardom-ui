@@ -4,7 +4,7 @@ import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
 import { storyUrl } from '../support/storyUrl'
 
 const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-${TEST_ID}`
-const [english, bulgarian] = LANGUAGES
+const [first, second] = LANGUAGES
 const TRIGGER = `${LANGUAGE_SELECT_ID}-trigger`
 const MENU = `${LANGUAGE_SELECT_ID}-menu`
 
@@ -15,7 +15,7 @@ test('can be used with the keyboard alone', async ({ page }) => {
   const trigger = page.getByTestId(TRIGGER)
   const menu = page.getByTestId(MENU)
 
-  await expect(trigger).toHaveAccessibleName(`Language: ${english.short}`)
+  await expect(trigger).toHaveAccessibleName(`Language: ${first.short}`)
   await trigger.focus()
   await page.keyboard.press('Enter')
   await expect(menu).toBeVisible()
@@ -25,7 +25,7 @@ test('can be used with the keyboard alone', async ({ page }) => {
   await page.keyboard.press('Enter')
 
   await expect(menu).toBeHidden()
-  await expect(trigger).toHaveAccessibleName(`Language: ${bulgarian.short}`)
+  await expect(trigger).toHaveAccessibleName(`Language: ${second.short}`)
 })
 
 test('opens the menu below the button, lined up with its right edge', async ({

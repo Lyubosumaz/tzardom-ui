@@ -3,7 +3,7 @@
 import { ChevronDown } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { TEST_ID_PREFIXES } from '../../testIdPrefixes'
+import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
 import type { TzarLanguageSelectProps } from './TzarLanguageSelect.types'
 
 export const TzarLanguageSelect = <Code extends string = string>({

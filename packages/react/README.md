@@ -61,6 +61,28 @@ to fit and hidden from screen readers.
 | `icon`        | component | `Umbrella` | The icon shown before the text         |
 | `className`   | `string`  | —          | Extra classes; on a conflict yours win |
 
+### `<TzarFooter>`
+
+The page footer: a copyright line, the app's name and what it's built with, in
+one row. Pass the texts ready to show, e.g. with the year already filled in.
+
+```tsx
+<TzarFooter
+  copyright="© 2026 Team Capacity"
+  appName="Team Capacity"
+  builtWith="Built with Next.js"
+  data-testid="app"
+/>
+```
+
+| Prop          | Type     | Default  | Description                              |
+| ------------- | -------- | -------- | ---------------------------------------- |
+| `data-testid` | `string` | required | The test id, put on the root element     |
+| `copyright`   | `string` | —        | The copyright line, on the left          |
+| `appName`     | `string` | —        | The app's name, in the middle            |
+| `builtWith`   | `string` | —        | What the app is built with, on the right |
+| `className`   | `string` | —        | Extra classes; on a conflict yours win   |
+
 ### `<TzarCommonLink>`
 
 A pill-shaped link. React only: it renders your app's own link component, so
@@ -130,12 +152,13 @@ import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
 screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
 ```
 
-| Component            | `TEST_ID_PREFIXES` key | Root element                               | Inner parts                           |
-| -------------------- | ---------------------- | ------------------------------------------ | ------------------------------------- |
-| `TzarBrand`          | `brand`                | the outer `<div>`                          | `-icon`, `-title`, `-subtitle`        |
-| `TzarCommonLink`     | `commonLink`           | the `<a>`, or the component passed as `as` | — (its content is your `children`)    |
-| `TzarLanguageSelect` | `languageSelect`       | the outer `<div>`                          | `-trigger`, `-menu`, `-option-{code}` |
-| `TzarThemeToggle`    | `themeToggle`          | the `<button>`                             | `-icon`                               |
+| Component            | `TEST_ID_PREFIXES` key | Root element                               | Inner parts                              |
+| -------------------- | ---------------------- | ------------------------------------------ | ---------------------------------------- |
+| `TzarBrand`          | `brand`                | the outer `<div>`                          | `-icon`, `-title`, `-subtitle`           |
+| `TzarCommonLink`     | `commonLink`           | the `<a>`, or the component passed as `as` | — (its content is your `children`)       |
+| `TzarFooter`         | `footer`               | the `<footer>`                             | `-copyright`, `-app-name`, `-built-with` |
+| `TzarLanguageSelect` | `languageSelect`       | the outer `<div>`                          | `-trigger`, `-menu`, `-option-{code}`    |
+| `TzarThemeToggle`    | `themeToggle`          | the `<button>`                             | `-icon`                                  |
 
 ## Themes
 
