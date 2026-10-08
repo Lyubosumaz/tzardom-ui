@@ -1,103 +1,58 @@
-import resolve from '@rollup/plugin-node-resolve'
-import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
-import depsExternal from 'rollup-plugin-peer-deps-external'
 
-const input = {
-  index: 'src/index.ts', // @tzardom-ui/react
-  icons: 'src/icons.ts', // @tzardom-ui/react/icons
+// Rollup drops 'use client' (MODULE_LEVEL_DIRECTIVE warning); this adds it
+// back per file, as Rollup's maintainers suggest in rollup/rollup#4699.
+const keepUseClient = () => {
+  const clientFiles = new Set()
+
+  return {
+    name: 'keep-use-client',
+    onLog(level, log) {
+      const removedUseClient =
+        log.code === 'MODULE_LEVEL_DIRECTIVE' &&
+        log.message.includes('"use client"')
+
+      if (removedUseClient) {
+        clientFiles.add(log.id)
+        return false
+      }
+    },
+    banner(chunk) {
+      const isClientFile = chunk.moduleIds.some((id) => clientFiles.has(id))
+      return isClientFile ? "'use client';" : ''
+    },
+  }
 }
 
-const external = (id) => /^lucide-react/.test(id) || /^tailwind-merge/.test(id)
-
-const USE_CLIENT = /^(?:\s|\/\/[^\n]*\n|\/\*[\s\S]*?\*\/)*['"]use client['"]/
-
-const clientModules = new Set()
-
-const preserveUseClient = () => ({
-  name: 'preserve-use-client',
-  onLog(level, log) {
-    // Rollup reports that it dropped 'use client'; banner() below restores it.
-    if (
-      log.code === 'MODULE_LEVEL_DIRECTIVE' &&
-      /use client/.test(log.message)
-    ) {
-      return false
-    }
+export default {
+  input: {
+    index: 'src/index.ts', // @tzardom-ui/react
+    icons: 'src/icons.ts', // @tzardom-ui/react/icons
   },
-  transform(code, id) {
-    if (USE_CLIENT.test(code)) {
-      clientModules.add(id)
-    }
-    return null
+  external: [
+    /^react($|\/)/,
+    /^react-dom($|\/)/,
+    /^lucide-react$/,
+    /^tailwind-merge$/,
+  ],
+  output: {
+    dir: 'dist',
+    format: 'esm',
+    preserveModules: true,
+    preserveModulesRoot: 'src',
+    sourcemap: true,
   },
-  banner(chunk) {
-    return chunk.moduleIds.some((id) => clientModules.has(id))
-      ? "'use client';"
-      : ''
-  },
-})
-
-const sharedPlugins = [
-  preserveUseClient(),
-  depsExternal(),
-  resolve({
-    extensions: ['.js', '.ts', '.tsx'],
-  }),
-  terser({ compress: { directives: false } }),
-]
-
-const typescriptExclude = ['**/__tests__', '**/*.test.tsx']
-
-export default [
-  {
-    input,
-    output: {
-      dir: 'dist/esm',
-      entryFileNames: '[name].js',
-      preserveModules: true,
-      preserveModulesRoot: 'src',
-      format: 'esm',
-      sourcemap: true,
-    },
-    external,
-    plugins: [
-      ...sharedPlugins,
-      typescript({
-        tsconfig: './tsconfig.json',
-        exclude: typescriptExclude,
-        compilerOptions: {
-          rootDir: 'src',
-          outDir: 'dist/esm',
-          declaration: true,
-          declarationDir: 'dist/esm/types',
-        },
-      }),
-    ],
-  },
-  {
-    input,
-    output: {
-      dir: 'dist/cjs',
-      entryFileNames: '[name].js',
-      preserveModules: true,
-      preserveModulesRoot: 'src',
-      format: 'cjs',
-      sourcemap: true,
-    },
-    external,
-    plugins: [
-      ...sharedPlugins,
-      typescript({
-        tsconfig: './tsconfig.json',
-        exclude: typescriptExclude,
-        compilerOptions: {
-          rootDir: 'src',
-          outDir: 'dist/cjs',
-          declaration: false,
-          declarationDir: undefined,
-        },
-      }),
-    ],
-  },
-]
+  plugins: [
+    keepUseClient(),
+    typescript({
+      tsconfig: './tsconfig.json',
+      exclude: ['**/*.test.tsx'],
+      compilerOptions: {
+        rootDir: 'src',
+        outDir: 'dist',
+        declaration: true,
+        declarationDir: 'dist/types',
+      },
+    }),
+  ],
+}

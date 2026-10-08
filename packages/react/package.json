@@ -5,19 +5,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/esm/types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./icons": {
-      "types": "./dist/esm/types/icons.d.ts",
-      "import": "./dist/esm/icons.js",
-      "require": "./dist/cjs/icons.js"
+      "types": "./dist/types/icons.d.ts",
+      "default": "./dist/icons.js"
     },
     "./tailwind.css": "./tailwind.css",
     "./themes/*": "./themes/*",
@@ -29,7 +24,7 @@
     "themes"
   ],
   "scripts": {
-    "build": "rollup --config",
+    "build": "rm -rf dist && rollup --config",
     "test:coverage": "vitest run --coverage"
   },
   "author": "Lyubosumaz",
@@ -39,8 +34,6 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^22",
@@ -53,7 +46,6 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "rollup": "^4.63.5",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
     "typescript": "~6.0.3",
     "vite": "^8.3.1",
     "vitest": "^4.1.11"

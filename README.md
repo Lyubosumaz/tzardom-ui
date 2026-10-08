@@ -43,7 +43,7 @@ types (`ThemeColorMode`) live with `TzarProvider`, in
 | ------------------------ | ----------- | ------------------------------------------------------------------------------------------ |
 | pnpm workspaces          | root        | One install and lockfile for the root tooling and `packages/react`; root scripts run in it |
 | Tailwind CSS v4          | `react`     | Styles the components; the app's own Tailwind compiles the classes                         |
-| Rollup                   | `react`     | Bundles `react` into ESM + CJS for publishing                                              |
+| Rollup                   | `react`     | Builds `react` into ESM for publishing                                                     |
 | Vitest + Testing Library | `react`     | Unit tests for the components and the provider, in jsdom                                   |
 | Playwright               | `e2e`       | End-to-end tests in a real browser, run against Storybook                                  |
 | Storybook                | `storybook` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
