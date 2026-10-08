@@ -26,8 +26,8 @@ jobs:
       - name: The root version matches the release branch
         run: node scripts/check-release-version.mjs
 
-      - name: The react version is higher than on master
-        run: node scripts/check-react-version.mjs
+      - name: Changed packages have a higher version than on master
+        run: node scripts/check-package-versions.mjs
 
       - name: The LICENSE years are up to date
         run: node scripts/license-year.mjs && git diff --exit-code

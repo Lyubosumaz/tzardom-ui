@@ -6,21 +6,20 @@ built with semantic HTML and styled with Tailwind CSS v4.
 ## Install
 
 ```bash
-npm install @tzardom-ui/react
+npm install @tzardom-ui/react @tzardom-ui/themes
 ```
 
-Requires React 19 and React DOM 19 as peer dependencies.
+Requires React 19.
 
 ## Usage
 
-In your app's CSS, import Tailwind, then one of this package's
-[themes](#themes), then its `tailwind.css`, which makes your Tailwind generate
-the classes the components use:
+In your app's CSS, import Tailwind, then one of the [themes](#themes). The theme
+gives your Tailwind the colors, and imports this package's `tailwind.css`, which
+makes it generate the classes the components use:
 
 ```css
 @import 'tailwindcss';
-@import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
-@import '@tzardom-ui/react/tailwind.css';
+@import '@tzardom-ui/themes/team-capacity-dashboard.css';
 ```
 
 Then use the components:
@@ -190,17 +189,11 @@ screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
 
 ## Themes
 
-| File                                 | For                     |
-| ------------------------------------ | ----------------------- |
-| `themes/team-capacity-dashboard.css` | team-capacity-dashboard |
-
-Each theme names the colors for Tailwind (`bg-background`, `text-secondary`, …),
-sets their light values on `:root` and dark values on
-`:root[data-theme='dark']`, and sets the page's background and text color.
+The color themes are their own package,
+[`@tzardom-ui/themes`](https://www.npmjs.com/package/@tzardom-ui/themes). Each
+names the colors for Tailwind (`bg-background`, `text-secondary`, …) and sets
+their light values on `:root` and dark values on `:root[data-theme='dark']`.
 `TzarProvider` switches between light and dark.
-
-To add a theme, copy `themes/team-capacity-dashboard.css`, name it after the
-app, and change the values, keeping every variable name.
 
 ## Upgrading from 0.2
 
@@ -216,6 +209,6 @@ app, and change the values, keeping every variable name.
   changes the provider's theme.
 - `TzarContext` isn't exported anymore; use `useTzarTheme()`.
 - Every component needs a `data-testid`; see [Test ids](#test-ids).
-- Keep `@import '@tzardom-ui/react/themes/team-capacity-dashboard.css'` and add
-  `@import '@tzardom-ui/react/tailwind.css'` right after it, so your Tailwind
-  generates the classes the components use.
+- The themes moved to their own package: install `@tzardom-ui/themes` and change
+  `@import '@tzardom-ui/react/themes/team-capacity-dashboard.css'` to
+  `@import '@tzardom-ui/themes/team-capacity-dashboard.css'`.

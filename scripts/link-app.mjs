@@ -12,9 +12,10 @@ import {
 import path from 'node:path'
 import { clearTimeout, setTimeout } from 'node:timers'
 import { fileURLToPath } from 'node:url'
+import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const PACKAGES = ['react']
+const PACKAGES = ['react', 'themes']
 const DEBOUNCE_MS = 400
 
 const args = process.argv.slice(2)
@@ -36,15 +37,6 @@ const pkgJson = (name) => readJson(path.join(pkgDir(name), 'package.json'))
 const destDir = (name) => path.join(appDir, 'node_modules', '@tzardom-ui', name)
 const shipped = (pkg) =>
   (pkg.files ?? ['dist']).map((entry) => entry.replace(/\/+$/, ''))
-
-const fail = (message) => {
-  console.error(`\n✖ ${message}\n`)
-  process.exit(1)
-}
-
-if (!existsSync(path.join(appDir, 'package.json'))) {
-  fail(`No app found at ${appDir}. Pass --app <path> or set TZARDOM_APP.`)
-}
 
 const resolveWorkspaceRanges = (pkg) => {
   const versions = Object.fromEntries(
@@ -116,13 +108,13 @@ const linkAll = () => {
 
   const missing = missingDeps()
   if (missing.length > 0) {
-    console.log(`Installing in ${appName}: ${missing.join(', ')}…`)
+    console.log(`➜ Installing in ${appName}: ${missing.join(', ')}…`)
     const result = spawnSync('npm', ['install', '--no-save', ...missing], {
       cwd: appDir,
       stdio: 'inherit',
     })
     if (result.status !== 0) {
-      fail(`npm install ${missing.join(' ')} failed in ${appName}.`)
+      throw new Error(`npm install ${missing.join(' ')} failed in ${appName}.`)
     }
     linked = copy()
   }
@@ -134,14 +126,14 @@ const build = () => {
   if (has('--no-build')) {
     return
   }
-  console.log('Building types → react…')
+  console.log('➜ Building @tzardom-ui/react…')
   const result = spawnSync(
     'pnpm',
     ['--filter', '@tzardom-ui/react...', 'run', 'build'],
     { cwd: root, stdio: 'inherit' },
   )
   if (result.status !== 0) {
-    fail('Build failed.')
+    throw new Error('Build failed.')
   }
 }
 
@@ -149,13 +141,13 @@ const unlink = () => {
   for (const name of PACKAGES) {
     rmSync(destDir(name), { recursive: true, force: true })
   }
-  console.log(`Restoring the npm versions in ${appName}…`)
+  console.log(`➜ Restoring the npm versions in ${appName}…`)
   const result = spawnSync('npm', ['install'], {
     cwd: appDir,
     stdio: 'inherit',
   })
   if (result.status !== 0) {
-    fail('npm install failed.')
+    throw new Error('npm install failed.')
   }
   console.log(`✔ ${appName} is back on the published @tzardom-ui packages`)
 }
@@ -177,12 +169,12 @@ const dev = () => {
         process.kill(-child.pid, 'SIGTERM')
       } catch {
         console.error(
-          `Failed to stop ${child.pid}. It may have already exited.`,
+          `⚠ Failed to stop ${child.pid}. It may have already exited.`,
         )
       }
     }
     console.log(
-      `\nStill linked. Run "pnpm app:unlink" to go back to the npm versions.`,
+      `\nℹ Still linked. Run "pnpm app:unlink" to go back to the npm versions.`,
     )
     process.exit(code)
   }
@@ -212,7 +204,7 @@ const dev = () => {
       if (stopping) {
         return
       }
-      console.error(`[${label}] stopped (${signal ?? `exit ${code}`})`)
+      console.error(`[${label}] ✖ stopped (${signal ?? `exit ${code}`})`)
       stop(1)
     })
     children.push(child)
@@ -251,14 +243,27 @@ const dev = () => {
 
   process.on('SIGINT', () => stop(0))
   process.on('SIGTERM', () => stop(0))
-  console.log('Watching packages/*. Press Ctrl+C to stop.')
+  console.log('➜ Watching packages/*. Press Ctrl+C to stop.')
 }
 
-if (has('--unlink')) {
-  unlink()
-} else if (has('--watch')) {
-  dev()
-} else {
-  build()
-  linkAll()
+try {
+  if (!existsSync(path.join(appDir, 'package.json'))) {
+    throw new Error(
+      `No app found at ${appDir}. Pass --app <path> or set TZARDOM_APP.`,
+    )
+  }
+
+  if (has('--unlink')) {
+    unlink()
+  } else if (has('--watch')) {
+    dev()
+  } else {
+    build()
+    linkAll()
+  }
+} catch (error) {
+  console.error('✖ Link script failed:', error.message)
+  process.exitCode = 1
+} finally {
+  console.log(THANK_YOU_MESSAGE)
 }

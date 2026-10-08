@@ -32,12 +32,7 @@ const emptyDist = () => ({
 
 export default {
   input: 'src/index.ts',
-  external: [
-    /^react($|\/)/,
-    /^react-dom($|\/)/,
-    /^lucide-react$/,
-    /^tailwind-merge$/,
-  ],
+  external: [/^react($|\/)/, /^lucide-react$/, /^tailwind-merge$/],
   output: {
     dir: 'dist',
     format: 'esm',

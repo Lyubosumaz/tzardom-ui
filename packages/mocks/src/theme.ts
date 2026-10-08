@@ -1,7 +1,7 @@
 // The key TzarProvider saves the theme under.
 export const THEME_STORAGE_KEY = 'mock-theme'
 
-// Colors from packages/react/themes/team-capacity-dashboard.css, written the
+// Colors from packages/themes/team-capacity-dashboard.css, written the
 // way the browser reports them (getComputedStyle), so tests can compare them.
 export const THEME_COLORS = {
   light: {

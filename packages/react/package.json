@@ -12,13 +12,11 @@
       "default": "./dist/index.js"
     },
     "./tailwind.css": "./tailwind.css",
-    "./themes/*": "./themes/*",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "tailwind.css",
-    "themes"
+    "tailwind.css"
   ],
   "scripts": {
     "build": "rollup --config",
@@ -48,7 +46,6 @@
     "vitest": "^4.1.11"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "^19.0.0"
   }
 }
