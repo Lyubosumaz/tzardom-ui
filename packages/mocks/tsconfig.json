@@ -3,11 +3,11 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "types": ["node"],
     "isolatedModules": true,
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": []
   },
-  "include": ["tests", "support", "playwright.config.ts"]
+  "include": ["src"]
 }

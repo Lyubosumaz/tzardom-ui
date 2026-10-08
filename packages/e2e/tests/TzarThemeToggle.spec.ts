@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
-import { storyUrl } from './storyUrl'
+import { THEME_COLORS } from '@tzardom-ui/mocks'
+import { storyUrl } from '../support/storyUrl'
 
-// In this story the toggle sits inside a TzarProvider that saves the theme.
 const WITH_PROVIDER = storyUrl(
   'reactcomponentlibrary-tzarthemetoggle--with-provider',
 )
@@ -24,8 +24,7 @@ test('takes its colors from the theme', async ({ page }) => {
   await page.goto(WITH_PROVIDER)
   const toggle = page.getByRole('button', { name: 'Toggle theme' })
 
-  // text-secondary: #0f172a in the light theme, #38bdf8 in the dark one
-  await expect(toggle).toHaveCSS('color', 'rgb(15, 23, 42)')
+  await expect(toggle).toHaveCSS('color', THEME_COLORS.light.secondary)
   await toggle.click()
-  await expect(toggle).toHaveCSS('color', 'rgb(56, 189, 248)')
+  await expect(toggle).toHaveCSS('color', THEME_COLORS.dark.secondary)
 })

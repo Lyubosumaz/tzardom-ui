@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react'
+import { LOGIN_LINK } from '@tzardom-ui/mocks'
 import type { AnchorHTMLAttributes } from 'react'
 import { describe, expect, test } from 'vitest'
 import { TzarCommonLink } from './TzarCommonLink'
 
 describe('TzarCommonLink', () => {
   test('renders a plain link by default', () => {
-    render(<TzarCommonLink href="/login">Log in</TzarCommonLink>)
-    const link = screen.getByRole('link', { name: 'Log in' })
+    render(
+      <TzarCommonLink href={LOGIN_LINK.href}>{LOGIN_LINK.text}</TzarCommonLink>,
+    )
+    const link = screen.getByRole('link', { name: LOGIN_LINK.text })
 
     expect(link.tagName).toBe('A')
-    expect(link.getAttribute('href')).toBe('/login')
+    expect(link.getAttribute('href')).toBe(LOGIN_LINK.href)
     expect(link.className).toContain('rounded-full')
   })
 

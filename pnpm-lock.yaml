@@ -50,9 +50,14 @@ importers:
       '@types/node':
         specifier: ^22
         version: 22.20.5
+      '@tzardom-ui/mocks':
+        specifier: workspace:*
+        version: link:../mocks
       typescript:
         specifier: ~6.0.3
         version: 6.0.3
+
+  packages/mocks: {}
 
   packages/react:
     dependencies:
@@ -84,6 +89,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.3.0
         version: 19.3.0(@types/react@19.3.0)
+      '@tzardom-ui/mocks':
+        specifier: workspace:*
+        version: link:../mocks
       '@vitejs/plugin-react':
         specifier: ^6.1.1
         version: 6.1.1(vite@8.3.1(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.105.0)(sass@1.105.0)(terser@5.51.2)(yaml@2.9.1))
@@ -138,6 +146,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.3.0
         version: 19.3.0(@types/react@19.3.0)
+      '@tzardom-ui/mocks':
+        specifier: workspace:*
+        version: link:../mocks
       '@tzardom-ui/react':
         specifier: workspace:^
         version: link:../react

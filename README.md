@@ -11,7 +11,27 @@ tzardom-ui/            root — private workspace manifest (build/test/lint/clea
     react/      @tzardom-ui/react       React components + color themes (published)
     storybook/  @tzardom-ui/storybook   Storybook for the components (private)
     e2e/        @tzardom-ui/e2e         end-to-end tests in a real browser (private)
+    mocks/      @tzardom-ui/mocks       mock data shared by tests and stories (private)
 ```
+
+Inside the private packages:
+
+```
+packages/storybook/
+  .storybook/      Storybook's config: main.ts, preview.ts, tailwind.css
+  src/stories/     one file per component
+  src/decorators.tsx   shared story wrappers (withTzarProvider)
+packages/e2e/
+  tests/           one spec per component, nothing else
+  support/         helpers for the tests (storyUrl)
+packages/mocks/
+  src/             LANGUAGES, LOGIN_LINK, THEME_STORAGE_KEY, THEME_COLORS, …
+```
+
+Mock data (languages, link texts, the theme's storage key and colors) lives in
+`@tzardom-ui/mocks`, and the react unit tests, the stories and the e2e tests all
+import it from there. It has no build: it exports its TypeScript source, and it
+never ends up in the published package.
 
 Each component's types live next to it (`ComponentName.types.ts`). The theme
 types (`ThemeColorMode`) live with `TzarProvider`, in
@@ -77,9 +97,9 @@ pnpm --filter @tzardom-ui/storybook storybook
 Storybook is its own private package, `packages/storybook`, so the react package
 doesn't carry Storybook's dependencies. It shows the components straight from
 `packages/react/src`, so edits show up without building the package. The stories
-are in `packages/storybook/stories/`, one file per component, and use CSF3 with
-`play` functions for interaction testing, runnable from Storybook's Interactions
-panel.
+are in `packages/storybook/src/stories/`, one file per component, and use CSF3
+with `play` functions for interaction testing, runnable from Storybook's
+Interactions panel.
 
 ### Styling
 
@@ -127,7 +147,7 @@ pnpm test:e2e
 ```
 
 Playwright starts Storybook itself, or uses the one already running on
-port 6006. Each test opens one story by its id (see `tests/storyUrl.ts`), so
+port 6006. Each test opens one story by its id (see `support/storyUrl.ts`), so
 renaming a story or its title means updating the tests too.
 
 On GitHub they run on release PRs into `master`, in the Extensive code check

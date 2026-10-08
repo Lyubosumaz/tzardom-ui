@@ -1,0 +1,9 @@
+{
+  "name": "@tzardom-ui/mocks",
+  "private": true,
+  "description": "Mock data shared by the tzardom-ui unit tests, stories and e2e tests (not published)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

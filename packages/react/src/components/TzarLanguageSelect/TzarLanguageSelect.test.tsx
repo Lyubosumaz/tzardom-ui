@@ -1,12 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
+import { LANGUAGES } from '@tzardom-ui/mocks'
 import { describe, expect, test, vi } from 'vitest'
 import { TzarLanguageSelect } from './TzarLanguageSelect'
-
-const LANGUAGES = [
-  { code: 'en', short: 'EN', label: 'English' },
-  { code: 'bg', short: 'BG', label: 'Bulgarian' },
-  { code: 'ka', short: 'KA', label: 'Georgian' },
-] as const
 
 const getMenu = () => screen.getByRole('list', { hidden: true })
 
@@ -42,11 +37,9 @@ describe('TzarLanguageSelect', () => {
     render(<TzarLanguageSelect languages={LANGUAGES} value="ka" />)
     const items = within(getMenu()).getAllByRole('button', { hidden: true })
 
-    expect(items.map((item) => item.textContent)).toEqual([
-      'ENEnglish',
-      'BGBulgarian',
-      'KAGeorgian',
-    ])
+    expect(items.map((item) => item.textContent)).toEqual(
+      LANGUAGES.map((lang) => `${lang.short}${lang.label}`),
+    )
     expect(items[2].getAttribute('aria-current')).toBe('true')
     expect(items[0].getAttribute('aria-current')).toBe('false')
   })
