@@ -2,15 +2,13 @@ import { expect, test } from '@playwright/test'
 import { THEME_COLORS } from '@tzardom-ui/mocks'
 import { storyUrl } from '../support/storyUrl'
 
-const WITH_PROVIDER = storyUrl(
-  'reactcomponentlibrary-tzarthemetoggle--with-provider',
-)
+const TOGGLE_STORY = storyUrl('reactcomponentlibrary-tzarthemetoggle--default')
 const { light, dark } = THEME_COLORS
 
 test('switches the page to dark and keeps it after a reload', async ({
   page,
 }) => {
-  await page.goto(WITH_PROVIDER)
+  await page.goto(TOGGLE_STORY)
   const html = page.locator('html')
   await expect(html).toHaveAttribute('data-theme', 'light')
 
@@ -22,7 +20,7 @@ test('switches the page to dark and keeps it after a reload', async ({
 })
 
 test('takes its colors from the theme', async ({ page }) => {
-  await page.goto(WITH_PROVIDER)
+  await page.goto(TOGGLE_STORY)
   const toggle = page.getByRole('button', { name: 'Toggle theme' })
 
   await expect(toggle).toHaveCSS('color', light.secondary)

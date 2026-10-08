@@ -4,7 +4,11 @@ import { ThemeActionsType } from './TzarProvider.types'
 import type { ThemeColorMode } from './TzarProvider.types'
 
 export const useTzarTheme = () => {
-  const { theme, setTheme } = use(TzarContext)
+  const context = use(TzarContext)
+  if (!context) {
+    throw new Error('useTzarTheme must be used inside a <TzarProvider>')
+  }
+  const { theme, setTheme } = context
 
   return useMemo(
     () => ({

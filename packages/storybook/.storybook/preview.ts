@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
+import { withTzarProvider } from '../src/decorators'
 import './tailwind.css'
 
 const preview: Preview = {
@@ -10,6 +11,8 @@ const preview: Preview = {
       },
     },
   },
+  // Every story runs inside a TzarProvider, as an app would.
+  decorators: [withTzarProvider],
   tags: ['autodocs'],
 }
 

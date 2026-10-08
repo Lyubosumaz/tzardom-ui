@@ -59,15 +59,13 @@ import Link from 'next/link'
 ### `<TzarThemeToggle>`
 
 An icon button that switches between light and dark: a moon in light mode, a sun
-in dark mode. Inside a `TzarProvider` it changes the provider's theme.
+in dark mode. It must be inside a `TzarProvider`: a click changes the provider's
+theme, and the icon and the page follow it. Outside a provider it throws.
 
-| Prop            | Type                              | Default          | Description                                  |
-| --------------- | --------------------------------- | ---------------- | -------------------------------------------- |
-| `theme`         | `ThemeColorMode`                  | —                | Controls the theme from outside              |
-| `defaultTheme`  | `ThemeColorMode`                  | `LIGHT`          | Starting theme without a provider or `theme` |
-| `onThemeChange` | `(theme: ThemeColorMode) => void` | —                | Called with the new theme on every click     |
-| `label`         | `string`                          | `'Toggle theme'` | The button's accessible name                 |
-| `className`     | `string`                          | —                | Extra classes; on a conflict yours win       |
+| Prop        | Type     | Default          | Description                            |
+| ----------- | -------- | ---------------- | -------------------------------------- |
+| `label`     | `string` | `'Toggle theme'` | The button's accessible name           |
+| `className` | `string` | —                | Extra classes; on a conflict yours win |
 
 ### `<TzarLanguageSelect>`
 

@@ -1,16 +1,10 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { THEME_STORAGE_KEY } from '@tzardom-ui/mocks'
-import { use } from 'react'
 import { beforeEach, describe, expect, test } from 'vitest'
-import {
-  TzarProvider,
-  TzarContext,
-  ThemeActionsType,
-  ThemeColorMode,
-} from './index'
+import { TzarProvider, ThemeColorMode, useTzarTheme } from './index'
 
 const ThemeConsumer = () => {
-  const { theme, setTheme } = use(TzarContext)
+  const { theme, setTheme, resetTheme } = useTzarTheme()
 
   return (
     <div>
@@ -18,13 +12,11 @@ const ThemeConsumer = () => {
       <button
         type="button"
         onClick={() => {
-          setTheme({
-            type: ThemeActionsType.THEME_COLOR_MODE,
-            theme:
-              theme === ThemeColorMode.DARK
-                ? ThemeColorMode.LIGHT
-                : ThemeColorMode.DARK,
-          })
+          setTheme(
+            theme === ThemeColorMode.DARK
+              ? ThemeColorMode.LIGHT
+              : ThemeColorMode.DARK,
+          )
         }}
       >
         toggle
@@ -32,7 +24,7 @@ const ThemeConsumer = () => {
       <button
         type="button"
         onClick={() => {
-          setTheme({ type: ThemeActionsType.RESET_THEME })
+          resetTheme()
         }}
       >
         reset
@@ -78,12 +70,10 @@ describe('TzarProvider', () => {
     expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
   })
 
-  test('default context value exposes a no-op setTheme before any provider mounts', () => {
-    render(<ThemeConsumer />)
-
-    expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
-    expect(() => fireEvent.click(screen.getByText('toggle'))).not.toThrow()
-    expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
+  test('useTzarTheme throws outside a TzarProvider', () => {
+    expect(() => render(<ThemeConsumer />)).toThrow(
+      'useTzarTheme must be used inside a <TzarProvider>',
+    )
   })
 
   describe('page theme and storage', () => {

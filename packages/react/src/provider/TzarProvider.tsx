@@ -58,15 +58,7 @@ const storeTheme = (key: string, theme: ThemeColorMode) => {
   }
 }
 
-const defaultContext: TypeContext = {
-  ...DEFAULT_THEME,
-  setTheme: () => undefined,
-}
-
-export const TzarContext = createContext<TypeContext>(defaultContext)
-
-export const isDefaultTzarContext = (context: TypeContext) =>
-  context === defaultContext
+export const TzarContext = createContext<TypeContext | null>(null)
 
 export const TzarProvider = ({ children, storageKey }: ITzarProviderProps) => {
   const [tzarThemeMode, dispatch] = useReducer(themeReducer, DEFAULT_THEME)
