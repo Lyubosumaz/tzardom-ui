@@ -1,4 +1,5 @@
 export { BRAND } from './brand'
 export { LANGUAGES } from './languages'
 export { LOGIN_LINK, OVERVIEW_LINK } from './links'
+export { TEST_ID } from './testId'
 export { THEME_COLORS, THEME_STORAGE_KEY } from './theme'

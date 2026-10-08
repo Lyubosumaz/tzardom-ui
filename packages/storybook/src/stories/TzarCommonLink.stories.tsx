@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { LOGIN_LINK, OVERVIEW_LINK } from '@tzardom-ui/mocks'
+import { LOGIN_LINK, OVERVIEW_LINK, TEST_ID } from '@tzardom-ui/mocks'
 import { TzarCommonLink } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarCommonLink> = {
   title: 'ReactComponentLibrary/TzarCommonLink',
   component: TzarCommonLink,
   args: {
+    'data-testid': TEST_ID,
     href: LOGIN_LINK.href,
     children: LOGIN_LINK.text,
   },

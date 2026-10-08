@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { LANGUAGES } from '@tzardom-ui/mocks'
+import { LANGUAGES, TEST_ID } from '@tzardom-ui/mocks'
 import { TzarLanguageSelect } from '@tzardom-ui/react'
 import { useState } from 'react'
 import { fn } from 'storybook/test'
@@ -10,6 +10,7 @@ const meta: Meta<typeof TzarLanguageSelect> = {
   title: 'ReactComponentLibrary/TzarLanguageSelect',
   component: TzarLanguageSelect,
   args: {
+    'data-testid': TEST_ID,
     languages: LANGUAGES,
     value: english.code,
     onChange: fn(),

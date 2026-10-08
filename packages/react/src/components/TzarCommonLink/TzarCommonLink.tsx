@@ -1,5 +1,6 @@
 import type { ElementType } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { TEST_ID_PREFIXES } from '../../testIdPrefixes'
 import type {
   TzarCommonLinkProps,
   TzarCommonLinkVariant,
@@ -13,17 +14,20 @@ const VARIANT_CLASSES: Record<TzarCommonLinkVariant, string> = {
 }
 
 export const TzarCommonLink = <C extends ElementType = 'a'>({
+  'data-testid': testId,
   as,
   variant = 'outline',
   className,
   ...rest
 }: TzarCommonLinkProps<C>) => {
   const Component: ElementType = as ?? 'a'
+  const rootTestId = `${TEST_ID_PREFIXES.commonLink}-${testId}`
 
   return (
     <Component
       {...rest}
       className={twMerge(VARIANT_CLASSES[variant], className)}
+      data-testid={rootTestId}
     />
   )
 }

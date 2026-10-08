@@ -29,7 +29,11 @@ Then use the components:
 import { TzarCommonLink } from '@tzardom-ui/react'
 
 function App() {
-  return <TzarCommonLink href="/login">Log in</TzarCommonLink>
+  return (
+    <TzarCommonLink href="/login" data-testid="login">
+      Log in
+    </TzarCommonLink>
+  )
 }
 ```
 
@@ -42,15 +46,20 @@ any icon component you pass, such as one from `lucide-react`. The icon is sized
 to fit and hidden from screen readers.
 
 ```tsx
-<TzarBrand title="Team Capacity" subtitle="Plan your sprints" />
+<TzarBrand
+  title="Team Capacity"
+  subtitle="Plan your sprints"
+  data-testid="header"
+/>
 ```
 
-| Prop        | Type      | Default    | Description                            |
-| ----------- | --------- | ---------- | -------------------------------------- |
-| `title`     | `string`  | —          | The name, in bold                      |
-| `subtitle`  | `string`  | —          | The smaller line under it              |
-| `icon`      | component | `Umbrella` | The icon shown before the text         |
-| `className` | `string`  | —          | Extra classes; on a conflict yours win |
+| Prop          | Type      | Default    | Description                            |
+| ------------- | --------- | ---------- | -------------------------------------- |
+| `data-testid` | `string`  | required   | The test id, put on the root element   |
+| `title`       | `string`  | —          | The name, in bold                      |
+| `subtitle`    | `string`  | —          | The smaller line under it              |
+| `icon`        | component | `Umbrella` | The icon shown before the text         |
+| `className`   | `string`  | —          | Extra classes; on a conflict yours win |
 
 ### `<TzarCommonLink>`
 
@@ -61,17 +70,18 @@ by default).
 ```tsx
 import Link from 'next/link'
 
-;<TzarCommonLink as={Link} href="/login">
+;<TzarCommonLink as={Link} href="/login" data-testid="login">
   Log in
 </TzarCommonLink>
 ```
 
-| Prop        | Type                   | Default     | Description                                                        |
-| ----------- | ---------------------- | ----------- | ------------------------------------------------------------------ |
-| `as`        | `ElementType`          | `'a'`       | Element or component to render                                     |
-| `variant`   | `'outline' \| 'ghost'` | `'outline'` | Bordered pill, or pill on hover only                               |
-| `className` | `string`               | —           | Extra classes; on a conflict (e.g. `px-5` vs our `px-3`) yours win |
-| …           |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …)                |
+| Prop          | Type                   | Default     | Description                                                        |
+| ------------- | ---------------------- | ----------- | ------------------------------------------------------------------ |
+| `data-testid` | `string`               | required    | The test id, put on the root element                               |
+| `as`          | `ElementType`          | `'a'`       | Element or component to render                                     |
+| `variant`     | `'outline' \| 'ghost'` | `'outline'` | Bordered pill, or pill on hover only                               |
+| `className`   | `string`               | —           | Extra classes; on a conflict (e.g. `px-5` vs our `px-3`) yours win |
+| …             |                        |             | Any other prop goes to `as` (`href`, `prefetch`, …)                |
 
 ### `<TzarThemeToggle>`
 
@@ -79,22 +89,53 @@ An icon button that switches between light and dark: a moon in light mode, a sun
 in dark mode. It must be inside a `TzarProvider`: a click changes the provider's
 theme, and the icon and the page follow it. Outside a provider it throws.
 
-| Prop        | Type     | Default          | Description                            |
-| ----------- | -------- | ---------------- | -------------------------------------- |
-| `label`     | `string` | `'Toggle theme'` | The button's accessible name           |
-| `className` | `string` | —                | Extra classes; on a conflict yours win |
+| Prop          | Type     | Default          | Description                            |
+| ------------- | -------- | ---------------- | -------------------------------------- |
+| `data-testid` | `string` | required         | The test id, put on the root element   |
+| `label`       | `string` | `'Toggle theme'` | The button's accessible name           |
+| `className`   | `string` | —                | Extra classes; on a conflict yours win |
 
 ### `<TzarLanguageSelect>`
 
 A button that opens a list of languages. Escape and a click outside close it.
 
-| Prop        | Type                     | Default      | Description                                                     |
-| ----------- | ------------------------ | ------------ | --------------------------------------------------------------- |
-| `languages` | `TzarLanguage[]`         | —            | `{ code, short, label }` for each language                      |
-| `value`     | `string`                 | —            | The current language's `code`                                   |
-| `onChange`  | `(code: string) => void` | —            | Called with the picked language's `code`                        |
-| `label`     | `string`                 | `'Language'` | Names the button, followed by the current code (`Language: EN`) |
-| `className` | `string`                 | —            | Extra classes for the wrapper; on a conflict yours win          |
+| Prop          | Type                     | Default      | Description                                                     |
+| ------------- | ------------------------ | ------------ | --------------------------------------------------------------- |
+| `data-testid` | `string`                 | required     | The test id, put on the root element                            |
+| `languages`   | `TzarLanguage[]`         | —            | `{ code, short, label }` for each language                      |
+| `value`       | `string`                 | —            | The current language's `code`                                   |
+| `onChange`    | `(code: string) => void` | —            | Called with the picked language's `code`                        |
+| `label`       | `string`                 | `'Language'` | Names the button, followed by the current code (`Language: EN`) |
+| `className`   | `string`                 | —            | Extra classes for the wrapper; on a conflict yours win          |
+
+## Test ids
+
+Every component requires a `data-testid`: leaving it out is a TypeScript error.
+Every id starts with `tzar-ui-` and the component's name, followed by your id.
+Inner parts get the same id plus a fixed suffix. So two copies never clash, and
+every id shows which component it belongs to:
+
+```tsx
+<TzarBrand title="…" subtitle="…" data-testid="header" />
+// tzar-ui-brand-header, tzar-ui-brand-header-icon,
+// tzar-ui-brand-header-title, tzar-ui-brand-header-subtitle
+```
+
+The names are exported as `TEST_ID_PREFIXES`, so tests can build the ids instead
+of typing them:
+
+```ts
+import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+
+screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
+```
+
+| Component            | `TEST_ID_PREFIXES` key | Root element                               | Inner parts                           |
+| -------------------- | ---------------------- | ------------------------------------------ | ------------------------------------- |
+| `TzarBrand`          | `brand`                | the outer `<div>`                          | `-icon`, `-title`, `-subtitle`        |
+| `TzarCommonLink`     | `commonLink`           | the `<a>`, or the component passed as `as` | — (its content is your `children`)    |
+| `TzarLanguageSelect` | `languageSelect`       | the outer `<div>`                          | `-trigger`, `-menu`, `-option-{code}` |
+| `TzarThemeToggle`    | `themeToggle`          | the `<button>`                             | `-icon`                               |
 
 ## Themes
 

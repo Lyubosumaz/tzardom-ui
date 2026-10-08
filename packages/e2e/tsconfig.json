@@ -7,7 +7,13 @@
     "isolatedModules": true,
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    // Like Storybook, read @tzardom-ui/react from its source, so the e2e tests
+    // can import TEST_ID_PREFIXES without building the library first.
+    "paths": {
+      "@tzardom-ui/react": ["../react/src/index.ts"]
+    }
   },
   "include": ["tests", "support", "playwright.config.ts"]
 }

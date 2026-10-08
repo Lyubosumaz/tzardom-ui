@@ -1,13 +1,22 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { LANGUAGES } from '@tzardom-ui/mocks'
+import { LANGUAGES, TEST_ID } from '@tzardom-ui/mocks'
 import { describe, expect, test, vi } from 'vitest'
+import { TEST_ID_PREFIXES } from '../../testIdPrefixes'
 import { TzarLanguageSelect } from './TzarLanguageSelect'
+
+const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-${TEST_ID}`
 
 const getMenu = () => screen.getByRole('list', { hidden: true })
 
 describe('TzarLanguageSelect', () => {
   test('shows the current language on the trigger', () => {
-    render(<TzarLanguageSelect languages={LANGUAGES} value="bg" />)
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="bg"
+      />,
+    )
 
     expect(
       screen.getByRole('button', { name: 'Language: BG' }).textContent,
@@ -17,6 +26,7 @@ describe('TzarLanguageSelect', () => {
   test('falls back to the first language for an unknown value', () => {
     render(
       <TzarLanguageSelect
+        data-testid={TEST_ID}
         languages={LANGUAGES}
         value={'fr' as (typeof LANGUAGES)[number]['code']}
       />,
@@ -28,13 +38,26 @@ describe('TzarLanguageSelect', () => {
   })
 
   test('names the trigger with the label and the visible code', () => {
-    render(<TzarLanguageSelect languages={LANGUAGES} value="bg" label="Език" />)
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="bg"
+        label="Език"
+      />,
+    )
 
     expect(screen.getByRole('button', { name: 'Език: BG' })).toBeTruthy()
   })
 
   test('lists every language and marks the current one', () => {
-    render(<TzarLanguageSelect languages={LANGUAGES} value="ka" />)
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="ka"
+      />,
+    )
     const items = within(getMenu()).getAllByRole('button', { hidden: true })
 
     expect(items.map((item) => item.textContent)).toEqual(
@@ -48,6 +71,7 @@ describe('TzarLanguageSelect', () => {
     const handleChange = vi.fn()
     render(
       <TzarLanguageSelect
+        data-testid={TEST_ID}
         languages={LANGUAGES}
         value="en"
         onChange={handleChange}
@@ -69,7 +93,13 @@ describe('TzarLanguageSelect', () => {
   })
 
   test('closes on Escape and moves focus back to the trigger', () => {
-    render(<TzarLanguageSelect languages={LANGUAGES} value="en" />)
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="en"
+      />,
+    )
     const trigger = screen.getByRole('button', { name: 'Language: EN' })
 
     fireEvent.click(trigger)
@@ -80,11 +110,50 @@ describe('TzarLanguageSelect', () => {
   })
 
   test('closes on a click outside', () => {
-    render(<TzarLanguageSelect languages={LANGUAGES} value="en" />)
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="en"
+      />,
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'Language: EN' }))
     fireEvent.click(document.body)
 
     expect(getMenu().hidden).toBe(true)
+  })
+
+  test('passes data-testid to its root element, the outer div', () => {
+    const { container } = render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="en"
+      />,
+    )
+
+    expect(screen.getByTestId(LANGUAGE_SELECT_ID)).toBe(container.firstChild)
+  })
+
+  test('gives its parts test ids built from data-testid', () => {
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value="en"
+      />,
+    )
+
+    expect(screen.getByTestId(`${LANGUAGE_SELECT_ID}-trigger`)).toBe(
+      screen.getByRole('button', { name: 'Language: EN' }),
+    )
+    expect(screen.getByTestId(`${LANGUAGE_SELECT_ID}-menu`)).toBe(getMenu())
+    for (const language of LANGUAGES) {
+      expect(
+        screen.getByTestId(`${LANGUAGE_SELECT_ID}-option-${language.code}`)
+          .textContent,
+      ).toBe(`${language.short}${language.label}`)
+    }
   })
 })
