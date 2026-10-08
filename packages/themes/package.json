@@ -9,7 +9,7 @@
     "./*": "./*"
   },
   "files": [
-    "*.css"
+    "team-capacity-dashboard.css"
   ],
   "peerDependencies": {
     "@tzardom-ui/react": "^0.3.0"

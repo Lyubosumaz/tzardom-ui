@@ -82,9 +82,7 @@ with `pnpm approve-builds`.
 | `pnpm test:e2e`      | `e2e`                   | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs on PRs into `master` (`release.yml`), not on work PRs or in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
 | `pnpm lint`          | root                    | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                                                    |
 | `pnpm lint:fix`      | root                    | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                                                    |
-| `pnpm app:dev`       | all packages            | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                                            |
-| `pnpm app:link`      | all packages            | Builds once and copies the packages into the app, without watching                                                                                                                                                                                   |
-| `pnpm app:unlink`    | all packages            | Puts the app back on the npm-published versions                                                                                                                                                                                                      |
+| `pnpm dev`           | all packages            | Builds the packages, copies them into `../team-capacity-dashboard` and copies them again on every change. Run the app itself with `npm run dev` in its own terminal. See [Trying changes in an app](#trying-changes-in-an-app)                       |
 | `pnpm run clean`     | all packages            | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                                          |
 | `pnpm license`       | root, `react`, `themes` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                                           |
 
@@ -131,9 +129,9 @@ Themes live in `packages/themes/`, their own package:
   page colors.
 
 To add a theme, copy `team-capacity-dashboard.css`, rename it after the app, and
-change the values (keep every variable name and the `tailwind.css` import).
-Every `.css` file there is published. Storybook uses the team-capacity-dashboard
-theme.
+change the values (keep every variable name and the `tailwind.css` import). Then
+add its file name to `files` in `packages/themes/package.json`, so it's
+published. Storybook uses the team-capacity-dashboard theme.
 
 ## End-to-end tests
 
@@ -168,28 +166,33 @@ looked like at the failure) as a downloadable artifact.
 
 ## Trying changes in an app
 
+Run the library and the app side by side, each in its own terminal:
+
 ```bash
-pnpm app:dev
+# in tzardom-ui
+pnpm dev
+
+# in team-capacity-dashboard
+npm run dev
 ```
 
-Builds everything, copies `react` and `themes` into
-`../team-capacity-dashboard/node_modules/@tzardom-ui/`, and starts that app's
-`npm run dev`. After that it watches both packages: edit a component in
-`packages/react`, and Rollup rebuilds it and the fresh output is copied into the
-app, where Next.js picks it up. Theme edits are copied over directly. Ctrl+C
-stops everything.
+`pnpm dev` (or `npm run dev`) builds everything and copies `react` and `themes`
+into `../team-capacity-dashboard/node_modules/@tzardom-ui/`. Then it keeps
+watching both packages: edit a component in `packages/react`, and Rollup
+rebuilds it and the fresh output is copied into the app, where Next.js picks it
+up. Theme edits are copied over directly. Ctrl+C stops the watching; the app
+keeps running.
 
-- Another app: `pnpm app:dev --app ../other-app` (or
-  `TZARDOM_APP=../other-app`).
-- Run the app's dev server yourself: `pnpm app:dev --no-app-server`.
-- Back to the published versions: `pnpm app:unlink` (removes the copies and runs
-  `npm install` in the app). The app's `package.json` and lockfile are never
+- Another app: `pnpm dev --app ../other-app` (or `TZARDOM_APP=../other-app`).
+- Back to the published versions: in the app, delete `node_modules/@tzardom-ui`
+  and run `npm install`. The app's `package.json` and lockfile are never
   touched, so there's nothing to revert in git.
 
 Next.js 16 apps run `next dev` on Turbopack, which doesn't notice files that
 appear in `node_modules` while it's running. Edits to files already shipped come
 through live, but when you add a new file to a package's output (a new entry in
-`"files"`, a new theme in `packages/themes/`), restart `pnpm app:dev` once.
+`"files"`, a new theme in `packages/themes/`), restart the app's `npm run dev`
+once. `pnpm dev` in tzardom-ui can keep running.
 
 The packages are copied rather than symlinked on purpose. A symlink would make
 the app resolve `react` from `packages/react/node_modules`, which loads a second

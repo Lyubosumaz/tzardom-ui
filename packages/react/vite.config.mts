@@ -3,7 +3,6 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [react()],
-  // Resolves the @/ imports from tsconfig.json's paths.
   resolve: { tsconfigPaths: true },
   test: {
     environment: 'jsdom',

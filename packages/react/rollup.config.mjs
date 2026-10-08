@@ -1,4 +1,5 @@
-import { rmSync } from 'node:fs'
+import { readdirSync, rmSync, statSync } from 'node:fs'
+import path from 'node:path'
 import typescript from '@rollup/plugin-typescript'
 
 const keepUseClient = () => {
@@ -23,10 +24,17 @@ const keepUseClient = () => {
   }
 }
 
-const emptyDist = () => ({
-  name: 'empty-dist',
-  renderStart() {
-    rmSync('dist', { recursive: true, force: true })
+const removeStaleFiles = () => ({
+  name: 'remove-stale-files',
+  writeBundle(options, bundle) {
+    const written = new Set(Object.keys(bundle))
+    for (const file of readdirSync(options.dir, { recursive: true })) {
+      const fullPath = path.join(options.dir, file)
+      const isStale = !written.has(file.split(path.sep).join('/'))
+      if (isStale && statSync(fullPath).isFile()) {
+        rmSync(fullPath)
+      }
+    }
   },
 })
 
@@ -48,7 +56,7 @@ export default {
     }
   },
   plugins: [
-    emptyDist(),
+    removeStaleFiles(),
     keepUseClient(),
     typescript({
       tsconfig: './tsconfig.json',

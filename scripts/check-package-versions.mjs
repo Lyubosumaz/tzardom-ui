@@ -6,11 +6,8 @@ import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 
-// The packages published to npm, as folders in packages/.
 const PUBLISHED = ['react', 'themes']
 
-// stdio 'pipe' keeps git's own error text off the console; a failure still
-// throws, with that text in its message.
 const git = (...args) =>
   execFileSync('git', args, { cwd: rootDir, encoding: 'utf8', stdio: 'pipe' })
 
@@ -18,7 +15,6 @@ const readVersion = (dir) =>
   JSON.parse(readFileSync(path.join(rootDir, dir, 'package.json'), 'utf8'))
     .version
 
-// The version on the base branch, or null if the package isn't there yet.
 const readBaseVersion = (dir) => {
   try {
     return JSON.parse(git('show', `FETCH_HEAD:${dir}/package.json`)).version
@@ -27,7 +23,6 @@ const readBaseVersion = (dir) => {
   }
 }
 
-// True when any file in the folder differs from the base branch.
 const changedSinceBase = (dir) =>
   spawnSync('git', ['diff', '--quiet', 'FETCH_HEAD', '--', dir], {
     cwd: rootDir,

@@ -7,7 +7,6 @@ import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 
-// How each package's GitHub release is tagged, e.g. v0.3.1 or themes-v0.1.0.
 const RELEASE_TAG_PREFIX = {
   '@tzardom-ui/react': 'v',
   '@tzardom-ui/themes': 'themes-v',

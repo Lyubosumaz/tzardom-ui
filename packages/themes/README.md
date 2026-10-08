@@ -38,7 +38,7 @@ sets their light and dark values, and sets the page's background and text color.
 
 Copy `team-capacity-dashboard.css`, name it after the app, and change the
 values, keeping every variable name and the `@tzardom-ui/react/tailwind.css`
-import. Every `.css` file in this folder is published.
+import. Then add its file name to `files` in `package.json`, so it's published.
 
 ## Part of the tzardom-ui monorepo
 
