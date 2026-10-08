@@ -1,7 +1,9 @@
 # @tzardom-ui/themes
 
-Color themes for the [tzardom-ui](https://github.com/Lyubosumaz/tzardom-ui)
-React components, as plain CSS for Tailwind CSS v4.
+Color themes for the
+[`@tzardom-ui/react`](https://www.npmjs.com/package/@tzardom-ui/react)
+components, as CSS for Tailwind CSS v4. Part of
+[tzardom-ui](https://github.com/Lyubosumaz/tzardom-ui).
 
 ## Install
 
@@ -9,7 +11,7 @@ React components, as plain CSS for Tailwind CSS v4.
 npm install @tzardom-ui/themes @tzardom-ui/react
 ```
 
-## Usage
+## Use
 
 In your app's CSS, import Tailwind, then one theme:
 
@@ -18,31 +20,21 @@ In your app's CSS, import Tailwind, then one theme:
 @import '@tzardom-ui/themes/team-capacity-dashboard.css';
 ```
 
-The theme also imports `@tzardom-ui/react/tailwind.css`, which makes your
-Tailwind generate the classes the components use. That's why `@tzardom-ui/react`
-is a peer dependency: install both.
+A theme does two things:
 
-Light colors are set on `:root` and dark colors on `:root[data-theme='dark']`.
-`TzarProvider` from `@tzardom-ui/react` switches between them.
-
-## Themes
+- **Names the colors** for Tailwind (`bg-background`, `text-secondary`, …):
+  light values on `:root`, dark ones on `:root[data-theme='dark']`.
+  `TzarProvider` from `@tzardom-ui/react` switches between them.
+- **Imports `@tzardom-ui/react/tailwind.css`,** so your Tailwind generates the
+  components' classes. That's why you install both packages.
 
 | File                          | For                     |
 | ----------------------------- | ----------------------- |
 | `team-capacity-dashboard.css` | team-capacity-dashboard |
 
-Each theme names the colors for Tailwind (`bg-background`, `text-secondary`, …),
-sets their light and dark values, and sets the page's background and text color.
-
 ## Adding a theme
 
-Copy `team-capacity-dashboard.css`, name it after the app, and change the
-values, keeping every variable name and the `@tzardom-ui/react/tailwind.css`
-import. Then add its file name to `files` in `package.json`, so it's published.
-
-## Part of the tzardom-ui monorepo
-
-| Package                                                                | What it is       |
-| ---------------------------------------------------------------------- | ---------------- |
-| [`@tzardom-ui/react`](https://www.npmjs.com/package/@tzardom-ui/react) | React components |
-| `@tzardom-ui/themes`                                                   | This package     |
+1. Copy `team-capacity-dashboard.css` and name it after the app.
+2. Change the color values. Keep every variable name and the `tailwind.css`
+   import.
+3. Add the file name to `files` in `package.json`, so it gets published.

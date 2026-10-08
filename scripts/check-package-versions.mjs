@@ -54,7 +54,7 @@ try {
       console.log(`✔ @tzardom-ui/${name} is new, at ${version}.`)
     } else if (!changedSinceBase(dir)) {
       console.log(
-        `ℹ @tzardom-ui/${name} didn't change; it stays at ${version}.`,
+        `◆ @tzardom-ui/${name} didn't change; it stays at ${version}.`,
       )
     } else if (isHigher(version, baseVersion)) {
       console.log(

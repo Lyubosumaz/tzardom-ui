@@ -141,7 +141,7 @@ const watchPackages = () => {
   const stop = (code) => {
     stopping = true
     console.log(
-      `\nℹ Still linked. To go back to the npm versions, delete node_modules/@tzardom-ui in ${appName} and run "npm install" there.`,
+      `\n◆ Still linked. To go back to the npm versions, delete node_modules/@tzardom-ui in ${appName} and run "npm install" there.`,
     )
     process.exit(code)
   }

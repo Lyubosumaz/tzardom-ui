@@ -51,7 +51,7 @@ try {
     : []
 
   if (published.length === 0) {
-    console.log('ℹ No package version was bumped, so nothing was published.')
+    console.log('◆ No package version was bumped, so nothing was published.')
   }
 
   for (const { name, version } of published) {
