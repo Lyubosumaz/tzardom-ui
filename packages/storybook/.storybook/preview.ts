@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
-import { withTzarProvider } from '../src/decorators'
+import { withTzarProvider } from '@/decorators'
 import './tailwind.css'
 
 const preview: Preview = {

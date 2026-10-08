@@ -13,6 +13,8 @@ const reactSource = fileURLToPath(
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
+    // Resolves the @/ imports from each file's nearest tsconfig.json.
+    tsconfigPaths: true,
     alias: [{ find: /^@tzardom-ui\/react$/, replacement: reactSource }],
     // One copy of React, although the components' files sit in another package.
     dedupe: ['react', 'react-dom'],

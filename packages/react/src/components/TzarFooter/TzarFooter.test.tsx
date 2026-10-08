@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { FOOTER, TEST_ID } from '@tzardom-ui/mocks'
 import { describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarFooter } from './TzarFooter'
 
 const FOOTER_ID = `${TEST_ID_PREFIXES.footer}-${TEST_ID}`

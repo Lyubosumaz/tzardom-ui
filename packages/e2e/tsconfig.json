@@ -9,9 +9,8 @@
     "noEmit": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    // Like Storybook, read @tzardom-ui/react from its source, so the e2e tests
-    // can import TEST_ID_PREFIXES without building the library first.
     "paths": {
+      "@/*": ["./*", "../react/src/*"],
       "@tzardom-ui/react": ["../react/src/index.ts"]
     }
   },

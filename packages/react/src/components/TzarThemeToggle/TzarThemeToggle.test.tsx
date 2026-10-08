@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { TEST_ID } from '@tzardom-ui/mocks'
 import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
-import { ThemeColorMode, TzarProvider, useTzarTheme } from '../../provider'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
+import { ThemeColorMode, TzarProvider, useTzarTheme } from '@/provider'
 import { TzarThemeToggle } from './TzarThemeToggle'
 
 const THEME_TOGGLE_ID = `${TEST_ID_PREFIXES.themeToggle}-${TEST_ID}`

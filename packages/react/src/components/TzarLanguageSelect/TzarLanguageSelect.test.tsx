@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { LANGUAGES, TEST_ID } from '@tzardom-ui/mocks'
 import { describe, expect, test, vi } from 'vitest'
-import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarLanguageSelect } from './TzarLanguageSelect'
 
 const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-${TEST_ID}`

@@ -33,6 +33,11 @@ Mock data (languages, link texts, the theme's storage key and colors) lives in
 import it from there. It has no build: it exports its TypeScript source, and it
 never ends up in the published package.
 
+Inside a package, `@/` points to its own source: `src/` in `react` and
+`storybook`, the package folder in `e2e`. Use it instead of `../`; a file in the
+same folder is still imported with `./`. The alias lives in each package's
+`tsconfig.json` (`paths`), and Vite, Vitest and Playwright read it from there.
+
 Each component's types live next to it (`ComponentName.types.ts`). The theme
 types (`ThemeColorMode`) live with `TzarProvider`, in
 `src/provider/TzarProvider.types.ts`.

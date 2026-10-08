@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { TEST_ID, THEME_COLORS } from '@tzardom-ui/mocks'
 import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
-import { storyUrl } from '../support/storyUrl'
+import { storyUrl } from '@/support/storyUrl'
 
 const LINK_ID = `${TEST_ID_PREFIXES.commonLink}-${TEST_ID}`
 const OUTLINE_LINK = storyUrl('reactcomponentlibrary-tzarcommonlink--default')

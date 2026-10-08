@@ -1,6 +1,6 @@
 import type { ElementType } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import type {
   TzarCommonLinkProps,
   TzarCommonLinkVariant,

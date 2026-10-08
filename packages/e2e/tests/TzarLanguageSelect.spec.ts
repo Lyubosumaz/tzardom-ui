@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { LANGUAGES, TEST_ID } from '@tzardom-ui/mocks'
 import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
-import { storyUrl } from '../support/storyUrl'
+import { storyUrl } from '@/support/storyUrl'
 
 const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-${TEST_ID}`
 const [first, second] = LANGUAGES

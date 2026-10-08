@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { BRAND, TEST_ID } from '@tzardom-ui/mocks'
 import { Heart } from 'lucide-react'
 import { describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarBrand } from './TzarBrand'
 
 const BRAND_ID = `${TEST_ID_PREFIXES.brand}-${TEST_ID}`

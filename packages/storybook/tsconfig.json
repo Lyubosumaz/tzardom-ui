@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
+      "@/*": ["./src/*", "../react/src/*"],
       "@tzardom-ui/react": ["../react/src/index.ts"]
     },
     "types": ["node"],

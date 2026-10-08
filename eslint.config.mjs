@@ -30,6 +30,7 @@ export default defineConfig([
       reportUnusedDisableDirectives: 'error',
     },
     plugins: { import: importPlugin },
+    settings: { 'import/internal-regex': '^@/' },
     rules: {
       eqeqeq: ['error', 'always'],
       curly: ['error', 'all'],

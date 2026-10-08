@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge'
-import { TEST_ID_PREFIXES } from '../../constants/testIdPrefixes'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import type { TzarFooterProps } from './TzarFooter.types'
 
 export const TzarFooter = ({
