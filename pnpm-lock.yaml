@@ -53,6 +53,9 @@ importers:
       '@tzardom-ui/mocks':
         specifier: workspace:*
         version: link:../mocks
+      '@tzardom-ui/react':
+        specifier: workspace:^
+        version: link:../react
       typescript:
         specifier: ~6.0.3
         version: 6.0.3

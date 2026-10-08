@@ -6,7 +6,6 @@ import {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
 } from 'react'
 import type {
   ThemeData,
@@ -85,29 +84,9 @@ export const TzarProvider = ({ children, storageKey }: ITzarProviderProps) => {
     }
   }, [storageKey])
 
-  const appliedTheme = useRef(tzarThemeMode.theme)
-
   useEffect(() => {
-    appliedTheme.current = tzarThemeMode.theme
     document.documentElement.setAttribute(THEME_ATTRIBUTE, tzarThemeMode.theme)
   }, [tzarThemeMode.theme])
-
-  useEffect(() => {
-    const root = document.documentElement
-    const observer = new MutationObserver(() => {
-      const value = root.getAttribute(THEME_ATTRIBUTE)
-      if (isThemeColorMode(value) && value !== appliedTheme.current) {
-        dispatch({ type: ThemeActionsType.THEME_COLOR_MODE, theme: value })
-      }
-    })
-    observer.observe(root, {
-      attributes: true,
-      attributeFilter: [THEME_ATTRIBUTE],
-    })
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
 
   const value = useMemo(
     () => ({ ...tzarThemeMode, setTheme }),

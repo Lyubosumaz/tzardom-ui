@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { THEME_STORAGE_KEY } from '@tzardom-ui/mocks'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { TzarProvider, ThemeColorMode, useTzarTheme } from './index'
@@ -137,25 +137,6 @@ describe('TzarProvider', () => {
       )
 
       expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
-    })
-
-    test('follows data-theme when something else changes it', async () => {
-      render(
-        <TzarProvider>
-          <ThemeConsumer />
-        </TzarProvider>,
-      )
-
-      await act(async () => {
-        document.documentElement.setAttribute('data-theme', ThemeColorMode.DARK)
-        await Promise.resolve()
-      })
-
-      await waitFor(() => {
-        expect(screen.getByTestId('theme').textContent).toBe(
-          ThemeColorMode.DARK,
-        )
-      })
     })
   })
 })
