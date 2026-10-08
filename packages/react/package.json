@@ -10,10 +10,6 @@
       "types": "./dist/types/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./icons": {
-      "types": "./dist/types/icons.d.ts",
-      "default": "./dist/icons.js"
-    },
     "./tailwind.css": "./tailwind.css",
     "./themes/*": "./themes/*",
     "./package.json": "./package.json"

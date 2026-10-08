@@ -35,6 +35,23 @@ function App() {
 
 ## Components
 
+### `<TzarBrand>`
+
+The app's name and tagline, with an icon in front: an umbrella by default, or
+any icon component you pass, such as one from `lucide-react`. The icon is sized
+to fit and hidden from screen readers.
+
+```tsx
+<TzarBrand title="Team Capacity" subtitle="Plan your sprints" />
+```
+
+| Prop        | Type      | Default    | Description                            |
+| ----------- | --------- | ---------- | -------------------------------------- |
+| `title`     | `string`  | —          | The name, in bold                      |
+| `subtitle`  | `string`  | —          | The smaller line under it              |
+| `icon`      | component | `Umbrella` | The icon shown before the text         |
+| `className` | `string`  | —          | Extra classes; on a conflict yours win |
+
 ### `<TzarCommonLink>`
 
 A pill-shaped link. React only: it renders your app's own link component, so
@@ -78,17 +95,6 @@ A button that opens a list of languages. Escape and a click outside close it.
 | `onChange`  | `(code: string) => void` | —            | Called with the picked language's `code`                        |
 | `label`     | `string`                 | `'Language'` | Names the button, followed by the current code (`Language: EN`) |
 | `className` | `string`                 | —            | Extra classes for the wrapper; on a conflict yours win          |
-
-## Icons
-
-Icons come from their own entry point, re-exported from the lucide-react version
-the components use:
-
-```tsx
-import { Umbrella } from '@tzardom-ui/react/icons'
-```
-
-Available: `Umbrella`. Add more in `src/icons.ts`.
 
 ## Themes
 

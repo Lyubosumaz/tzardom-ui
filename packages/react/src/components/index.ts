@@ -1,3 +1,5 @@
+export { TzarBrand } from './TzarBrand/TzarBrand'
+export type { TzarBrandProps } from './TzarBrand/TzarBrand.types'
 export { TzarCommonLink } from './TzarCommonLink/TzarCommonLink'
 export type {
   TzarCommonLinkProps,

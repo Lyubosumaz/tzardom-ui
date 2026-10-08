@@ -25,10 +25,7 @@ const keepUseClient = () => {
 }
 
 export default {
-  input: {
-    index: 'src/index.ts', // @tzardom-ui/react
-    icons: 'src/icons.ts', // @tzardom-ui/react/icons
-  },
+  input: 'src/index.ts',
   external: [
     /^react($|\/)/,
     /^react-dom($|\/)/,
