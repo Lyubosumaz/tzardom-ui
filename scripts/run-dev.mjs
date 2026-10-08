@@ -12,13 +12,13 @@ import {
 import path from 'node:path'
 import { clearTimeout, setTimeout } from 'node:timers'
 import { fileURLToPath } from 'node:url'
+import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const PACKAGES = ['react']
+const PACKAGES = ['react', 'themes']
 const DEBOUNCE_MS = 400
 
 const args = process.argv.slice(2)
-const has = (name) => args.includes(name)
 const option = (name) => {
   const i = args.indexOf(name)
   return i === -1 ? undefined : args[i + 1]
@@ -36,15 +36,6 @@ const pkgJson = (name) => readJson(path.join(pkgDir(name), 'package.json'))
 const destDir = (name) => path.join(appDir, 'node_modules', '@tzardom-ui', name)
 const shipped = (pkg) =>
   (pkg.files ?? ['dist']).map((entry) => entry.replace(/\/+$/, ''))
-
-const fail = (message) => {
-  console.error(`\n✖ ${message}\n`)
-  process.exit(1)
-}
-
-if (!existsSync(path.join(appDir, 'package.json'))) {
-  fail(`No app found at ${appDir}. Pass --app <path> or set TZARDOM_APP.`)
-}
 
 const resolveWorkspaceRanges = (pkg) => {
   const versions = Object.fromEntries(
@@ -116,13 +107,13 @@ const linkAll = () => {
 
   const missing = missingDeps()
   if (missing.length > 0) {
-    console.log(`Installing in ${appName}: ${missing.join(', ')}…`)
+    console.log(`➜ Installing in ${appName}: ${missing.join(', ')}…`)
     const result = spawnSync('npm', ['install', '--no-save', ...missing], {
       cwd: appDir,
       stdio: 'inherit',
     })
     if (result.status !== 0) {
-      fail(`npm install ${missing.join(' ')} failed in ${appName}.`)
+      throw new Error(`npm install ${missing.join(' ')} failed in ${appName}.`)
     }
     linked = copy()
   }
@@ -131,95 +122,48 @@ const linkAll = () => {
 }
 
 const build = () => {
-  if (has('--no-build')) {
-    return
-  }
-  console.log('Building types → react…')
+  console.log('➜ Building @tzardom-ui/react…')
   const result = spawnSync(
     'pnpm',
     ['--filter', '@tzardom-ui/react...', 'run', 'build'],
     { cwd: root, stdio: 'inherit' },
   )
   if (result.status !== 0) {
-    fail('Build failed.')
+    throw new Error('Build failed.')
   }
 }
 
-const unlink = () => {
-  for (const name of PACKAGES) {
-    rmSync(destDir(name), { recursive: true, force: true })
-  }
-  console.log(`Restoring the npm versions in ${appName}…`)
-  const result = spawnSync('npm', ['install'], {
-    cwd: appDir,
-    stdio: 'inherit',
-  })
-  if (result.status !== 0) {
-    fail('npm install failed.')
-  }
-  console.log(`✔ ${appName} is back on the published @tzardom-ui packages`)
-}
-
-const dev = () => {
+const watchPackages = () => {
   build()
   linkAll()
 
-  const children = []
   let stopping = false
-
-  const stop = (code = 0) => {
-    if (stopping) {
-      return
-    }
+  const stop = (code) => {
     stopping = true
-    for (const child of children) {
-      try {
-        process.kill(-child.pid, 'SIGTERM')
-      } catch {
-        console.error(
-          `Failed to stop ${child.pid}. It may have already exited.`,
-        )
-      }
-    }
     console.log(
-      `\nStill linked. Run "pnpm app:unlink" to go back to the npm versions.`,
+      `\n◆ Still linked. To go back to the npm versions, delete node_modules/@tzardom-ui in ${appName} and run "npm install" there.`,
     )
     process.exit(code)
   }
 
-  const prefixLines = (label, from, to) => {
-    let buffer = ''
-    from.on('data', (chunk) => {
-      buffer += chunk
-      const lines = buffer.split('\n')
-      buffer = lines.pop()
-      for (const line of lines) {
-        to.write(`[${label}] ${line}\n`)
-      }
-    })
-  }
-
-  const run = (label, cmd, cmdArgs, cwd = root) => {
-    const child = spawn(cmd, cmdArgs, {
-      cwd,
-      detached: true,
-      stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, FORCE_COLOR: '1' },
-    })
-    prefixLines(label, child.stdout, process.stdout)
-    prefixLines(label, child.stderr, process.stderr)
-    child.on('exit', (code, signal) => {
-      if (stopping) {
-        return
-      }
-      console.error(`[${label}] stopped (${signal ?? `exit ${code}`})`)
+  const rollup = spawn(
+    'pnpm',
+    ['--filter', '@tzardom-ui/react', 'exec', 'rollup', '--config', '--watch'],
+    { cwd: root, stdio: 'inherit' },
+  )
+  rollup.on('error', (error) => {
+    console.error(`✖ Couldn't start Rollup: ${error.message}`)
+    stop(1)
+  })
+  rollup.on('exit', (code) => {
+    if (!stopping) {
+      console.error(`✖ Rollup stopped (exit ${code}).`)
       stop(1)
-    })
-    children.push(child)
-  }
-
-  const filter = (name) => ['--filter', `@tzardom-ui/${name}`, 'exec']
-  run('react', 'pnpm', [...filter('react'), 'rollup', '--config', '--watch'])
+    }
+  })
+  process.on('SIGINT', () => {
+    stop(0)
+  })
 
   const timers = {}
   for (const name of PACKAGES) {
@@ -245,20 +189,22 @@ const dev = () => {
     })
   }
 
-  if (!has('--no-app-server')) {
-    run('app', 'npm', ['run', 'dev'], appDir)
-  }
-
-  process.on('SIGINT', () => stop(0))
-  process.on('SIGTERM', () => stop(0))
-  console.log('Watching packages/*. Press Ctrl+C to stop.')
+  console.log(
+    `➜ Watching packages/*. Run "npm run dev" in ${appName} to see the changes. Ctrl+C stops watching.`,
+  )
 }
 
-if (has('--unlink')) {
-  unlink()
-} else if (has('--watch')) {
-  dev()
-} else {
-  build()
-  linkAll()
+try {
+  if (!existsSync(path.join(appDir, 'package.json'))) {
+    throw new Error(
+      `No app found at ${appDir}. Pass --app <path> or set TZARDOM_APP.`,
+    )
+  }
+
+  watchPackages()
+} catch (error) {
+  console.error('✖ Dev script failed:', error.message)
+  process.exitCode = 1
+} finally {
+  console.log(THANK_YOU_MESSAGE)
 }

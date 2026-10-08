@@ -7,7 +7,12 @@
     "isolatedModules": true,
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./*", "../react/src/*"],
+      "@tzardom-ui/react": ["../react/src/index.ts"]
+    }
   },
-  "include": ["tests", "playwright.config.ts"]
+  "include": ["tests", "support", "playwright.config.ts"]
 }

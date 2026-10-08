@@ -1,0 +1,22 @@
+{
+  "name": "@tzardom-ui/themes",
+  "version": "0.1.0",
+  "description": "Color themes for the tzardom-ui React components (Tailwind CSS v4)",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./*": "./*"
+  },
+  "files": [
+    "team-capacity-dashboard.css"
+  ],
+  "peerDependencies": {
+    "@tzardom-ui/react": "^0.3.0"
+  },
+  "devDependencies": {
+    "@tzardom-ui/react": "workspace:^"
+  },
+  "author": "Lyubosumaz",
+  "license": "MIT"
+}

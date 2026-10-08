@@ -1,15 +1,10 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
-import { use } from 'react'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { THEME_STORAGE_KEY } from '@tzardom-ui/mocks'
 import { beforeEach, describe, expect, test } from 'vitest'
-import {
-  TzarProvider,
-  TzarContext,
-  ThemeActionsType,
-  ThemeColorMode,
-} from './index'
+import { TzarProvider, ThemeColorMode, useTzarTheme } from './index'
 
 const ThemeConsumer = () => {
-  const { theme, setTheme } = use(TzarContext)
+  const { theme, setTheme, resetTheme } = useTzarTheme()
 
   return (
     <div>
@@ -17,13 +12,11 @@ const ThemeConsumer = () => {
       <button
         type="button"
         onClick={() => {
-          setTheme({
-            type: ThemeActionsType.THEME_COLOR_MODE,
-            theme:
-              theme === ThemeColorMode.DARK
-                ? ThemeColorMode.LIGHT
-                : ThemeColorMode.DARK,
-          })
+          setTheme(
+            theme === ThemeColorMode.DARK
+              ? ThemeColorMode.LIGHT
+              : ThemeColorMode.DARK,
+          )
         }}
       >
         toggle
@@ -31,7 +24,7 @@ const ThemeConsumer = () => {
       <button
         type="button"
         onClick={() => {
-          setTheme({ type: ThemeActionsType.RESET_THEME })
+          resetTheme()
         }}
       >
         reset
@@ -77,16 +70,13 @@ describe('TzarProvider', () => {
     expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
   })
 
-  test('default context value exposes a no-op setTheme before any provider mounts', () => {
-    render(<ThemeConsumer />)
-
-    expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
-    expect(() => fireEvent.click(screen.getByText('toggle'))).not.toThrow()
-    expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
+  test('useTzarTheme throws outside a TzarProvider', () => {
+    expect(() => render(<ThemeConsumer />)).toThrow(
+      'useTzarTheme must be used inside a <TzarProvider>',
+    )
   })
 
   describe('page theme and storage', () => {
-    const STORAGE_KEY = 'test-theme'
     const htmlTheme = () => document.documentElement.getAttribute('data-theme')
 
     beforeEach(() => {
@@ -108,25 +98,27 @@ describe('TzarProvider', () => {
 
     test('saves changes under storageKey', () => {
       render(
-        <TzarProvider storageKey={STORAGE_KEY}>
+        <TzarProvider storageKey={THEME_STORAGE_KEY}>
           <ThemeConsumer />
         </TzarProvider>,
       )
 
       fireEvent.click(screen.getByText('toggle'))
-      expect(window.localStorage.getItem(STORAGE_KEY)).toBe(ThemeColorMode.DARK)
+      expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe(
+        ThemeColorMode.DARK,
+      )
 
       fireEvent.click(screen.getByText('reset'))
-      expect(window.localStorage.getItem(STORAGE_KEY)).toBe(
+      expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe(
         ThemeColorMode.LIGHT,
       )
     })
 
     test('restores the saved theme on mount', () => {
-      window.localStorage.setItem(STORAGE_KEY, ThemeColorMode.DARK)
+      window.localStorage.setItem(THEME_STORAGE_KEY, ThemeColorMode.DARK)
 
       render(
-        <TzarProvider storageKey={STORAGE_KEY}>
+        <TzarProvider storageKey={THEME_STORAGE_KEY}>
           <ThemeConsumer />
         </TzarProvider>,
       )
@@ -136,34 +128,15 @@ describe('TzarProvider', () => {
     })
 
     test('ignores an invalid saved value', () => {
-      window.localStorage.setItem(STORAGE_KEY, 'purple')
+      window.localStorage.setItem(THEME_STORAGE_KEY, 'purple')
 
       render(
-        <TzarProvider storageKey={STORAGE_KEY}>
+        <TzarProvider storageKey={THEME_STORAGE_KEY}>
           <ThemeConsumer />
         </TzarProvider>,
       )
 
       expect(screen.getByTestId('theme').textContent).toBe(ThemeColorMode.LIGHT)
-    })
-
-    test('follows data-theme when something else changes it', async () => {
-      render(
-        <TzarProvider>
-          <ThemeConsumer />
-        </TzarProvider>,
-      )
-
-      await act(async () => {
-        document.documentElement.setAttribute('data-theme', ThemeColorMode.DARK)
-        await Promise.resolve()
-      })
-
-      await waitFor(() => {
-        expect(screen.getByTestId('theme').textContent).toBe(
-          ThemeColorMode.DARK,
-        )
-      })
     })
   })
 })

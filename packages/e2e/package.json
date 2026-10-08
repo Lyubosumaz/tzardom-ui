@@ -1,6 +1,5 @@
 {
   "name": "@tzardom-ui/e2e",
-  "version": "0.0.0",
   "private": true,
   "description": "End-to-end tests for the tzardom-ui React components, run in a real browser against Storybook (not published)",
   "scripts": {
@@ -9,6 +8,8 @@
   "devDependencies": {
     "@playwright/test": "^1.59.0",
     "@types/node": "^22",
+    "@tzardom-ui/mocks": "workspace:*",
+    "@tzardom-ui/react": "workspace:^",
     "typescript": "~6.0.3"
   }
 }

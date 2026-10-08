@@ -1,27 +1,32 @@
-name: Master
+name: CD
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [master]
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency: publish
 
 jobs:
-  check:
-    name: CI
-    uses: ./.github/workflows/ci.yml
-
   publish:
-    needs: check
+    name: Publish
+    if:
+      github.event.pull_request.merged && startsWith(github.head_ref,
+      'release/')
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to create the GitHub release
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
-      - uses: ./.github/actions/build
+      - uses: ./.github/actions/setup
 
-      - name: Publish a new version
+      - name: Build
+        run: pnpm run build
+
+      - name: Publish the packages whose version was bumped
         run: node scripts/publish.mjs
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

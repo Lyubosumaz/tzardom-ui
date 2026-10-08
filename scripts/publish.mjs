@@ -1,52 +1,75 @@
-// Run by master.yml after CI. Publishes the version in packages/react/package.json
-// to npm and creates its GitHub release, unless npm already has it (for example
-// when the workflow is re-run).
 import { execFileSync } from 'node:child_process'
-import { writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import path from 'node:path'
-import { isOnNpm, localVersion, PACKAGE } from './react-version.mjs'
+import { fileURLToPath } from 'node:url'
+import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 
-// It writes ~/.npmrc, so it only runs on CI.
-if (!process.env.CI) {
-  console.error(
-    'Publishing runs on CI only, from .github/workflows/master.yml.',
-  )
-  process.exit(1)
-}
+const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 
-const version = localVersion()
-
-if (isOnNpm(version)) {
-  console.log(
-    `npm already has ${PACKAGE} ${version}, so there's nothing to publish.`,
-  )
-  process.exit(0)
+const RELEASE_TAG_PREFIX = {
+  '@tzardom-ui/react': 'v',
+  '@tzardom-ui/themes': 'themes-v',
 }
 
 const run = (command, args) => {
-  execFileSync(command, args, { stdio: 'inherit' })
+  execFileSync(command, args, { cwd: rootDir, stdio: 'inherit' })
 }
 
-// npm fills in ${NODE_AUTH_TOKEN} from the environment, so the token itself is
-// never written to disk.
-writeFileSync(
-  path.join(homedir(), '.npmrc'),
-  '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}\n',
-)
+try {
+  if (!process.env.CI) {
+    throw new Error(
+      'Publishing runs on CI only, from .github/workflows/master.yml.',
+    )
+  }
 
-// --no-git-checks: pnpm's branch and clean-tree checks are meant for publishing
-// from your own machine; here the checkout is the merged commit.
-run('pnpm', ['--filter', PACKAGE, 'publish', '--no-git-checks'])
+  const releaseCommit = execFileSync('git', ['rev-parse', 'HEAD'], {
+    cwd: rootDir,
+    encoding: 'utf8',
+  }).trim()
 
-// The release notes list the PRs merged since the previous release.
-run('gh', [
-  'release',
-  'create',
-  `v${version}`,
-  '--target',
-  process.env.GITHUB_SHA,
-  '--title',
-  `v${version}`,
-  '--generate-notes',
-])
+  writeFileSync(
+    path.join(homedir(), '.npmrc'),
+    '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}\n',
+  )
+
+  run('pnpm', [
+    '--recursive',
+    '--filter',
+    '@tzardom-ui/react',
+    '--filter',
+    '@tzardom-ui/themes',
+    'publish',
+    '--report-summary',
+    '--no-git-checks',
+  ])
+
+  // pnpm skips a package whose version npm already has, and lists the rest here.
+  const summaryFile = path.join(rootDir, 'pnpm-publish-summary.json')
+  const published = existsSync(summaryFile)
+    ? JSON.parse(readFileSync(summaryFile, 'utf8')).publishedPackages
+    : []
+
+  if (published.length === 0) {
+    console.log('◆ No package version was bumped, so nothing was published.')
+  }
+
+  for (const { name, version } of published) {
+    const tag = `${RELEASE_TAG_PREFIX[name]}${version}`
+    run('gh', [
+      'release',
+      'create',
+      tag,
+      '--target',
+      releaseCommit,
+      '--title',
+      tag,
+      '--generate-notes',
+    ])
+  }
+} catch (error) {
+  console.error('✖ Publish failed:', error.message)
+  process.exitCode = 1
+} finally {
+  console.log(THANK_YOU_MESSAGE)
+}

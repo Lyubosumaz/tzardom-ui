@@ -6,9 +6,11 @@ import { THANK_YOU_MESSAGE } from './CONSTANTS.mjs'
 const rootDir = path.resolve(fileURLToPath(import.meta.url), '../..')
 const currentYear = new Date().getFullYear()
 
-const licenseFiles = ['LICENSE', 'packages/react/LICENSE'].map((relativePath) =>
-  path.join(rootDir, relativePath),
-)
+const licenseFiles = [
+  'LICENSE',
+  'packages/react/LICENSE',
+  'packages/themes/LICENSE',
+].map((relativePath) => path.join(rootDir, relativePath))
 
 const COPYRIGHT_PATTERN = /Copyright \(c\) (\d{4})(?:-(\d{4}))? (.+)/
 
@@ -33,16 +35,16 @@ try {
     .filter(({ latestYear }) => latestYear < currentYear)
 
   if (staleLicenses.length === 0) {
-    console.log('All LICENSE files have a current copyright year.')
+    console.log('✔ All LICENSE files have a current copyright year.')
   }
 
   for (const { filePath, content, fullMatch, newLine } of staleLicenses) {
     writeFileSync(filePath, content.replace(fullMatch, newLine))
-    console.log(`Bumped ${filePath}: "${fullMatch}" -> "${newLine}"`)
+    console.log(`✔ Bumped ${filePath}: "${fullMatch}" -> "${newLine}"`)
   }
 } catch (error) {
-  console.error('License year update failed:', error)
-  process.exit(1)
+  console.error('✖ License year update failed:', error.message)
+  process.exitCode = 1
 } finally {
   console.log(THANK_YOU_MESSAGE)
 }

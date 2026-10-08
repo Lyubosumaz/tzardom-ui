@@ -6,7 +6,6 @@ import {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
 } from 'react'
 import type {
   ThemeData,
@@ -58,15 +57,7 @@ const storeTheme = (key: string, theme: ThemeColorMode) => {
   }
 }
 
-const defaultContext: TypeContext = {
-  ...DEFAULT_THEME,
-  setTheme: () => undefined,
-}
-
-export const TzarContext = createContext<TypeContext>(defaultContext)
-
-export const isDefaultTzarContext = (context: TypeContext) =>
-  context === defaultContext
+export const TzarContext = createContext<TypeContext | null>(null)
 
 export const TzarProvider = ({ children, storageKey }: ITzarProviderProps) => {
   const [tzarThemeMode, dispatch] = useReducer(themeReducer, DEFAULT_THEME)
@@ -93,29 +84,9 @@ export const TzarProvider = ({ children, storageKey }: ITzarProviderProps) => {
     }
   }, [storageKey])
 
-  const appliedTheme = useRef(tzarThemeMode.theme)
-
   useEffect(() => {
-    appliedTheme.current = tzarThemeMode.theme
     document.documentElement.setAttribute(THEME_ATTRIBUTE, tzarThemeMode.theme)
   }, [tzarThemeMode.theme])
-
-  useEffect(() => {
-    const root = document.documentElement
-    const observer = new MutationObserver(() => {
-      const value = root.getAttribute(THEME_ATTRIBUTE)
-      if (isThemeColorMode(value) && value !== appliedTheme.current) {
-        dispatch({ type: ThemeActionsType.THEME_COLOR_MODE, theme: value })
-      }
-    })
-    observer.observe(root, {
-      attributes: true,
-      attributeFilter: [THEME_ATTRIBUTE],
-    })
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
 
   const value = useMemo(
     () => ({ ...tzarThemeMode, setTheme }),

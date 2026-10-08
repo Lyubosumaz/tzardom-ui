@@ -3,9 +3,11 @@
 import { ChevronDown } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import type { TzarLanguageSelectProps } from './TzarLanguageSelect.types'
 
 export const TzarLanguageSelect = <Code extends string = string>({
+  'data-testid': testId,
   languages,
   value,
   onChange,
@@ -17,6 +19,7 @@ export const TzarLanguageSelect = <Code extends string = string>({
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const menuId = useId()
+  const rootTestId = `${TEST_ID_PREFIXES.languageSelect}-${testId}`
   const current = languages.find((lang) => lang.code === value) ?? languages[0]
 
   useEffect(() => {
@@ -51,13 +54,19 @@ export const TzarLanguageSelect = <Code extends string = string>({
   }
 
   return (
-    <div {...rest} ref={rootRef} className={twMerge('relative', className)}>
+    <div
+      {...rest}
+      ref={rootRef}
+      className={twMerge('relative', className)}
+      data-testid={rootTestId}
+    >
       <button
         ref={triggerRef}
         type="button"
         aria-label={`${label}: ${current.short}`}
         aria-expanded={open}
         aria-controls={menuId}
+        data-testid={`${rootTestId}-trigger`}
         onClick={() => {
           setOpen(!open)
         }}
@@ -70,6 +79,7 @@ export const TzarLanguageSelect = <Code extends string = string>({
       <ul
         id={menuId}
         hidden={!open}
+        data-testid={`${rootTestId}-menu`}
         className="absolute right-0 z-10 mt-2 w-32 rounded-md border border-border-subtle bg-background py-1 text-xs shadow-md"
       >
         {languages.map((lang) => (
@@ -77,6 +87,7 @@ export const TzarLanguageSelect = <Code extends string = string>({
             <button
               type="button"
               aria-current={lang.code === current.code}
+              data-testid={`${rootTestId}-option-${lang.code}`}
               onClick={() => {
                 handleSelect(lang.code)
               }}

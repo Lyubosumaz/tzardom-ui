@@ -1,198 +1,139 @@
 # tzardom-ui
 
-Pet component library, mainly for educational purposes: React components built
-with semantic HTML and styled with Tailwind CSS v4, plus color themes for them.
+A small React component library, built to learn from: semantic HTML, Tailwind
+CSS v4 and color themes.
 
-## Structure
+## Packages
 
-```
-tzardom-ui/            root — private workspace manifest (build/test/lint/clean scripts)
-  packages/
-    react/      @tzardom-ui/react       React components + color themes (published)
-    storybook/  @tzardom-ui/storybook   Storybook for the components (private)
-    e2e/        @tzardom-ui/e2e         end-to-end tests in a real browser (private)
-```
+| Folder               | Package                 | What it is                               |
+| -------------------- | ----------------------- | ---------------------------------------- |
+| `packages/react`     | `@tzardom-ui/react`     | The components (published)               |
+| `packages/themes`    | `@tzardom-ui/themes`    | Color themes for them (published)        |
+| `packages/storybook` | `@tzardom-ui/storybook` | Storybook, to see the components         |
+| `packages/e2e`       | `@tzardom-ui/e2e`       | Browser tests that run against Storybook |
+| `packages/mocks`     | `@tzardom-ui/mocks`     | Fake data for the tests and stories      |
 
-Each component's types live next to it (`ComponentName.types.ts`). The theme
-types (`ThemeColorMode`) live with `TzarProvider`, in
-`src/provider/TzarProvider.types.ts`.
+The last three are private and never published. Tools: pnpm workspaces, Rollup
+(build), Vitest and Testing Library (unit tests), Storybook, Playwright (browser
+tests).
 
-### Stack
+## Setup
 
-| Tool                     | Used in     | What it does                                                                               |
-| ------------------------ | ----------- | ------------------------------------------------------------------------------------------ |
-| pnpm workspaces          | root        | One install and lockfile for the root tooling and `packages/react`; root scripts run in it |
-| Tailwind CSS v4          | `react`     | Styles the components; the app's own Tailwind compiles the classes                         |
-| Rollup                   | `react`     | Bundles `react` into ESM + CJS for publishing                                              |
-| Vitest + Testing Library | `react`     | Unit tests for the components and the provider, in jsdom                                   |
-| Playwright               | `e2e`       | End-to-end tests in a real browser, run against Storybook                                  |
-| Storybook                | `storybook` | Component docs and manual QA, with CSF3 `play` functions for interaction tests             |
-
-## Requirements
-
-Node 22 or newer and [pnpm](https://pnpm.io) 11. The exact pnpm version is
-pinned in `package.json` (`packageManager`), and pnpm switches to it
-automatically. To install pnpm: `npm install -g pnpm`, then run `pnpm setup`
-once.
-
-## Getting started
+You need Node 22+ and pnpm 11 (`npm install -g pnpm`). The exact pnpm version is
+pinned in `package.json`, and pnpm switches to it by itself.
 
 ```bash
 pnpm install
 ```
 
-Only the packages listed under `allowBuilds` in `pnpm-workspace.yaml` may run
-install scripts; if a new dependency needs one, pnpm will say so. Approve it
-with `pnpm approve-builds`.
+This also turns on the pre-commit hook: it lints and formats the files you
+commit and runs the unit tests.
 
-## Scripts (run from repo root)
+## Scripts
 
-| Command              | Used in        | What it does                                                                                                                                                                                                                    |
-| -------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm install`       | all packages   | Installs dependencies for every package                                                                                                                                                                                         |
-| `pnpm build`         | `react`        | Builds every package that has a `build` script (`pnpm -r`); today only `react` does                                                                                                                                             |
-| `pnpm test:coverage` | `react`        | Unit tests with coverage via Vitest (jsdom). Runs as part of the pre-commit hook. HTML report at `packages/react/coverage/index.html`                                                                                           |
-| `pnpm test:e2e`      | `e2e`          | End-to-end tests with Playwright in Chromium. Starts Storybook itself, or uses the one already running on port 6006. Runs in CI after the unit tests, but not in the pre-commit hook. See [End-to-end tests](#end-to-end-tests) |
-| `pnpm lint`          | root           | Checks formatting with Prettier and lints with ESLint across the whole repo, without changing files. CI runs this                                                                                                               |
-| `pnpm lint:fix`      | root           | Same as `pnpm lint`, but fixes formatting and auto-fixable lint problems in place                                                                                                                                               |
-| `pnpm app:dev`       | all packages   | Runs `../team-capacity-dashboard` on your local packages, rebuilding on change. See [Trying changes in an app](#trying-changes-in-an-app)                                                                                       |
-| `pnpm app:link`      | all packages   | Builds once and copies the packages into the app, without watching                                                                                                                                                              |
-| `pnpm app:unlink`    | all packages   | Puts the app back on the npm-published versions                                                                                                                                                                                 |
-| `pnpm run clean`     | all packages   | Removes every build/generated artifact **and** `node_modules`, keeping `pnpm-lock.yaml`. Run `pnpm install --frozen-lockfile` afterward to get the exact same versions back                                                     |
-| `pnpm kill-ports`    | `storybook`    | Frees port `6006` (Storybook) — useful when a dev server didn't shut down cleanly                                                                                                                                               |
-| `pnpm license`       | root + `react` | Extends each `LICENSE` file's copyright year range to the current year. CI fails a `release/*` → `master` PR if this would change anything                                                                                      |
+Run them from the repo root.
 
-Scope any command to one package with `--filter` (or `-F`), e.g.
-`pnpm --filter @tzardom-ui/react build`.
+| Command              | What it does                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`           | Copies the packages into the dashboard and keeps them updated; see [below](#working-with-the-dashboard) |
+| `pnpm storybook`     | Storybook on http://localhost:6006, straight from the source                                            |
+| `pnpm build`         | Builds `packages/react`                                                                                 |
+| `pnpm test:coverage` | Unit tests with coverage (report: `packages/react/coverage/index.html`)                                 |
+| `pnpm test:e2e`      | Browser tests; starts Storybook if it isn't running                                                     |
+| `pnpm lint`          | Checks formatting (Prettier) and code (ESLint); `pnpm lint:fix` fixes what it can                       |
+| `pnpm run clean`     | Deletes `node_modules` and all build output; run `pnpm install` after                                   |
+| `pnpm license`       | Updates the year in every `LICENSE` file                                                                |
 
-## Working on `@tzardom-ui/react`
+For one package only: `pnpm --filter @tzardom-ui/react build`.
 
-Each component lives in `packages/react/src/components/<Name>/`, next to its
-types and tests. To see the components, open Storybook:
+## Writing code
 
-```bash
-pnpm --filter @tzardom-ui/storybook storybook
-```
+- A component lives in `packages/react/src/components/<Name>/` as `<Name>.tsx`,
+  `<Name>.types.ts` and `<Name>.test.tsx`. Its story goes in
+  `packages/storybook/src/stories/`.
+- Imports: `@/` for another folder of the same package
+  (`@/constants/testIdPrefixes`), `./` for the same folder.
+- Test and story data comes from `@tzardom-ui/mocks` and is obviously fake
+  (`'Mock App'`).
+- Every component needs a `data-testid`; see
+  [Test ids](packages/react/README.md#test-ids).
 
-Storybook is its own private package, `packages/storybook`, so the react package
-doesn't carry Storybook's dependencies. It shows the components straight from
-`packages/react/src`, so edits show up without building the package. The stories
-are in `packages/storybook/stories/`, one file per component, and use CSF3 with
-`play` functions for interaction testing, runnable from Storybook's Interactions
-panel.
+## Styling and themes
 
-### Styling
-
-Components are styled with Tailwind v4 classes written on their elements. Those
-classes are compiled by the **app's** Tailwind, together with one theme from
-`packages/react/themes/`:
+Components use Tailwind classes, but the **app's** Tailwind turns them into CSS.
+An app imports Tailwind and one theme:
 
 ```css
 @import 'tailwindcss';
-@import '@tzardom-ui/react/themes/team-capacity-dashboard.css';
-@import '@tzardom-ui/react/tailwind.css';
+@import '@tzardom-ui/themes/team-capacity-dashboard.css';
 ```
 
-The last line, `packages/react/tailwind.css`, tells the app's Tailwind to scan
-the React package's build for the classes its components use.
+The theme sets the colors (light on `:root`, dark on `:root[data-theme='dark']`)
+and imports `@tzardom-ui/react/tailwind.css`, which makes the app's Tailwind
+generate the components' classes.
 
-Themes live in `packages/react/themes/`:
+To add a theme, copy `packages/themes/team-capacity-dashboard.css`, name it
+after the app and change the values. Keep every variable name and the import,
+and add the file name to `files` in `packages/themes/package.json`.
 
-- `team-capacity-dashboard.css`: names the colors for Tailwind (`bg-background`,
-  `text-secondary`, …), sets that app's light (`:root`) and dark
-  (`:root[data-theme='dark']`, managed by `TzarProvider`) values, and sets the
-  page colors.
+## Working with the dashboard
 
-To add a theme, copy `team-capacity-dashboard.css`, rename it after the app, and
-change the values (keep every variable name). Storybook uses the
-team-capacity-dashboard theme.
+Use two terminals:
 
-## End-to-end tests
+```bash
+pnpm dev       # in tzardom-ui
+npm run dev    # in team-capacity-dashboard
+```
 
-`packages/e2e` holds Playwright tests that open the Storybook stories in a real
-Chromium and check what the jsdom unit tests can't: the theme and Tailwind
-colors actually applied, keyboard use and focus, and the theme surviving a page
+`pnpm dev` copies `react` and `themes` into the dashboard's
+`node_modules/@tzardom-ui/`, then copies them again after every change, so the
+dashboard updates by itself. Ctrl+C stops it.
+
+- **Another app:** `pnpm dev --app ../other-app`.
+- **Added a new file to a package** (e.g. a theme)? Restart the dashboard's
+  `npm run dev` once. Next.js doesn't see new files in `node_modules` while it
+  runs.
+- **Back to the npm versions:** in the dashboard, delete
+  `node_modules/@tzardom-ui` and run `npm install`.
+
+The packages are copied, not symlinked: a symlink would load a second copy of
+React, which breaks hooks.
+
+## Browser tests
+
+The tests in `packages/e2e` open the stories in a real Chromium and check what
+unit tests can't: the real colors, keyboard and focus, and the theme after a
 reload.
 
-The first time, download the browser:
-
 ```bash
-pnpm --filter @tzardom-ui/e2e exec playwright install chromium
-```
-
-Then run the tests from the repo root:
-
-```bash
+pnpm --filter @tzardom-ui/e2e exec playwright install chromium   # once
 pnpm test:e2e
 ```
 
-Playwright starts Storybook itself, or uses the one already running on
-port 6006. Each test opens one story by its id (see `tests/storyUrl.ts`), so
-renaming a story or its title means updating the tests too.
+Each test opens a story by its id, so renaming a story means updating its test.
+If port 6006 stays taken, free it with `lsof -ti :6006 | xargs kill`.
 
-CI runs them after the unit tests. When one fails there, the run keeps
-Playwright's `test-results` folder (what the page looked like at the failure) as
-a downloadable artifact.
+## Releasing
 
-## Trying changes in an app
+Branches go `feature/*` → `release/x.y.z` → `master`. Versions are set by hand.
 
-```bash
-pnpm app:dev
-```
+1. Create `release/x.y.z` and set the root `package.json` version to `x.y.z`.
+2. Before merging into `master`, raise the version of each published package you
+   changed (`packages/react`, `packages/themes`): the last number for fixes, the
+   middle one for new features or breaking changes (while below 1.0). If react's
+   middle number goes up, also raise `@tzardom-ui/react` in `peerDependencies`
+   of `packages/themes/package.json`. Run `pnpm license` and commit.
+3. Merge into `master`. Each package with a new version goes to npm and gets a
+   GitHub release (`v0.4.0` for react, `themes-v0.2.0` for themes).
 
-Builds everything, copies `react` into
-`../team-capacity-dashboard/node_modules/@tzardom-ui/`, and starts that app's
-`npm run dev`. After that it watches the package: edit a component in
-`packages/react`, and Rollup rebuilds it and the fresh output is copied into the
-app, where Next.js picks it up. Theme edits are copied over directly. Ctrl+C
-stops everything.
+GitHub checks every step:
 
-- Another app: `pnpm app:dev --app ../other-app` (or
-  `TZARDOM_APP=../other-app`).
-- Run the app's dev server yourself: `pnpm app:dev --no-app-server`.
-- Back to the published versions: `pnpm app:unlink` (removes the copies and runs
-  `npm install` in the app). The app's `package.json` and lockfile are never
-  touched, so there's nothing to revert in git.
+| Workflow      | When                              | What it does                                                      |
+| ------------- | --------------------------------- | ----------------------------------------------------------------- |
+| `ci.yml`      | PR into `release/*`               | Build, lint, unit tests                                           |
+| `release.yml` | PR from `release/*` into `master` | The same, plus the version and `LICENSE` checks and browser tests |
+| `master.yml`  | That PR is merged                 | Builds and publishes                                              |
 
-Next.js 16 apps run `next dev` on Turbopack, which doesn't notice files that
-appear in `node_modules` while it's running. Edits to files already shipped come
-through live, but when you add a new file to a package's output (a new entry in
-`"files"`, a new theme in `packages/react/themes/`), restart `pnpm app:dev`
-once.
-
-The packages are copied rather than symlinked on purpose. A symlink would make
-the app resolve `react` from `packages/react/node_modules`, which loads a second
-copy of React and breaks hooks.
-
-## Publishing
-
-The `"version"` in `packages/react/package.json` decides what gets published.
-You change it by hand on the release branch; merging into `master` publishes it.
-
-**Branch flow**: work branch (`feature/*`, `bugfix/*`, …) → `release/x.y.z` →
-`master`. Every branch runs `ci.yml`; PRs into `master` and pushes to `master`
-add their own checks on top:
-
-| Workflow      | Runs on              | Checks                                                                                   |
-| ------------- | -------------------- | ---------------------------------------------------------------------------------------- |
-| `ci.yml`      | PRs into `release/*` | Build, lint, unit tests, e2e tests                                                       |
-| `release.yml` | PRs into `master`    | `ci.yml` + only `release/*` may target `master`, the version is new on npm, LICENSE year |
-| `master.yml`  | Pushes to `master`   | `ci.yml` + publish to npm and create the GitHub release, if the version is new           |
-
-**Releasing**:
-
-1. On the release branch, change `"version"` in `packages/react/package.json`:
-   the last number for fixes (0.2.9 → 0.2.10), the middle one for new features
-   or breaking changes while below 1.0 (0.2.9 → 0.3.0). Run `pnpm license` and
-   commit both.
-2. Open the PR into `master`. `release.yml` fails it if npm already has that
-   version, so a release can't be forgotten (`scripts/check-version.mjs`).
-3. Merge it. `master.yml` publishes the package to npm and creates the GitHub
-   release `v<version>`, whose notes GitHub writes from the PRs merged since the
-   previous release. If npm already has the version, it publishes nothing
-   (`scripts/publish.mjs`).
-
-**One-time setup** in the repo's GitHub settings (not something either of us can
-automate): a `NODE_AUTH_TOKEN` repository secret, an npm
+Publishing needs a `NODE_AUTH_TOKEN` repository secret, an npm
 [automation token](https://docs.npmjs.com/creating-and-viewing-access-tokens),
-for publishing.
+in the repo's GitHub settings.
