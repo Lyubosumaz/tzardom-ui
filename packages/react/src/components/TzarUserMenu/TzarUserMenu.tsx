@@ -73,7 +73,7 @@ export const TzarUserMenu = ({
         >
           {email}
         </p>
-        <ul>
+        <menu>
           <li>
             <TzarCommonLink
               as={linkAs ?? 'a'}
@@ -98,7 +98,7 @@ export const TzarUserMenu = ({
               {logoutLabel}
             </TzarCommonLink>
           </li>
-        </ul>
+        </menu>
       </div>
     </div>
   )

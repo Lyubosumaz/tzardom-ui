@@ -22,7 +22,7 @@ export const TzarFooter = ({
       {...rest}
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 text-xs text-muted md:px-6">
-        <p data-testid={`${rootTestId}-copyright`}>{copyright}</p>
+        <small data-testid={`${rootTestId}-copyright`}>{copyright}</small>
         <p
           className="font-medium text-secondary"
           data-testid={`${rootTestId}-app-name`}

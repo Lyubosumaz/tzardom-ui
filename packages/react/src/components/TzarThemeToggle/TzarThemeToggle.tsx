@@ -9,7 +9,7 @@ import type { TzarThemeToggleProps } from './TzarThemeToggle.types'
 
 export const TzarThemeToggle = ({
   'data-testid': testId,
-  label = 'Toggle theme',
+  label = 'Dark theme',
   className,
   ...rest
 }: TzarThemeToggleProps) => {
@@ -26,6 +26,7 @@ export const TzarThemeToggle = ({
     <button
       type="button"
       aria-label={label}
+      aria-pressed={isDark}
       onClick={handleClick}
       data-testid={rootTestId}
       className={twMerge(

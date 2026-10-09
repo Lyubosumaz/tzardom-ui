@@ -8,7 +8,7 @@ import { TzarThemeToggle } from './TzarThemeToggle'
 
 const THEME_TOGGLE_ID = `${TEST_ID_PREFIXES.themeToggle}-${TEST_ID}`
 
-const getToggle = () => screen.getByRole('button', { name: 'Toggle theme' })
+const getToggle = () => screen.getByRole('button', { name: 'Dark theme' })
 
 const iconName = () =>
   screen.getByTestId(`${THEME_TOGGLE_ID}-icon`).classList.contains('lucide-sun')
@@ -42,8 +42,11 @@ describe('TzarThemeToggle', () => {
       </>,
     )
 
+    expect(getToggle().getAttribute('aria-pressed')).toBe('false')
+
     fireEvent.click(getToggle())
 
+    expect(getToggle().getAttribute('aria-pressed')).toBe('true')
     expect(screen.getByTestId('provider-theme').textContent).toBe(
       ThemeColorMode.DARK,
     )

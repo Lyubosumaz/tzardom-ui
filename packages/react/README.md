@@ -98,12 +98,12 @@ your app's.
 
 ### `<TzarThemeToggle>`
 
-A button that switches between light and dark: a moon in light mode, a sun in
-dark. It must be inside a `TzarProvider`.
+A toggle button for dark mode: a moon in light mode, a sun in dark. It's
+`aria-pressed` while dark is on. It must be inside a `TzarProvider`.
 
-| Prop    | Type     | Default          | Description                  |
-| ------- | -------- | ---------------- | ---------------------------- |
-| `label` | `string` | `'Toggle theme'` | The button's accessible name |
+| Prop    | Type     | Default        | Description                  |
+| ------- | -------- | -------------- | ---------------------------- |
+| `label` | `string` | `'Dark theme'` | The button's accessible name |
 
 ### `<TzarLanguageSelect>`
 

@@ -55,7 +55,7 @@ export const TzarLanguageSelect = <Code extends string = string>({
         <ChevronDown className="h-3 w-3" aria-hidden="true" />
       </button>
 
-      <ul
+      <menu
         id={menuId}
         hidden={!open}
         data-testid={`${rootTestId}-menu`}
@@ -77,7 +77,7 @@ export const TzarLanguageSelect = <Code extends string = string>({
             </button>
           </li>
         ))}
-      </ul>
+      </menu>
     </div>
   )
 }

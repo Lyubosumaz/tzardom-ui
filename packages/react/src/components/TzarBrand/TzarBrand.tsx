@@ -26,18 +26,18 @@ export const TzarBrand = ({
       />
 
       <div className="flex flex-col leading-4">
-        <span
+        <p
           className="text-sm font-semibold tracking-tight text-foreground"
           data-testid={`${rootTestId}-title`}
         >
           {title}
-        </span>
-        <span
+        </p>
+        <p
           className="text-xs text-muted"
           data-testid={`${rootTestId}-subtitle`}
         >
           {subtitle}
-        </span>
+        </p>
       </div>
     </div>
   )
