@@ -7,6 +7,9 @@ export const TEST_ID_PREFIXES = {
   languageSelect: `${LIBRARY_TEST_ID_PREFIX}-language-select`,
   themeToggle: `${LIBRARY_TEST_ID_PREFIX}-theme-toggle`,
   userMenu: `${LIBRARY_TEST_ID_PREFIX}-user-menu`,
+  // Widgets
+  teamsOverCapacity: `${LIBRARY_TEST_ID_PREFIX}-teams-over-capacity`,
+  upcomingRiskEvents: `${LIBRARY_TEST_ID_PREFIX}-upcoming-risk-events`,
   // Footer
   footer: `${LIBRARY_TEST_ID_PREFIX}-footer`,
 } as const

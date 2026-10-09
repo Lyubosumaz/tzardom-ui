@@ -142,6 +142,66 @@ closes it.
 | `accountLabel` | `string`      | `'Account'`   | The account link's text                         |
 | `logoutLabel`  | `string`      | `'Log out'`   | The log out button's text                       |
 
+### `<TzarTeamsOverCapacity>`
+
+A section with a heading and the teams whose workload is above their capacity,
+e.g. `Platform 15/10 (150% used)`. Your app fetches and picks the teams; this
+only shows them, plus a loading, error or empty message.
+
+```tsx
+<TzarTeamsOverCapacity
+  title="Teams over capacity this sprint"
+  status={isLoading ? 'loading' : isError ? 'error' : 'ready'}
+  teams={[{ id: 'platform', name: 'Platform', workload: 15, capacity: 10 }]}
+  data-testid="overview"
+/>
+```
+
+| Prop          | Type                              | Default                                     | Description                        |
+| ------------- | --------------------------------- | ------------------------------------------- | ---------------------------------- |
+| `title`       | `string`                          | —                                           | The heading                        |
+| `status`      | `'loading' \| 'error' \| 'ready'` | —                                           | Which content to show              |
+| `teams`       | `TzarTeamCapacity[]`              | —                                           | `{ id, name, workload, capacity }` |
+| `loadingText` | `string`                          | `'Loading capacity data…'`                  | Shown while loading                |
+| `errorText`   | `string`                          | `'Unable to load capacity data right now.'` | Shown on error                     |
+| `emptyText`   | `string`                          | `'No teams are currently over capacity.'`   | Shown when `teams` is empty        |
+| `usedText`    | `string`                          | `'used'`                                    | The word after the percent         |
+
+### `<TzarUpcomingRiskEvents>`
+
+A section with a heading and a list of upcoming events, each with a label, an
+optional team, a description and a date. Your app fetches and picks the events;
+this only shows them, plus a loading, error or empty message.
+
+```tsx
+<TzarUpcomingRiskEvents
+  title="Upcoming risk events"
+  status={isLoading ? 'loading' : isError ? 'error' : 'ready'}
+  events={[
+    {
+      id: '1',
+      label: 'Vacation',
+      teamName: 'Platform',
+      description: 'Ana is off',
+      date: '2026-11-02',
+    },
+  ]}
+  data-testid="overview"
+/>
+```
+
+| Prop          | Type               | Default                                            | Description                                   |
+| ------------- | ------------------ | -------------------------------------------------- | --------------------------------------------- |
+| `title`       | `string`           | —                                                  | The heading                                   |
+| `status`      | `TzarWidgetStatus` | —                                                  | `'loading'`, `'error'` or `'ready'`           |
+| `events`      | `TzarRiskEvent[]`  | —                                                  | `{ id, label, teamName?, description, date }` |
+| `loadingText` | `string`           | `'Loading upcoming risk events…'`                  | Shown while loading                           |
+| `errorText`   | `string`           | `'Unable to load upcoming risk events right now.'` | Shown on error                                |
+| `emptyText`   | `string`           | `'No upcoming vacations or critical events.'`      | Shown when `events` is empty                  |
+
+`date` is shown as you pass it and goes into `<time dateTime>`, so pass an ISO
+date like `2026-11-02`.
+
 ### `<TzarProvider>` and `useTzarTheme()`
 
 `TzarProvider` holds the theme, light or dark, and sets it on
@@ -164,8 +224,8 @@ and always say which component they belong to:
 
 ```tsx
 <TzarBrand title="…" subtitle="…" data-testid="header" />
-// tzar-ui-brand-header         the root
-// tzar-ui-brand-header-title   one of its parts
+// tzr-brand-header         the root
+// tzr-brand-header-title   one of its parts
 ```
 
 In tests, build the ids from `TEST_ID_PREFIXES` instead of typing them:
@@ -176,14 +236,16 @@ import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
 screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
 ```
 
-| Component            | Key              | Root                   | Parts                                                                                                    |
-| -------------------- | ---------------- | ---------------------- | -------------------------------------------------------------------------------------------------------- |
-| `TzarBrand`          | `brand`          | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                           |
-| `TzarCommonLink`     | `commonLink`     | the `<a>` or your `as` | —                                                                                                        |
-| `TzarFooter`         | `footer`         | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                                 |
-| `TzarLanguageSelect` | `languageSelect` | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                                    |
-| `TzarThemeToggle`    | `themeToggle`    | `<button>`             | `-icon`                                                                                                  |
-| `TzarUserMenu`       | `userMenu`       | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzar-ui-common-link-{root id}-account`, `-logout` |
+| Component                | Key                  | Root                   | Parts                                                                                                |
+| ------------------------ | -------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------- |
+| `TzarBrand`              | `brand`              | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                       |
+| `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                                    |
+| `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                             |
+| `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                                |
+| `TzarThemeToggle`        | `themeToggle`        | `<button>`             | `-icon`                                                                                              |
+| `TzarTeamsOverCapacity`  | `teamsOverCapacity`  | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-team-{id}`                                      |
+| `TzarUpcomingRiskEvents` | `upcomingRiskEvents` | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-event-{id}`                                     |
+| `TzarUserMenu`           | `userMenu`           | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzr-common-link-{root id}-account`, `-logout` |
 
 ## Upgrading from 0.2 or 0.3.0
 

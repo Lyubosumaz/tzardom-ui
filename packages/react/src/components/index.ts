@@ -16,3 +16,13 @@ export { TzarThemeToggle } from './TzarThemeToggle/TzarThemeToggle'
 export type { TzarThemeToggleProps } from './TzarThemeToggle/TzarThemeToggle.types'
 export { TzarUserMenu } from './TzarUserMenu/TzarUserMenu'
 export type { TzarUserMenuProps } from './TzarUserMenu/TzarUserMenu.types'
+export { TzarTeamsOverCapacity } from './TzarTeamsOverCapacity/TzarTeamsOverCapacity'
+export type {
+  TzarTeamCapacity,
+  TzarTeamsOverCapacityProps,
+} from './TzarTeamsOverCapacity/TzarTeamsOverCapacity.types'
+export { TzarUpcomingRiskEvents } from './TzarUpcomingRiskEvents/TzarUpcomingRiskEvents'
+export type {
+  TzarRiskEvent,
+  TzarUpcomingRiskEventsProps,
+} from './TzarUpcomingRiskEvents/TzarUpcomingRiskEvents.types'
