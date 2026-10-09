@@ -1,9 +1,9 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
-import { useEffect, useId, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
+import { useDropdown } from '@/support/useDropdown'
 import type { TzarLanguageSelectProps } from './TzarLanguageSelect.types'
 
 export const TzarLanguageSelect = <Code extends string = string>({
@@ -15,49 +15,30 @@ export const TzarLanguageSelect = <Code extends string = string>({
   className,
   ...rest
 }: TzarLanguageSelectProps<Code>) => {
-  const [open, setOpen] = useState(false)
-  const rootRef = useRef<HTMLDivElement>(null)
-  const triggerRef = useRef<HTMLButtonElement>(null)
-  const menuId = useId()
+  const {
+    open,
+    menuId,
+    triggerRef,
+    toggle,
+    close,
+    closeOnEscape,
+    closeOnFocusOut,
+  } = useDropdown()
   const rootTestId = `${TEST_ID_PREFIXES.languageSelect}-${testId}`
   const current = languages.find((lang) => lang.code === value) ?? languages[0]
 
-  useEffect(() => {
-    if (!open) {
-      return
-    }
-
-    const closeOnClickOutside = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false)
-      }
-    }
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false)
-        triggerRef.current?.focus()
-      }
-    }
-
-    document.addEventListener('click', closeOnClickOutside)
-    document.addEventListener('keydown', closeOnEscape)
-    return () => {
-      document.removeEventListener('click', closeOnClickOutside)
-      document.removeEventListener('keydown', closeOnEscape)
-    }
-  }, [open])
-
   const handleSelect = (code: Code) => {
     onChange?.(code)
-    setOpen(false)
+    close()
   }
 
   return (
     <div
       {...rest}
-      ref={rootRef}
-      className={twMerge('relative', className)}
+      tabIndex={-1}
+      onKeyDown={closeOnEscape}
+      onBlur={closeOnFocusOut}
+      className={twMerge('relative outline-none', className)}
       data-testid={rootTestId}
     >
       <button
@@ -67,9 +48,7 @@ export const TzarLanguageSelect = <Code extends string = string>({
         aria-expanded={open}
         aria-controls={menuId}
         data-testid={`${rootTestId}-trigger`}
-        onClick={() => {
-          setOpen(!open)
-        }}
+        onClick={toggle}
         className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium text-secondary hover:bg-main-soft hover:text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:bg-main-soft"
       >
         <span>{current.short}</span>

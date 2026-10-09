@@ -116,6 +116,32 @@ A button that opens a list of languages. Escape or a click outside closes it.
 | `onChange`  | `(code: string) => void` | —            | Called with the picked language's `code`   |
 | `label`     | `string`                 | `'Language'` | Names the button, e.g. `Language: EN`      |
 
+### `<TzarUserMenu>`
+
+A round button with the first letter of the user's email. It opens a menu with
+the email, an account link and a log out button. Escape or a click outside
+closes it.
+
+```tsx
+<TzarUserMenu
+  email={user.email}
+  accountHref="/user"
+  linkAs={Link}
+  onLogout={logout}
+  data-testid="header"
+/>
+```
+
+| Prop           | Type          | Default       | Description                                     |
+| -------------- | ------------- | ------------- | ----------------------------------------------- |
+| `email`        | `string`      | —             | Shown in the menu; its first letter on top      |
+| `accountHref`  | `string`      | —             | Where the account link goes                     |
+| `onLogout`     | `() => void`  | —             | Called when log out is clicked                  |
+| `linkAs`       | `ElementType` | `'a'`         | The account link's element, e.g. Next.js `Link` |
+| `label`        | `string`      | `'User menu'` | Names the button, e.g. `User menu: a@b.com`     |
+| `accountLabel` | `string`      | `'Account'`   | The account link's text                         |
+| `logoutLabel`  | `string`      | `'Log out'`   | The log out button's text                       |
+
 ### `<TzarProvider>` and `useTzarTheme()`
 
 `TzarProvider` holds the theme, light or dark, and sets it on
@@ -150,13 +176,14 @@ import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
 screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
 ```
 
-| Component            | Key              | Root                   | Parts                                    |
-| -------------------- | ---------------- | ---------------------- | ---------------------------------------- |
-| `TzarBrand`          | `brand`          | `<div>`                | `-icon`, `-title`, `-subtitle`           |
-| `TzarCommonLink`     | `commonLink`     | the `<a>` or your `as` | —                                        |
-| `TzarFooter`         | `footer`         | `<footer>`             | `-copyright`, `-app-name`, `-built-with` |
-| `TzarLanguageSelect` | `languageSelect` | `<div>`                | `-trigger`, `-menu`, `-option-{code}`    |
-| `TzarThemeToggle`    | `themeToggle`    | `<button>`             | `-icon`                                  |
+| Component            | Key              | Root                   | Parts                                                                                                    |
+| -------------------- | ---------------- | ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| `TzarBrand`          | `brand`          | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                           |
+| `TzarCommonLink`     | `commonLink`     | the `<a>` or your `as` | —                                                                                                        |
+| `TzarFooter`         | `footer`         | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                                 |
+| `TzarLanguageSelect` | `languageSelect` | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                                    |
+| `TzarThemeToggle`    | `themeToggle`    | `<button>`             | `-icon`                                                                                                  |
+| `TzarUserMenu`       | `userMenu`       | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzar-ui-common-link-{root id}-account`, `-logout` |
 
 ## Upgrading from 0.2 or 0.3.0
 

@@ -1,4 +1,4 @@
-const LIBRARY_TEST_ID_PREFIX = 'tzar-ui'
+const LIBRARY_TEST_ID_PREFIX = 'tzr'
 
 export const TEST_ID_PREFIXES = {
   // Header
@@ -6,6 +6,7 @@ export const TEST_ID_PREFIXES = {
   commonLink: `${LIBRARY_TEST_ID_PREFIX}-common-link`,
   languageSelect: `${LIBRARY_TEST_ID_PREFIX}-language-select`,
   themeToggle: `${LIBRARY_TEST_ID_PREFIX}-theme-toggle`,
+  userMenu: `${LIBRARY_TEST_ID_PREFIX}-user-menu`,
   // Footer
   footer: `${LIBRARY_TEST_ID_PREFIX}-footer`,
 } as const

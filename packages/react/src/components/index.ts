@@ -14,3 +14,5 @@ export type {
 } from './TzarLanguageSelect/TzarLanguageSelect.types'
 export { TzarThemeToggle } from './TzarThemeToggle/TzarThemeToggle'
 export type { TzarThemeToggleProps } from './TzarThemeToggle/TzarThemeToggle.types'
+export { TzarUserMenu } from './TzarUserMenu/TzarUserMenu'
+export type { TzarUserMenuProps } from './TzarUserMenu/TzarUserMenu.types'

@@ -112,13 +112,13 @@ describe('TzarLanguageSelect', () => {
     })
 
     fireEvent.click(trigger)
-    fireEvent.keyDown(document, { key: 'Escape' })
+    fireEvent.keyDown(trigger, { key: 'Escape' })
 
     expect(getMenu().hidden).toBe(true)
     expect(document.activeElement).toBe(trigger)
   })
 
-  test('closes on a click outside', () => {
+  test('closes when focus leaves it, e.g. a click elsewhere', () => {
     render(
       <TzarLanguageSelect
         data-testid={TEST_ID}
@@ -126,13 +126,34 @@ describe('TzarLanguageSelect', () => {
         value={first.code}
       />,
     )
+    const trigger = screen.getByRole('button', {
+      name: `Language: ${first.short}`,
+    })
 
-    fireEvent.click(
-      screen.getByRole('button', { name: `Language: ${first.short}` }),
-    )
-    fireEvent.click(document.body)
+    fireEvent.click(trigger)
+    fireEvent.focusOut(trigger, { relatedTarget: document.body })
 
     expect(getMenu().hidden).toBe(true)
+  })
+
+  test('stays open when focus moves to one of its options', () => {
+    render(
+      <TzarLanguageSelect
+        data-testid={TEST_ID}
+        languages={LANGUAGES}
+        value={first.code}
+      />,
+    )
+    const trigger = screen.getByRole('button', {
+      name: `Language: ${first.short}`,
+    })
+
+    fireEvent.click(trigger)
+    fireEvent.focusOut(trigger, {
+      relatedTarget: screen.getByText(second.label).closest('button'),
+    })
+
+    expect(getMenu().hidden).toBe(false)
   })
 
   test('passes data-testid to its root element, the outer div', () => {

@@ -49,3 +49,14 @@ test('opens the menu below the button, lined up with its right edge', async ({
     0,
   )
 })
+
+test('closes on a click elsewhere on the page', async ({ page }) => {
+  await page.goto(storyUrl('reactcomponentlibrary-tzarlanguageselect--default'))
+  const menu = page.getByTestId(MENU)
+
+  await page.getByTestId(TRIGGER).click()
+  await expect(menu).toBeVisible()
+
+  await page.mouse.click(5, 5)
+  await expect(menu).toBeHidden()
+})
