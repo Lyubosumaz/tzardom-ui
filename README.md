@@ -19,8 +19,9 @@ tests).
 
 ## Setup
 
-You need Node 22+ and pnpm 11 (`npm install -g pnpm`). The exact pnpm version is
-pinned in `package.json`, and pnpm switches to it by itself.
+You need Node 26 (22.12+ and 24 also work; Vitest doesn't support 25) and pnpm
+11 (`npm install -g pnpm`). The exact pnpm version is pinned in `package.json`,
+and pnpm switches to it by itself.
 
 ```bash
 pnpm install

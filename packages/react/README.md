@@ -267,26 +267,35 @@ and always say which component they belong to:
 // tzr-brand-header-title   one of its parts
 ```
 
-In tests, build the ids from `TEST_ID_PREFIXES` instead of typing them:
+Name the place, not the component: the prefix already says what it is. Use
+`data-testid="header"`, not `"header-brand"`, which would give
+`tzr-brand-header-brand`.
+
+In tests, build the ids with `tzrTestId(component, id, part?)` instead of typing
+them:
 
 ```ts
-import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+import { tzrTestId } from '@tzardom-ui/react'
 
-screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
+screen.getByTestId(tzrTestId('brand', 'header')) // the root
+screen.getByTestId(tzrTestId('brand', 'header', 'title')) // one of its parts
 ```
 
-| Component                | Key                  | Root                   | Parts                                                                                                |
-| ------------------------ | -------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| `TzarBrand`              | `brand`              | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                       |
-| `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                                    |
-| `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                             |
-| `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                                |
-| `TzarMetricCard`         | `metricCard`         | `<dl>`                 | `-label`, `-value`, `-helper-text`                                                                   |
-| `TzarPageHeader`         | `pageHeader`         | `<hgroup>`             | `-title`, `-description`                                                                             |
-| `TzarThemeToggle`        | `themeToggle`        | `<button>`             | `-icon`                                                                                              |
-| `TzarTeamsOverCapacity`  | `teamsOverCapacity`  | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-team-{id}`                                      |
-| `TzarUpcomingRiskEvents` | `upcomingRiskEvents` | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-event-{id}`                                     |
-| `TzarUserMenu`           | `userMenu`           | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzr-common-link-{root id}-account`, `-logout` |
+`component` is a key from the "Key" column below. `TEST_ID_PREFIXES` is also
+exported if you need a bare prefix.
+
+| Component                | Key                  | Root                   | Parts                                                                                         |
+| ------------------------ | -------------------- | ---------------------- | --------------------------------------------------------------------------------------------- |
+| `TzarBrand`              | `brand`              | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                |
+| `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                             |
+| `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                      |
+| `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                         |
+| `TzarMetricCard`         | `metricCard`         | `<dl>`                 | `-label`, `-value`, `-helper-text`                                                            |
+| `TzarPageHeader`         | `pageHeader`         | `<hgroup>`             | `-title`, `-description`                                                                      |
+| `TzarThemeToggle`        | `themeToggle`        | `<button>`             | `-icon`                                                                                       |
+| `TzarTeamsOverCapacity`  | `teamsOverCapacity`  | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-team-{id}`                               |
+| `TzarUpcomingRiskEvents` | `upcomingRiskEvents` | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-event-{id}`                              |
+| `TzarUserMenu`           | `userMenu`           | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzr-link-{root id}-account`, `-logout` |
 
 ## Upgrading from 0.2 or 0.3.0
 

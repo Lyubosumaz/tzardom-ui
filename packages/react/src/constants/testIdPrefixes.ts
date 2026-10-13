@@ -3,16 +3,29 @@ const LIBRARY_TEST_ID_PREFIX = 'tzr'
 export const TEST_ID_PREFIXES = {
   // Header
   brand: `${LIBRARY_TEST_ID_PREFIX}-brand`,
-  commonLink: `${LIBRARY_TEST_ID_PREFIX}-common-link`,
-  languageSelect: `${LIBRARY_TEST_ID_PREFIX}-language-select`,
-  themeToggle: `${LIBRARY_TEST_ID_PREFIX}-theme-toggle`,
-  userMenu: `${LIBRARY_TEST_ID_PREFIX}-user-menu`,
+  commonLink: `${LIBRARY_TEST_ID_PREFIX}-link`,
+  languageSelect: `${LIBRARY_TEST_ID_PREFIX}-lang`,
+  themeToggle: `${LIBRARY_TEST_ID_PREFIX}-theme`,
+  userMenu: `${LIBRARY_TEST_ID_PREFIX}-user`,
   // Page
-  pageHeader: `${LIBRARY_TEST_ID_PREFIX}-page-header`,
+  pageHeader: `${LIBRARY_TEST_ID_PREFIX}-page`,
   // Widgets
-  metricCard: `${LIBRARY_TEST_ID_PREFIX}-metric-card`,
-  teamsOverCapacity: `${LIBRARY_TEST_ID_PREFIX}-teams-over-capacity`,
-  upcomingRiskEvents: `${LIBRARY_TEST_ID_PREFIX}-upcoming-risk-events`,
+  metricCard: `${LIBRARY_TEST_ID_PREFIX}-metric`,
+  teamsOverCapacity: `${LIBRARY_TEST_ID_PREFIX}-capacity`,
+  upcomingRiskEvents: `${LIBRARY_TEST_ID_PREFIX}-events`,
   // Footer
   footer: `${LIBRARY_TEST_ID_PREFIX}-footer`,
 } as const
+
+export type TzarTestIdComponent = keyof typeof TEST_ID_PREFIXES
+
+// Gets a component's test id in tests, so you don't type it by hand:
+// tzrTestId('brand', 'header', 'title') → 'tzr-brand-header-title'
+export const tzrTestId = (
+  component: TzarTestIdComponent,
+  id: string,
+  part?: string,
+) => {
+  const rootId = `${TEST_ID_PREFIXES[component]}-${id}`
+  return part ? `${rootId}-${part}` : rootId
+}
