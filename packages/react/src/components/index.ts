@@ -26,3 +26,10 @@ export type {
   TzarRiskEvent,
   TzarUpcomingRiskEventsProps,
 } from './TzarUpcomingRiskEvents/TzarUpcomingRiskEvents.types'
+export { TzarPageHeader } from './TzarPageHeader/TzarPageHeader'
+export type {
+  TzarHeadingLevel,
+  TzarPageHeaderProps,
+} from './TzarPageHeader/TzarPageHeader.types'
+export { TzarMetricCard } from './TzarMetricCard/TzarMetricCard'
+export type { TzarMetricCardProps } from './TzarMetricCard/TzarMetricCard.types'

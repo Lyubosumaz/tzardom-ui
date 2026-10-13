@@ -142,6 +142,45 @@ closes it.
 | `accountLabel` | `string`      | `'Account'`   | The account link's text                         |
 | `logoutLabel`  | `string`      | `'Log out'`   | The log out button's text                       |
 
+### `<TzarMetricCard>`
+
+A card with one number: a label, the value in large text and a short helper
+line. It's a `<dl>`, so the label is the term and the value its description.
+
+```tsx
+<TzarMetricCard
+  label="Teams"
+  value={3}
+  helperText="Active teams in the org."
+  data-testid="teams"
+/>
+```
+
+| Prop         | Type               | Default | Description            |
+| ------------ | ------------------ | ------- | ---------------------- |
+| `label`      | `string`           | —       | What the number is     |
+| `value`      | `number \| string` | —       | The number, e.g. `3`   |
+| `helperText` | `string`           | —       | A line under the value |
+
+### `<TzarPageHeader>`
+
+A page or section title with a description under it, in an `<hgroup>`. An `h1`
+gets the large page-title style; any other level gets a small section style.
+
+```tsx
+<TzarPageHeader
+  title="Teams"
+  description="Browse teams and their capacity."
+  data-testid="teams"
+/>
+```
+
+| Prop          | Type            | Default | Description                |
+| ------------- | --------------- | ------- | -------------------------- |
+| `title`       | `string`        | —       | The heading                |
+| `description` | `string`        | —       | The line under the heading |
+| `as`          | `'h1'` … `'h6'` | `'h1'`  | The heading level          |
+
 ### `<TzarTeamsOverCapacity>`
 
 A section with a heading and the teams whose workload is above their capacity,
@@ -242,6 +281,8 @@ screen.getByTestId(`${TEST_ID_PREFIXES.brand}-header-title`)
 | `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                                    |
 | `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                             |
 | `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                                |
+| `TzarMetricCard`         | `metricCard`         | `<dl>`                 | `-label`, `-value`, `-helper-text`                                                                   |
+| `TzarPageHeader`         | `pageHeader`         | `<hgroup>`             | `-title`, `-description`                                                                             |
 | `TzarThemeToggle`        | `themeToggle`        | `<button>`             | `-icon`                                                                                              |
 | `TzarTeamsOverCapacity`  | `teamsOverCapacity`  | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-team-{id}`                                      |
 | `TzarUpcomingRiskEvents` | `upcomingRiskEvents` | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-event-{id}`                                     |
