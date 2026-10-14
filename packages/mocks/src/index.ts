@@ -1,4 +1,5 @@
 export { BRAND } from './brand'
+export { CHART } from './chart'
 export { FOOTER } from './footer'
 export { LANGUAGES } from './languages'
 export { LOGIN_LINK, OVERVIEW_LINK } from './links'

@@ -36,5 +36,6 @@ A theme does two things:
 
 1. Copy `team-capacity-dashboard.css` and name it after the app.
 2. Change the color values. Keep every variable name and the `tailwind.css`
-   import.
+   import. Change `--chart-1` to `--chart-3` only as a set, and check they stay
+   apart for color-blind readers on the new background.
 3. Add the file name to `files` in `package.json`, so it gets published.

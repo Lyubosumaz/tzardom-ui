@@ -33,3 +33,10 @@ export type {
 } from './TzarPageHeader/TzarPageHeader.types'
 export { TzarMetricCard } from './TzarMetricCard/TzarMetricCard'
 export type { TzarMetricCardProps } from './TzarMetricCard/TzarMetricCard.types'
+export { TzarChart } from './TzarChart/TzarChart'
+export type {
+  TzarChartProps,
+  TzarChartRow,
+  TzarChartSeries,
+  TzarChartType,
+} from './TzarChart/TzarChart.types'

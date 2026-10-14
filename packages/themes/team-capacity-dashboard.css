@@ -29,6 +29,9 @@
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-muted: var(--muted);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
 }
 
 @layer base {
@@ -55,6 +58,9 @@
   --danger: #fb7185;
   --danger-soft: #ffe4e6;
   --muted: #6b7280;
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
 }
 
 :root[data-theme='dark'] {
@@ -74,4 +80,7 @@
   --danger: #fb7185;
   --danger-soft: #450a0a;
   --muted: #9ca3af;
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
 }

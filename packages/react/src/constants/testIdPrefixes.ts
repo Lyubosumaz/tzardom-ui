@@ -10,6 +10,7 @@ export const TEST_ID_PREFIXES = {
   // Page
   pageHeader: `${LIBRARY_TEST_ID_PREFIX}-page`,
   // Widgets
+  chart: `${LIBRARY_TEST_ID_PREFIX}-chart`,
   metricCard: `${LIBRARY_TEST_ID_PREFIX}-metric`,
   teamsOverCapacity: `${LIBRARY_TEST_ID_PREFIX}-capacity`,
   upcomingRiskEvents: `${LIBRARY_TEST_ID_PREFIX}-events`,

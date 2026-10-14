@@ -142,6 +142,48 @@ closes it.
 | `accountLabel` | `string`      | `'Account'`   | The account link's text                         |
 | `logoutLabel`  | `string`      | `'Log out'`   | The log out button's text                       |
 
+### `<TzarChart>`
+
+A line or bar chart drawn in plain SVG, with no chart library. It has axes with
+round ticks, a legend for two or more series, a tooltip on hover, and a "Show
+data" table for keyboard and screen-reader users. It fills the width of its
+container.
+
+```tsx
+<TzarChart
+  type="bar"
+  title="Workload vs capacity"
+  data={[
+    { name: 'Platform', capacity: 10, workload: 12 },
+    { name: 'Web', capacity: 8, workload: 6 },
+  ]}
+  xKey="name"
+  xLabel="Team"
+  series={[
+    { key: 'capacity', label: 'Capacity' },
+    { key: 'workload', label: 'Workload' },
+  ]}
+  data-testid="workload"
+/>
+```
+
+| Prop         | Type               | Default              | Description                            |
+| ------------ | ------------------ | -------------------- | -------------------------------------- |
+| `type`       | `'line' \| 'bar'`  | —                    | How to draw the series                 |
+| `title`      | `string`           | —                    | The caption                            |
+| `subtitle`   | `string`           | —                    | A line under the title                 |
+| `data`       | `TzarChartRow[]`   | —                    | One object per point / bar group       |
+| `xKey`       | `string`           | —                    | The field with each row's label        |
+| `xLabel`     | `string`           | `xKey`               | The table's first column header        |
+| `series`     | `{ key, label }[]` | —                    | Up to 3 fields to plot, in color order |
+| `emptyText`  | `string`           | `'No data to show.'` | Shown when `data` is empty             |
+| `tableLabel` | `string`           | `'Show data'`        | The data table's toggle                |
+
+Series colors come from `--chart-1`, `--chart-2` and `--chart-3` in the theme,
+always in that order. They're checked to stay apart for color-blind readers, so
+change them only as a set. More than three series throws an error instead of
+repeating a color.
+
 ### `<TzarMetricCard>`
 
 A card with one number: a label, the value in large text and a short helper
@@ -287,6 +329,7 @@ exported if you need a bare prefix.
 | Component                | Key                  | Root                   | Parts                                                                                         |
 | ------------------------ | -------------------- | ---------------------- | --------------------------------------------------------------------------------------------- |
 | `TzarBrand`              | `brand`              | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                |
+| `TzarChart`              | `chart`              | `<figure>`             | `-title`, `-subtitle`, `-legend`, `-plot`, `-hover-{index}`, `-tooltip`, `-data`, `-empty`    |
 | `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                             |
 | `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                      |
 | `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                         |
