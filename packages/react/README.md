@@ -27,19 +27,16 @@ Needs React 19.
    <TzarProvider storageKey="theme">{children}</TzarProvider>
    ```
 
-3. Use the components. Each one needs a `data-testid`:
+3. Use the components:
 
    ```tsx
-   <TzarCommonLink href="/login" data-testid="login">
-     Log in
-   </TzarCommonLink>
+   <TzarCommonLink href="/login">Log in</TzarCommonLink>
    ```
 
 ## Components
 
-Every component takes `data-testid` (required, see [Test ids](#test-ids)) and
-`className` (extra classes; where they clash with ours, yours win). The tables
-list the other props.
+Every component takes `className` (extra classes; where they clash with ours,
+yours win). The tables list the other props.
 
 ### `<TzarBrand>`
 
@@ -47,11 +44,7 @@ The app's name and tagline, with an icon in front. The icon is hidden from
 screen readers.
 
 ```tsx
-<TzarBrand
-  title="Team Capacity"
-  subtitle="Plan your sprints"
-  data-testid="header"
-/>
+<TzarBrand title="Team Capacity" subtitle="Plan your sprints" />
 ```
 
 | Prop       | Type      | Default    | Description                                  |
@@ -78,7 +71,6 @@ a confirm button.
   confirmLabel="Delete"
   confirmVariant="danger"
   onConfirm={deleteTeam}
-  data-testid="delete-team"
 >
   <p>This can't be undone.</p>
 </TzarDialog>
@@ -95,7 +87,6 @@ submits the form (Enter in a field does too).
   confirmLabel={isSaving ? 'Saving…' : 'Save'}
   confirmDisabled={isSaving}
   form="edit-name"
-  data-testid="edit-name"
 >
   <form id="edit-name" onSubmit={save}>
     …
@@ -131,7 +122,6 @@ The page footer: copyright, app name and what it's built with, in one row.
   copyright="© 2026 Team Capacity"
   appName="Team Capacity"
   builtWith="Built with Next.js"
-  data-testid="app"
 />
 ```
 
@@ -147,7 +137,7 @@ A pill-shaped link. It renders your router's link component, so routing stays
 your app's.
 
 ```tsx
-<TzarCommonLink as={Link} href="/login" data-testid="login">
+<TzarCommonLink as={Link} href="/login">
   Log in
 </TzarCommonLink>
 ```
@@ -190,7 +180,6 @@ closes it.
   accountHref="/user"
   linkAs={Link}
   onLogout={logout}
-  data-testid="header"
 />
 ```
 
@@ -210,7 +199,7 @@ A native `<button>` in four looks and two sizes. It's `type="button"` unless you
 pass `type="submit"`, so it never submits a form by accident.
 
 ```tsx
-<TzarButton variant="primary" type="submit" data-testid="login-submit">
+<TzarButton variant="primary" type="submit">
   Log in
 </TzarButton>
 ```
@@ -236,7 +225,6 @@ and is linked to it.
   value={email}
   onChange={(event) => setEmail(event.target.value)}
   error={emailError}
-  data-testid="login-email"
 />
 ```
 
@@ -270,7 +258,6 @@ container.
     { key: 'capacity', label: 'Capacity', color: '#db2777' },
     { key: 'workload', label: 'Workload', color: '#0891b2' },
   ]}
-  data-testid="workload"
 />
 ```
 
@@ -296,12 +283,7 @@ A card with one number: a label, the value in large text and a short helper
 line. It's a `<dl>`, so the label is the term and the value its description.
 
 ```tsx
-<TzarMetricCard
-  label="Teams"
-  value={3}
-  helperText="Active teams in the org."
-  data-testid="teams"
-/>
+<TzarMetricCard label="Teams" value={3} helperText="Active teams in the org." />
 ```
 
 | Prop         | Type               | Default | Description            |
@@ -316,11 +298,7 @@ A page or section title with a description under it, in an `<hgroup>`. An `h1`
 gets the large page-title style; any other level gets a small section style.
 
 ```tsx
-<TzarPageHeader
-  title="Teams"
-  description="Browse teams and their capacity."
-  data-testid="teams"
-/>
+<TzarPageHeader title="Teams" description="Browse teams and their capacity." />
 ```
 
 | Prop          | Type            | Default | Description                |
@@ -340,7 +318,6 @@ only shows them, plus a loading, error or empty message.
   title="Teams over capacity this sprint"
   status={isLoading ? 'loading' : isError ? 'error' : 'ready'}
   teams={[{ id: 'platform', name: 'Platform', workload: 15, capacity: 10 }]}
-  data-testid="overview"
 />
 ```
 
@@ -373,7 +350,6 @@ this only shows them, plus a loading, error or empty message.
       date: '2026-11-02',
     },
   ]}
-  data-testid="overview"
 />
 ```
 
@@ -406,55 +382,22 @@ Outside a provider, `useTzarTheme()` and `TzarThemeToggle` throw an error.
 
 ## Test ids
 
-Your `data-testid` becomes part of every id a component sets, so ids never clash
-and always say which component they belong to:
+Test by role, label or text first (`getByRole('button', { name: 'Save' })`). Add
+a `data-testid` only where a test can't find the element another way. It goes on
+the component's root element as is, with nothing added to it:
 
 ```tsx
-<TzarBrand title="…" subtitle="…" data-testid="header" />
-// tzr-brand-header         the root
-// tzr-brand-header-title   one of its parts
+<TzarBrand title="…" subtitle="…" />
+// <div>…</div>
 ```
-
-Name the place, not the component: the prefix already says what it is. Use
-`data-testid="header"`, not `"header-brand"`, which would give
-`tzr-brand-header-brand`.
-
-In tests, build the ids with `tzrTestId(component, id, part?)` instead of typing
-them:
-
-```ts
-import { tzrTestId } from '@tzardom-ui/react'
-
-screen.getByTestId(tzrTestId('brand', 'header')) // the root
-screen.getByTestId(tzrTestId('brand', 'header', 'title')) // one of its parts
-```
-
-`component` is a key from the "Key" column below. `TEST_ID_PREFIXES` is also
-exported if you need a bare prefix.
-
-| Component                | Key                  | Root                   | Parts                                                                                         |
-| ------------------------ | -------------------- | ---------------------- | --------------------------------------------------------------------------------------------- |
-| `TzarBrand`              | `brand`              | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                |
-| `TzarButton`             | `button`             | `<button>`             | —                                                                                             |
-| `TzarChart`              | `chart`              | `<figure>`             | `-title`, `-subtitle`, `-legend`, `-plot`, `-hover-{index}`, `-tooltip`, `-data`, `-empty`    |
-| `TzarDialog`             | `dialog`             | `<dialog>`             | `-title`, `-content`, `-actions`; its buttons: `tzr-button-{your id}-cancel`, `-confirm`      |
-| `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                             |
-| `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                      |
-| `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                         |
-| `TzarMetricCard`         | `metricCard`         | `<dl>`                 | `-label`, `-value`, `-helper-text`                                                            |
-| `TzarPageHeader`         | `pageHeader`         | `<hgroup>`             | `-title`, `-description`                                                                      |
-| `TzarThemeToggle`        | `themeToggle`        | `<button>`             | `-icon`                                                                                       |
-| `TzarTeamsOverCapacity`  | `teamsOverCapacity`  | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-team-{id}`                               |
-| `TzarTextField`          | `textField`          | `<div>`                | `-label`, `-input`, `-error`                                                                  |
-| `TzarUpcomingRiskEvents` | `upcomingRiskEvents` | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-event-{id}`                              |
-| `TzarUserMenu`           | `userMenu`           | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzr-link-{root id}-account`, `-logout` |
 
 ## Upgrading from 0.2 or 0.3.0
 
 - **Themes moved** to their own package: install `@tzardom-ui/themes` and import
   `@tzardom-ui/themes/team-capacity-dashboard.css` instead of
   `@tzardom-ui/react/themes/…`. The theme imports `tailwind.css` for you.
-- **`data-testid` is required** on every component.
+- **`data-testid` is optional** and goes on the root as is; `tzrTestId` and
+  `TEST_ID_PREFIXES` are gone.
 - **`TzarThemeToggle` needs a `TzarProvider`,** and its `theme`, `defaultTheme`
   and `onThemeChange` props are gone.
 - **`TzarContext` is gone;** use `useTzarTheme()`.

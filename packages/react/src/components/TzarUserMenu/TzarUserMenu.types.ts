@@ -4,7 +4,6 @@ export type TzarUserMenuProps = Omit<
   ComponentPropsWithoutRef<'div'>,
   'children'
 > & {
-  'data-testid': string
   email: string
   accountHref: string
   onLogout: () => void

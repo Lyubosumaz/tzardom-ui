@@ -4,7 +4,6 @@ export type TzarMetricCardProps = Omit<
   ComponentPropsWithoutRef<'dl'>,
   'children'
 > & {
-  'data-testid': string
   label: string
   value: number | string
   helperText: string

@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test'
-import { CHART, TEST_ID } from '@tzardom-ui/mocks'
-import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+import { CHART } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
-const CHART_ID = `${TEST_ID_PREFIXES.chart}-${TEST_ID}`
+// The hover areas and the tooltip have no role or name (see the TODO in
+// TzarChart), so they are found by tag and position.
 const [, rowB] = CHART.data
 
 for (const story of ['line', 'bar']) {
@@ -11,9 +11,9 @@ for (const story of ['line', 'bar']) {
     page,
   }) => {
     await page.goto(storyUrl(`reactcomponentlibrary-tzarchart--${story}`))
-    const tooltip = page.getByTestId(`${CHART_ID}-tooltip`)
+    const tooltip = page.locator('figure svg + div')
 
-    await page.getByTestId(`${CHART_ID}-hover-1`).hover()
+    await page.locator('figure svg rect').nth(1).hover()
     await expect(tooltip).toBeVisible()
     await expect(tooltip).toContainText(rowB.name)
     await expect(tooltip).toContainText(String(rowB.workload))
@@ -25,8 +25,8 @@ for (const story of ['line', 'bar']) {
 
 test('fills the width of its container', async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarchart--line'))
-  const figure = page.getByTestId(CHART_ID)
-  const plot = page.getByTestId(`${CHART_ID}-plot`)
+  const figure = page.getByRole('figure')
+  const plot = figure.locator('svg')
 
   const figureBox = await figure.boundingBox()
   const plotBox = await plot.boundingBox()
@@ -38,9 +38,9 @@ test('fills the width of its container', async ({ page }) => {
 
 test('shows the data as a table when opened', async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarchart--line'))
-  const data = page.getByTestId(`${CHART_ID}-data`)
+  const table = page.getByRole('table')
 
-  await expect(data.getByRole('table')).toBeHidden()
-  await data.getByText('Show data').click()
-  await expect(data.getByRole('table')).toBeVisible()
+  await expect(table).toBeHidden()
+  await page.getByText('Show data').click()
+  await expect(table).toBeVisible()
 })

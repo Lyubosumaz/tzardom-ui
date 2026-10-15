@@ -4,7 +4,6 @@ export type TzarTextFieldProps = Omit<
   ComponentPropsWithoutRef<'input'>,
   'children'
 > & {
-  'data-testid': string
   label: string
   error?: string
 }

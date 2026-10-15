@@ -1,28 +1,21 @@
 import { expect, test } from '@playwright/test'
-import { TEST_ID, USER } from '@tzardom-ui/mocks'
-import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+import { USER } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
-
-const USER_MENU_ID = `${TEST_ID_PREFIXES.userMenu}-${TEST_ID}`
-const TRIGGER = `${USER_MENU_ID}-trigger`
-const MENU = `${USER_MENU_ID}-menu`
-const ACCOUNT = `${TEST_ID_PREFIXES.commonLink}-${USER_MENU_ID}-account`
-const LOGOUT = `${TEST_ID_PREFIXES.commonLink}-${USER_MENU_ID}-logout`
 
 test('can be used with the keyboard alone', async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
-  const trigger = page.getByTestId(TRIGGER)
-  const menu = page.getByTestId(MENU)
+  const trigger = page.getByRole('button', { name: `User menu: ${USER.email}` })
+  // The menu box is the parent of the email shown inside it.
+  const menu = page.getByText(USER.email).locator('..')
 
-  await expect(trigger).toHaveAccessibleName(`User menu: ${USER.email}`)
   await trigger.focus()
   await page.keyboard.press('Enter')
   await expect(menu).toBeVisible()
 
   await page.keyboard.press('Tab')
-  await expect(page.getByTestId(ACCOUNT)).toBeFocused()
+  await expect(page.getByRole('link', { name: 'Account' })).toBeFocused()
   await page.keyboard.press('Tab')
-  await expect(page.getByTestId(LOGOUT)).toBeFocused()
+  await expect(page.getByRole('button', { name: 'Log out' })).toBeFocused()
 
   await page.keyboard.press('Escape')
   await expect(menu).toBeHidden()
@@ -33,8 +26,8 @@ test('opens the menu below the button, lined up with its right edge', async ({
   page,
 }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
-  const trigger = page.getByTestId(TRIGGER)
-  const menu = page.getByTestId(MENU)
+  const trigger = page.getByRole('button', { name: `User menu: ${USER.email}` })
+  const menu = page.getByText(USER.email).locator('..')
 
   await trigger.click()
   await expect(menu).toBeVisible()
@@ -53,9 +46,9 @@ test('opens the menu below the button, lined up with its right edge', async ({
 
 test('closes on a click elsewhere on the page', async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
-  const menu = page.getByTestId(MENU)
+  const menu = page.getByText(USER.email).locator('..')
 
-  await page.getByTestId(TRIGGER).click()
+  await page.getByRole('button', { name: `User menu: ${USER.email}` }).click()
   await expect(menu).toBeVisible()
 
   await page.mouse.click(5, 5)
@@ -64,10 +57,10 @@ test('closes on a click elsewhere on the page', async ({ page }) => {
 
 test('stays open when the email inside it is clicked', async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
-  const menu = page.getByTestId(MENU)
+  const menu = page.getByText(USER.email).locator('..')
 
-  await page.getByTestId(TRIGGER).click()
-  await page.getByTestId(`${USER_MENU_ID}-email`).click()
+  await page.getByRole('button', { name: `User menu: ${USER.email}` }).click()
+  await page.getByText(USER.email).click()
 
   await expect(menu).toBeVisible()
 })

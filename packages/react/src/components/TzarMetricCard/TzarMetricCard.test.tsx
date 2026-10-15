@@ -1,21 +1,20 @@
 import { render, screen } from '@testing-library/react'
-import { METRIC, TEST_ID } from '@tzardom-ui/mocks'
+import { METRIC } from '@tzardom-ui/mocks'
 import { describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarMetricCard } from './TzarMetricCard'
+import type { TzarMetricCardProps } from './TzarMetricCard.types'
 
-const ROOT_ID = `${TEST_ID_PREFIXES.metricCard}-${TEST_ID}`
-
-const renderCard = (className?: string) =>
+const renderCard = (props: Partial<TzarMetricCardProps> = {}) =>
   render(
     <TzarMetricCard
-      data-testid={TEST_ID}
       label={METRIC.label}
       value={METRIC.value}
       helperText={METRIC.helperText}
-      className={className}
+      {...props}
     />,
   )
+
+const getCard = () => screen.getByRole('term').closest('dl') as HTMLElement
 
 describe('TzarMetricCard', () => {
   test('shows the label as a term, and the value and helper text as its descriptions', () => {
@@ -28,45 +27,23 @@ describe('TzarMetricCard', () => {
   })
 
   test('shows a text value as it is', () => {
-    render(
-      <TzarMetricCard
-        data-testid={TEST_ID}
-        label={METRIC.label}
-        value="75%"
-        helperText={METRIC.helperText}
-      />,
-    )
+    renderCard({ value: '75%' })
 
-    expect(screen.getByTestId(`${ROOT_ID}-value`).textContent).toBe('75%')
+    expect(screen.getAllByRole('definition')[0].textContent).toBe('75%')
   })
 
   test('className overrides a conflicting built-in class', () => {
-    renderCard('shadow-none')
-    const classes = screen.getByTestId(ROOT_ID).className.split(' ')
+    renderCard({ className: 'shadow-none' })
+    const classes = getCard().className.split(' ')
 
     expect(classes).toContain('shadow-none')
     expect(classes).not.toContain('shadow-lg')
     expect(classes).toContain('rounded-lg')
   })
 
-  test('passes data-testid to its root element, the dl', () => {
-    const { container } = renderCard()
+  test('passes data-testid through to its root element, the dl', () => {
+    renderCard({ 'data-testid': 'mock' } as Partial<TzarMetricCardProps>)
 
-    expect(screen.getByTestId(ROOT_ID)).toBe(container.firstChild)
-    expect(screen.getByTestId(ROOT_ID).tagName).toBe('DL')
-  })
-
-  test('gives its parts test ids built from data-testid', () => {
-    renderCard()
-
-    expect(screen.getByTestId(`${ROOT_ID}-label`).textContent).toBe(
-      METRIC.label,
-    )
-    expect(screen.getByTestId(`${ROOT_ID}-value`).textContent).toBe(
-      String(METRIC.value),
-    )
-    expect(screen.getByTestId(`${ROOT_ID}-helper-text`).textContent).toBe(
-      METRIC.helperText,
-    )
+    expect(screen.getByTestId('mock')).toBe(getCard())
   })
 })

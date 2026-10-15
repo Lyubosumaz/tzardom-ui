@@ -11,7 +11,6 @@ export type TzarTeamsOverCapacityProps = Omit<
   ComponentPropsWithoutRef<'section'>,
   'title' | 'children'
 > & {
-  'data-testid': string
   title: string
   status: 'loading' | 'error' | 'ready'
   teams: readonly TzarTeamCapacity[]

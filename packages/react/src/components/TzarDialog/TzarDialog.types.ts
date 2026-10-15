@@ -6,7 +6,6 @@ export type TzarDialogProps = Omit<
   ComponentPropsWithoutRef<'dialog'>,
   'open' | 'title' | 'children'
 > & {
-  'data-testid': string
   open: boolean
   onClose: () => void
   title: string

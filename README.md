@@ -53,10 +53,10 @@ For one package only: `pnpm --filter @tzardom-ui/react build`.
   `<Name>.types.ts` and `<Name>.test.tsx`. Its story goes in
   `packages/storybook/src/stories/`.
 - Imports: `@/` for another folder of the same package
-  (`@/constants/testIdPrefixes`), `./` for the same folder.
+  (`@/support/WidgetSection`), `./` for the same folder.
 - Test and story data comes from `@tzardom-ui/mocks` and is obviously fake
   (`'Mock App'`).
-- Every component needs a `data-testid`; see
+- Test by role, label or text; see
   [Test ids](packages/react/README.md#test-ids).
 
 ## Styling and themes

@@ -1,17 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { TEST_ID } from '@tzardom-ui/mocks'
 import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { ThemeColorMode, TzarProvider, useTzarTheme } from '@/provider'
 import { TzarThemeToggle } from './TzarThemeToggle'
-
-const THEME_TOGGLE_ID = `${TEST_ID_PREFIXES.themeToggle}-${TEST_ID}`
 
 const getToggle = () => screen.getByRole('button', { name: 'Dark theme' })
 
 const iconName = () =>
-  screen.getByTestId(`${THEME_TOGGLE_ID}-icon`).classList.contains('lucide-sun')
+  getToggle().querySelector('svg')?.classList.contains('lucide-sun')
     ? 'sun'
     : 'moon'
 
@@ -26,7 +22,7 @@ describe('TzarThemeToggle', () => {
   })
 
   test('shows the moon in light mode and labels the button', () => {
-    renderInProvider(<TzarThemeToggle data-testid={TEST_ID} />)
+    renderInProvider(<TzarThemeToggle />)
 
     expect(iconName()).toBe('moon')
   })
@@ -37,7 +33,7 @@ describe('TzarThemeToggle', () => {
     )
     renderInProvider(
       <>
-        <TzarThemeToggle data-testid={TEST_ID} />
+        <TzarThemeToggle />
         <ProviderTheme />
       </>,
     )
@@ -75,7 +71,7 @@ describe('TzarThemeToggle', () => {
     }
     renderInProvider(
       <>
-        <TzarThemeToggle data-testid={TEST_ID} />
+        <TzarThemeToggle />
         <SetDark />
       </>,
     )
@@ -86,13 +82,13 @@ describe('TzarThemeToggle', () => {
   })
 
   test('throws outside a TzarProvider', () => {
-    expect(() => render(<TzarThemeToggle data-testid={TEST_ID} />)).toThrow(
+    expect(() => render(<TzarThemeToggle />)).toThrow(
       'useTzarTheme must be used inside a <TzarProvider>',
     )
   })
 
   test('className overrides a conflicting built-in class', () => {
-    renderInProvider(<TzarThemeToggle data-testid={TEST_ID} className="p-4" />)
+    renderInProvider(<TzarThemeToggle className="p-4" />)
     const classes = getToggle().className.split(' ')
 
     expect(classes).toContain('p-4')
@@ -100,17 +96,9 @@ describe('TzarThemeToggle', () => {
     expect(classes).toContain('rounded-full')
   })
 
-  test('passes data-testid to its root element, the button', () => {
-    renderInProvider(<TzarThemeToggle data-testid={TEST_ID} />)
+  test('passes data-testid through to the button', () => {
+    renderInProvider(<TzarThemeToggle data-testid="mock" />)
 
-    expect(screen.getByTestId(THEME_TOGGLE_ID)).toBe(getToggle())
-  })
-
-  test('gives its icon a test id built from data-testid', () => {
-    renderInProvider(<TzarThemeToggle data-testid={TEST_ID} />)
-
-    expect(
-      getToggle().contains(screen.getByTestId(`${THEME_TOGGLE_ID}-icon`)),
-    ).toBe(true)
+    expect(screen.getByTestId('mock')).toBe(getToggle())
   })
 })

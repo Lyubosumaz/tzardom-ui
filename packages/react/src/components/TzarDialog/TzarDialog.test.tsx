@@ -1,21 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { DIALOG, TEST_ID } from '@tzardom-ui/mocks'
+import { DIALOG } from '@tzardom-ui/mocks'
 import { describe, expect, test, vi } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarDialog } from './TzarDialog'
 
-const DIALOG_ID = `${TEST_ID_PREFIXES.dialog}-${TEST_ID}`
-
-const getDialog = () => screen.getByTestId<HTMLDialogElement>(DIALOG_ID)
+const getDialog = () =>
+  screen.getByRole<HTMLDialogElement>('dialog', { hidden: true })
 
 const renderDialog = (open: boolean, onClose = vi.fn()) =>
   render(
-    <TzarDialog
-      data-testid={TEST_ID}
-      open={open}
-      onClose={onClose}
-      title={DIALOG.title}
-    >
+    <TzarDialog open={open} onClose={onClose} title={DIALOG.title}>
       <p>{DIALOG.text}</p>
     </TzarDialog>,
   )
@@ -41,12 +34,7 @@ describe('TzarDialog', () => {
     const { rerender } = renderDialog(true, onClose)
 
     rerender(
-      <TzarDialog
-        data-testid={TEST_ID}
-        open={false}
-        onClose={onClose}
-        title={DIALOG.title}
-      >
+      <TzarDialog open={false} onClose={onClose} title={DIALOG.title}>
         <p>{DIALOG.text}</p>
       </TzarDialog>,
     )
@@ -90,7 +78,6 @@ describe('TzarDialog', () => {
     const onConfirm = vi.fn()
     render(
       <TzarDialog
-        data-testid={TEST_ID}
         open
         onClose={vi.fn()}
         title={DIALOG.title}
@@ -118,7 +105,6 @@ describe('TzarDialog', () => {
     })
     render(
       <TzarDialog
-        data-testid={TEST_ID}
         open
         onClose={vi.fn()}
         title={DIALOG.title}
@@ -144,7 +130,6 @@ describe('TzarDialog', () => {
   test('disables the confirm button with confirmDisabled', () => {
     render(
       <TzarDialog
-        data-testid={TEST_ID}
         open
         onClose={vi.fn()}
         title={DIALOG.title}
@@ -163,13 +148,14 @@ describe('TzarDialog', () => {
 
   test('puts its buttons in a footer after the content', () => {
     renderDialog(true)
-    const footer = screen.getByTestId(`${DIALOG_ID}-actions`)
+    const footer = getDialog().getElementsByTagName('footer')[0]
 
-    expect(footer.tagName).toBe('FOOTER')
     expect(
-      screen
-        .getByTestId(`${DIALOG_ID}-content`)
-        .compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING,
+      footer.contains(screen.getByRole('button', { name: 'Cancel' })),
+    ).toBe(true)
+    expect(
+      screen.getByText(DIALOG.text).compareDocumentPosition(footer) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
   })
 
@@ -180,13 +166,7 @@ describe('TzarDialog', () => {
     expect(compact).not.toContain('min-h-80')
 
     rerender(
-      <TzarDialog
-        data-testid={TEST_ID}
-        open
-        onClose={vi.fn()}
-        title={DIALOG.title}
-        size="lg"
-      >
+      <TzarDialog open onClose={vi.fn()} title={DIALOG.title} size="lg">
         <p>{DIALOG.text}</p>
       </TzarDialog>,
     )
@@ -198,7 +178,6 @@ describe('TzarDialog', () => {
   test('className overrides a conflicting built-in class', () => {
     render(
       <TzarDialog
-        data-testid={TEST_ID}
         open
         onClose={vi.fn()}
         title={DIALOG.title}
@@ -213,12 +192,18 @@ describe('TzarDialog', () => {
     expect(classes).not.toContain('max-w-sm')
   })
 
-  test('gives its root and title test ids built from data-testid', () => {
-    const { container } = renderDialog(true)
-
-    expect(getDialog()).toBe(container.firstChild)
-    expect(screen.getByTestId(`${DIALOG_ID}-title`).textContent).toBe(
-      DIALOG.title,
+  test('passes data-testid through to the dialog', () => {
+    render(
+      <TzarDialog
+        open
+        onClose={vi.fn()}
+        title={DIALOG.title}
+        data-testid="mock"
+      >
+        <p>{DIALOG.text}</p>
+      </TzarDialog>,
     )
+
+    expect(screen.getByTestId('mock')).toBe(getDialog())
   })
 })

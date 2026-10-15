@@ -23,12 +23,9 @@ scripts/            dev, release and clean scripts
 3. **Components use fully semantic HTML.** Native elements first (`<button>`,
    `<ul>`, `<nav>`, `<footer>`, …). ARIA only where HTML has no element or
    attribute for it.
-4. **Test ids: `tzar-ui`, the component, the app's id, then the part.** Every
-   component's props have a required `'data-testid': string`. The root gets
-   `{prefix}-{id}` from `TEST_ID_PREFIXES` (`src/constants/testIdPrefixes.ts`),
-   inner parts add a fixed suffix (`tzar-ui-brand-header-icon`). Tests, stories
-   and e2e pass `TEST_ID` from `@tzardom-ui/mocks` and build ids from
-   `TEST_ID_PREFIXES`, never typed by hand.
+4. **Tests find elements by role, label or text.** `data-testid` is an optional
+   prop that goes on the root as is. Add one only where a test can't find the
+   element another way.
 
 ## Working here
 
@@ -41,20 +38,19 @@ scripts/            dev, release and clean scripts
 
 ## Code conventions
 
-- **Imports:** `@/` for anything outside the current folder (`@/constants/…`,
-  `@/provider/…`, `@/support/…`), `./` within it. `packages/react/src/index.ts`
-  keeps `./`, because its paths end up in the published `.d.ts` files.
+- **Imports:** `@/` for anything outside the current folder (`@/provider/…`,
+  `@/support/…`), `./` within it. `packages/react/src/index.ts` keeps `./`,
+  because its paths end up in the published `.d.ts` files.
 - **A component** lives in `packages/react/src/components/<Name>/` as
   `<Name>.tsx`, `<Name>.types.ts` and `<Name>.test.tsx`, plus a story in
-  `packages/storybook/src/stories/`. Export it from `components/index.ts`, add
-  its prefix to `TEST_ID_PREFIXES`, and document its props and test ids in
-  `packages/react/README.md`.
+  `packages/storybook/src/stories/`. Export it from `components/index.ts` and
+  document its props in `packages/react/README.md`.
 - **Styling:** Tailwind v4 classes on the elements; `className` merged with
   `twMerge`, so the app's classes win. Colors only through theme names
   (`bg-main-soft`, `text-secondary`), never hex values in components.
 - **Mock data** lives in `@tzardom-ui/mocks` and is obviously fake
-  (`'Mock App'`, `'#mock-login'`, `TEST_ID = 'mock'`). The exception is
-  `THEME_COLORS`, which must match the theme CSS.
+  (`'Mock App'`, `'#mock-login'`). The exception is `THEME_COLORS`, which must
+  match the theme CSS.
 - **Themes:** one file per app in `packages/themes/`, same variable names, each
   starting with `@import '@tzardom-ui/react/tailwind.css'`. A new theme's file
   name also goes into `files` in `packages/themes/package.json`.

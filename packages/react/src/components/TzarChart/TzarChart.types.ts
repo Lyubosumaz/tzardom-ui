@@ -14,7 +14,6 @@ export type TzarChartProps = Omit<
   ComponentPropsWithoutRef<'figure'>,
   'title' | 'children'
 > & {
-  'data-testid': string
   type: TzarChartType
   title: string
   subtitle?: string

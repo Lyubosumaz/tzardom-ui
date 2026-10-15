@@ -1,19 +1,15 @@
 import { expect, test } from '@playwright/test'
-import { LANGUAGES, TEST_ID } from '@tzardom-ui/mocks'
-import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+import { LANGUAGES } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
-const LANGUAGE_SELECT_ID = `${TEST_ID_PREFIXES.languageSelect}-${TEST_ID}`
 const [first, second] = LANGUAGES
-const TRIGGER = `${LANGUAGE_SELECT_ID}-trigger`
-const MENU = `${LANGUAGE_SELECT_ID}-menu`
 
 test('can be used with the keyboard alone', async ({ page }) => {
   await page.goto(
     storyUrl('reactcomponentlibrary-tzarlanguageselect--interactive'),
   )
-  const trigger = page.getByTestId(TRIGGER)
-  const menu = page.getByTestId(MENU)
+  const trigger = page.getByRole('button', { name: /^Language/ })
+  const menu = page.getByRole('list')
 
   await expect(trigger).toHaveAccessibleName(`Language: ${first.short}`)
   await trigger.focus()
@@ -32,8 +28,8 @@ test('opens the menu below the button, lined up with its right edge', async ({
   page,
 }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarlanguageselect--default'))
-  const trigger = page.getByTestId(TRIGGER)
-  const menu = page.getByTestId(MENU)
+  const trigger = page.getByRole('button', { name: /^Language/ })
+  const menu = page.getByRole('list')
 
   await trigger.click()
   await expect(menu).toBeVisible()
@@ -52,9 +48,9 @@ test('opens the menu below the button, lined up with its right edge', async ({
 
 test('closes on a click elsewhere on the page', async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzarlanguageselect--default'))
-  const menu = page.getByTestId(MENU)
+  const menu = page.getByRole('list')
 
-  await page.getByTestId(TRIGGER).click()
+  await page.getByRole('button', { name: /^Language/ }).click()
   await expect(menu).toBeVisible()
 
   await page.mouse.click(5, 5)

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BUTTON, TEST_ID } from '@tzardom-ui/mocks'
+import { BUTTON } from '@tzardom-ui/mocks'
 import { TzarButton } from '@tzardom-ui/react'
 import { fn } from 'storybook/test'
 
@@ -7,7 +7,6 @@ const meta: Meta<typeof TzarButton> = {
   title: 'ReactComponentLibrary/TzarButton',
   component: TzarButton,
   args: {
-    'data-testid': TEST_ID,
     children: BUTTON.text,
     onClick: fn(),
   },

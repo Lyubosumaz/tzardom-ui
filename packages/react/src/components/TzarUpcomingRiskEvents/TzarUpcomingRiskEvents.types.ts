@@ -12,7 +12,6 @@ export type TzarUpcomingRiskEventsProps = Omit<
   ComponentPropsWithoutRef<'section'>,
   'title' | 'children'
 > & {
-  'data-testid': string
   title: string
   status: 'loading' | 'error' | 'ready'
   events: readonly TzarRiskEvent[]

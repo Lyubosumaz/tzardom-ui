@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react'
-import { TEST_ID, UPCOMING_RISK_EVENTS } from '@tzardom-ui/mocks'
+import { UPCOMING_RISK_EVENTS } from '@tzardom-ui/mocks'
 import { describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import type { TzarWidgetStatus } from '@/support/WidgetSection'
 import { TzarUpcomingRiskEvents } from './TzarUpcomingRiskEvents'
 import type { TzarRiskEvent } from './TzarUpcomingRiskEvents.types'
 
-const ROOT_ID = `${TEST_ID_PREFIXES.upcomingRiskEvents}-${TEST_ID}`
 const { title, events } = UPCOMING_RISK_EVENTS
 const [eventA, eventB] = events
+
+const getWidget = () => screen.getByRole('region', { name: title })
 
 const renderWidget = (
   status: TzarWidgetStatus,
@@ -16,7 +16,6 @@ const renderWidget = (
 ) =>
   render(
     <TzarUpcomingRiskEvents
-      data-testid={TEST_ID}
       title={title}
       status={status}
       events={shownEvents}
@@ -27,37 +26,33 @@ describe('TzarUpcomingRiskEvents', () => {
   test('is a section named by its heading', () => {
     renderWidget('ready')
 
-    expect(screen.getByRole('region', { name: title })).toBe(
-      screen.getByTestId(ROOT_ID),
-    )
+    expect(getWidget().tagName).toBe('SECTION')
     expect(screen.getByRole('heading', { level: 2, name: title })).toBeTruthy()
   })
 
   test('shows the loading text and is busy while loading', () => {
     renderWidget('loading')
 
-    expect(screen.getByTestId(`${ROOT_ID}-loading`).textContent).toBe(
-      'Loading upcoming risk events…',
-    )
-    expect(screen.getByTestId(ROOT_ID).getAttribute('aria-busy')).toBe('true')
+    expect(screen.getByText('Loading upcoming risk events…')).toBeTruthy()
+    expect(getWidget().getAttribute('aria-busy')).toBe('true')
     expect(screen.queryByRole('list')).toBeNull()
   })
 
   test('shows the error text on error', () => {
     renderWidget('error')
 
-    expect(screen.getByTestId(`${ROOT_ID}-error`).textContent).toBe(
-      'Unable to load upcoming risk events right now.',
-    )
+    expect(
+      screen.getByText('Unable to load upcoming risk events right now.'),
+    ).toBeTruthy()
     expect(screen.queryByRole('list')).toBeNull()
   })
 
   test('shows the empty text when there are no events', () => {
     renderWidget('ready', [])
 
-    expect(screen.getByTestId(`${ROOT_ID}-empty`).textContent).toBe(
-      'No upcoming vacations or critical events.',
-    )
+    expect(
+      screen.getByText('No upcoming vacations or critical events.'),
+    ).toBeTruthy()
     expect(screen.queryByRole('list')).toBeNull()
   })
 
@@ -82,58 +77,48 @@ describe('TzarUpcomingRiskEvents', () => {
   test('uses custom texts', () => {
     const { rerender } = renderWidget('loading', [])
 
-    for (const [status, prop, part] of [
-      ['loading', 'loadingText', 'loading'],
-      ['error', 'errorText', 'error'],
-      ['ready', 'emptyText', 'empty'],
+    for (const [status, prop] of [
+      ['loading', 'loadingText'],
+      ['error', 'errorText'],
+      ['ready', 'emptyText'],
     ] as const) {
       rerender(
         <TzarUpcomingRiskEvents
-          data-testid={TEST_ID}
           title={title}
           status={status}
           events={[]}
           {...{ [prop]: 'Mock text' }}
         />,
       )
-      expect(screen.getByTestId(`${ROOT_ID}-${part}`).textContent).toBe(
-        'Mock text',
-      )
+      expect(screen.getByText('Mock text')).toBeTruthy()
     }
   })
 
   test('className overrides a conflicting built-in class', () => {
     render(
       <TzarUpcomingRiskEvents
-        data-testid={TEST_ID}
         title={title}
         status="ready"
         events={events}
         className="space-y-4"
       />,
     )
-    const classes = screen.getByTestId(ROOT_ID).className.split(' ')
+    const classes = getWidget().className.split(' ')
 
     expect(classes).toContain('space-y-4')
     expect(classes).not.toContain('space-y-2')
   })
 
-  test('passes data-testid to its root element, the section', () => {
-    const { container } = renderWidget('ready')
+  test('passes data-testid through to the section', () => {
+    render(
+      <TzarUpcomingRiskEvents
+        title={title}
+        status="ready"
+        events={events}
+        data-testid="mock"
+      />,
+    )
 
-    expect(screen.getByTestId(ROOT_ID)).toBe(container.firstChild)
-    expect(screen.getByTestId(ROOT_ID).tagName).toBe('SECTION')
-  })
-
-  test('gives its parts test ids built from data-testid', () => {
-    renderWidget('ready')
-
-    expect(screen.getByTestId(`${ROOT_ID}-title`).textContent).toBe(title)
-    expect(screen.getByTestId(`${ROOT_ID}-list`)).toBe(screen.getByRole('list'))
-    for (const event of events) {
-      expect(
-        screen.getByTestId(`${ROOT_ID}-event-${event.id}`).textContent,
-      ).toContain(event.description)
-    }
+    expect(screen.getByTestId('mock')).toBe(getWidget())
   })
 })

@@ -1,22 +1,26 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { TEST_ID, USER } from '@tzardom-ui/mocks'
+import { USER } from '@tzardom-ui/mocks'
 import type { ComponentPropsWithoutRef } from 'react'
 import { describe, expect, test, vi } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarUserMenu } from './TzarUserMenu'
-
-const USER_MENU_ID = `${TEST_ID_PREFIXES.userMenu}-${TEST_ID}`
-const ACCOUNT_ID = `${TEST_ID_PREFIXES.commonLink}-${USER_MENU_ID}-account`
-const LOGOUT_ID = `${TEST_ID_PREFIXES.commonLink}-${USER_MENU_ID}-logout`
 
 const getTrigger = () =>
   screen.getByRole('button', { name: `User menu: ${USER.email}` })
-const getMenu = () => screen.getByTestId(`${USER_MENU_ID}-menu`)
+// The menu is the element the trigger controls.
+const getMenu = () => {
+  const menuId = getTrigger().getAttribute('aria-controls') ?? ''
+  const menu = document.getElementById(menuId)
+  if (!menu) {
+    throw new Error('The trigger should control the menu')
+  }
+  return menu
+}
+const getAccountLink = () =>
+  screen.getByRole('link', { name: 'Account', hidden: true })
 
 const renderUserMenu = (onLogout = vi.fn()) =>
   render(
     <TzarUserMenu
-      data-testid={TEST_ID}
       email={USER.email}
       accountHref={USER.accountHref}
       onLogout={onLogout}
@@ -33,7 +37,6 @@ describe('TzarUserMenu', () => {
   test('names the trigger with the label and the email', () => {
     render(
       <TzarUserMenu
-        data-testid={TEST_ID}
         email={USER.email}
         accountHref={USER.accountHref}
         onLogout={vi.fn()}
@@ -67,7 +70,6 @@ describe('TzarUserMenu', () => {
   test('uses custom texts for the account link and log out', () => {
     render(
       <TzarUserMenu
-        data-testid={TEST_ID}
         email={USER.email}
         accountHref={USER.accountHref}
         onLogout={vi.fn()}
@@ -90,7 +92,6 @@ describe('TzarUserMenu', () => {
     )
     render(
       <TzarUserMenu
-        data-testid={TEST_ID}
         email={USER.email}
         accountHref={USER.accountHref}
         onLogout={vi.fn()}
@@ -98,9 +99,7 @@ describe('TzarUserMenu', () => {
       />,
     )
 
-    expect(screen.getByTestId(ACCOUNT_ID).getAttribute('data-mock-link')).toBe(
-      'true',
-    )
+    expect(getAccountLink().getAttribute('data-mock-link')).toBe('true')
   })
 
   test('closes when the account link is clicked', () => {
@@ -150,26 +149,22 @@ describe('TzarUserMenu', () => {
 
     fireEvent.click(trigger)
     fireEvent.focusOut(trigger, {
-      relatedTarget: screen.getByTestId(ACCOUNT_ID),
+      relatedTarget: getAccountLink(),
     })
 
     expect(getMenu().hidden).toBe(false)
   })
 
-  test('passes data-testid to its root element, the outer div', () => {
-    const { container } = renderUserMenu()
-
-    expect(screen.getByTestId(USER_MENU_ID)).toBe(container.firstChild)
-  })
-
-  test('gives its parts test ids built from data-testid', () => {
-    renderUserMenu()
-
-    expect(screen.getByTestId(`${USER_MENU_ID}-trigger`)).toBe(getTrigger())
-    expect(screen.getByTestId(`${USER_MENU_ID}-email`).textContent).toBe(
-      USER.email,
+  test('passes data-testid through to its root element', () => {
+    const { container } = render(
+      <TzarUserMenu
+        email={USER.email}
+        accountHref={USER.accountHref}
+        onLogout={vi.fn()}
+        data-testid="mock"
+      />,
     )
-    expect(screen.getByTestId(ACCOUNT_ID).textContent).toBe('Account')
-    expect(screen.getByTestId(LOGOUT_ID).textContent).toBe('Log out')
+
+    expect(screen.getByTestId('mock')).toBe(container.firstChild)
   })
 })

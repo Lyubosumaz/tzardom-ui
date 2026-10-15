@@ -1,17 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { BUTTON, TEST_ID } from '@tzardom-ui/mocks'
+import { BUTTON } from '@tzardom-ui/mocks'
 import { describe, expect, test, vi } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarButton } from './TzarButton'
-
-const BUTTON_ID = `${TEST_ID_PREFIXES.button}-${TEST_ID}`
 
 const getButton = () => screen.getByRole('button', { name: BUTTON.text })
 const classes = () => getButton().className.split(' ')
 
 describe('TzarButton', () => {
   test('is a native button that is not a submit button by default', () => {
-    render(<TzarButton data-testid={TEST_ID}>{BUTTON.text}</TzarButton>)
+    render(<TzarButton>{BUTTON.text}</TzarButton>)
 
     expect(getButton().tagName).toBe('BUTTON')
     expect(getButton().getAttribute('type')).toBe('button')
@@ -27,9 +24,7 @@ describe('TzarButton', () => {
           handleSubmit(event.nativeEvent)
         }}
       >
-        <TzarButton data-testid={TEST_ID} type="submit">
-          {BUTTON.text}
-        </TzarButton>
+        <TzarButton type="submit">{BUTTON.text}</TzarButton>
       </form>,
     )
 
@@ -41,16 +36,14 @@ describe('TzarButton', () => {
   test('calls onClick, but not while disabled', () => {
     const handleClick = vi.fn()
     const { rerender } = render(
-      <TzarButton data-testid={TEST_ID} onClick={handleClick}>
-        {BUTTON.text}
-      </TzarButton>,
+      <TzarButton onClick={handleClick}>{BUTTON.text}</TzarButton>,
     )
 
     fireEvent.click(getButton())
     expect(handleClick).toHaveBeenCalledOnce()
 
     rerender(
-      <TzarButton data-testid={TEST_ID} onClick={handleClick} disabled>
+      <TzarButton onClick={handleClick} disabled>
         {BUTTON.text}
       </TzarButton>,
     )
@@ -59,7 +52,7 @@ describe('TzarButton', () => {
   })
 
   test('is an outlined small button by default', () => {
-    render(<TzarButton data-testid={TEST_ID}>{BUTTON.text}</TzarButton>)
+    render(<TzarButton>{BUTTON.text}</TzarButton>)
 
     expect(classes()).toEqual(
       expect.arrayContaining(['border', 'bg-background', 'h-8', 'text-xs']),
@@ -68,28 +61,18 @@ describe('TzarButton', () => {
 
   test('has a filled look for primary and danger', () => {
     const { rerender } = render(
-      <TzarButton data-testid={TEST_ID} variant="primary">
-        {BUTTON.text}
-      </TzarButton>,
+      <TzarButton variant="primary">{BUTTON.text}</TzarButton>,
     )
     expect(classes()).toContain('bg-accent')
 
-    rerender(
-      <TzarButton data-testid={TEST_ID} variant="danger">
-        {BUTTON.text}
-      </TzarButton>,
-    )
+    rerender(<TzarButton variant="danger">{BUTTON.text}</TzarButton>)
     expect(classes()).toEqual(
       expect.arrayContaining(['bg-danger', 'text-foreground']),
     )
   })
 
   test("has the header's soft color for soft", () => {
-    render(
-      <TzarButton data-testid={TEST_ID} variant="soft">
-        {BUTTON.text}
-      </TzarButton>,
-    )
+    render(<TzarButton variant="soft">{BUTTON.text}</TzarButton>)
 
     expect(classes()).toEqual(
       expect.arrayContaining(['bg-accent-soft', 'border']),
@@ -97,30 +80,22 @@ describe('TzarButton', () => {
   })
 
   test('is larger with size md', () => {
-    render(
-      <TzarButton data-testid={TEST_ID} size="md">
-        {BUTTON.text}
-      </TzarButton>,
-    )
+    render(<TzarButton size="md">{BUTTON.text}</TzarButton>)
 
     expect(classes()).toEqual(expect.arrayContaining(['py-1.5', 'text-sm']))
     expect(classes()).not.toContain('h-8')
   })
 
   test('className overrides a conflicting built-in class', () => {
-    render(
-      <TzarButton data-testid={TEST_ID} className="px-6">
-        {BUTTON.text}
-      </TzarButton>,
-    )
+    render(<TzarButton className="px-6">{BUTTON.text}</TzarButton>)
 
     expect(classes()).toContain('px-6')
     expect(classes()).not.toContain('px-3')
   })
 
-  test('passes data-testid to its root element, the button', () => {
-    render(<TzarButton data-testid={TEST_ID}>{BUTTON.text}</TzarButton>)
+  test('passes data-testid through to the button', () => {
+    render(<TzarButton data-testid="mock">{BUTTON.text}</TzarButton>)
 
-    expect(screen.getByTestId(BUTTON_ID)).toBe(getButton())
+    expect(screen.getByTestId('mock')).toBe(getButton())
   })
 })

@@ -6,7 +6,6 @@ export type TzarPageHeaderProps = Omit<
   ComponentPropsWithoutRef<'hgroup'>,
   'title' | 'children'
 > & {
-  'data-testid': string
   title: string
   description: string
   as?: TzarHeadingLevel

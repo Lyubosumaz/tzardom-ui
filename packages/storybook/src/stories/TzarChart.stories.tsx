@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CHART, TEST_ID } from '@tzardom-ui/mocks'
+import { CHART } from '@tzardom-ui/mocks'
 import { TzarChart } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarChart> = {
   title: 'ReactComponentLibrary/TzarChart',
   component: TzarChart,
   args: {
-    'data-testid': TEST_ID,
     type: 'line',
     title: CHART.title,
     subtitle: CHART.subtitle,

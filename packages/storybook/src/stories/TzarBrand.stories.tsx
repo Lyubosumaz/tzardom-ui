@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BRAND, TEST_ID } from '@tzardom-ui/mocks'
+import { BRAND } from '@tzardom-ui/mocks'
 import { TzarBrand } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarBrand> = {
   title: 'ReactComponentLibrary/TzarBrand',
   component: TzarBrand,
-  args: { ...BRAND, 'data-testid': TEST_ID },
+  args: { ...BRAND },
   argTypes: { icon: { control: false } },
 }
 export default meta

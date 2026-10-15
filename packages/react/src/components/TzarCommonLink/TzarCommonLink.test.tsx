@@ -1,18 +1,13 @@
 import { render, screen } from '@testing-library/react'
-import { LOGIN_LINK, TEST_ID } from '@tzardom-ui/mocks'
+import { LOGIN_LINK } from '@tzardom-ui/mocks'
 import type { AnchorHTMLAttributes } from 'react'
 import { describe, expect, test } from 'vitest'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarCommonLink } from './TzarCommonLink'
-
-const LINK_ID = `${TEST_ID_PREFIXES.commonLink}-${TEST_ID}`
 
 describe('TzarCommonLink', () => {
   test('renders a plain link by default', () => {
     render(
-      <TzarCommonLink data-testid={TEST_ID} href={LOGIN_LINK.href}>
-        {LOGIN_LINK.text}
-      </TzarCommonLink>,
+      <TzarCommonLink href={LOGIN_LINK.href}>{LOGIN_LINK.text}</TzarCommonLink>,
     )
     const link = screen.getByRole('link', { name: LOGIN_LINK.text })
 
@@ -27,7 +22,7 @@ describe('TzarCommonLink', () => {
     )
 
     render(
-      <TzarCommonLink data-testid={TEST_ID} as={AppLink} href="/teams">
+      <TzarCommonLink as={AppLink} href="/teams">
         Teams
       </TzarCommonLink>,
     )
@@ -39,7 +34,7 @@ describe('TzarCommonLink', () => {
 
   test('className overrides a conflicting built-in class', () => {
     render(
-      <TzarCommonLink data-testid={TEST_ID} href="/" className="px-5 ml-2">
+      <TzarCommonLink href="/" className="px-5 ml-2">
         Home
       </TzarCommonLink>,
     )
@@ -53,7 +48,7 @@ describe('TzarCommonLink', () => {
 
   test('the ghost variant has no border or background', () => {
     render(
-      <TzarCommonLink data-testid={TEST_ID} href="/risk" variant="ghost">
+      <TzarCommonLink href="/risk" variant="ghost">
         Risk
       </TzarCommonLink>,
     )
@@ -64,13 +59,13 @@ describe('TzarCommonLink', () => {
     expect(classes).not.toContain('bg-background')
   })
 
-  test('passes data-testid to its root element, the link', () => {
+  test('passes data-testid through to the link', () => {
     render(
-      <TzarCommonLink data-testid={TEST_ID} href="/">
+      <TzarCommonLink data-testid="mock" href="/">
         Home
       </TzarCommonLink>,
     )
 
-    expect(screen.getByTestId(LINK_ID)).toBe(screen.getByRole('link'))
+    expect(screen.getByTestId('mock')).toBe(screen.getByRole('link'))
   })
 })

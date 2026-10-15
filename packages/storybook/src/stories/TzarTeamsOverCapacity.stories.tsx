@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { TEAMS_OVER_CAPACITY, TEST_ID } from '@tzardom-ui/mocks'
+import { TEAMS_OVER_CAPACITY } from '@tzardom-ui/mocks'
 import { TzarTeamsOverCapacity } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarTeamsOverCapacity> = {
   title: 'ReactComponentLibrary/TzarTeamsOverCapacity',
   component: TzarTeamsOverCapacity,
   args: {
-    'data-testid': TEST_ID,
     title: TEAMS_OVER_CAPACITY.title,
     status: 'ready',
     teams: TEAMS_OVER_CAPACITY.teams,

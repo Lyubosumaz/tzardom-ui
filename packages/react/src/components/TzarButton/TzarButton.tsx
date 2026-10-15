@@ -1,5 +1,4 @@
 import { twMerge } from 'tailwind-merge'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import type {
   TzarButtonProps,
   TzarButtonSize,
@@ -25,7 +24,6 @@ const SIZE_CLASSES: Record<TzarButtonSize, string> = {
 }
 
 export const TzarButton = ({
-  'data-testid': testId,
   variant = 'secondary',
   size = 'sm',
   type = 'button',
@@ -41,6 +39,5 @@ export const TzarButton = ({
       SIZE_CLASSES[size],
       className,
     )}
-    data-testid={`${TEST_ID_PREFIXES.button}-${testId}`}
   />
 )

@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { TEST_ID, UPCOMING_RISK_EVENTS } from '@tzardom-ui/mocks'
+import { UPCOMING_RISK_EVENTS } from '@tzardom-ui/mocks'
 import { TzarUpcomingRiskEvents } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarUpcomingRiskEvents> = {
   title: 'ReactComponentLibrary/TzarUpcomingRiskEvents',
   component: TzarUpcomingRiskEvents,
   args: {
-    'data-testid': TEST_ID,
     title: UPCOMING_RISK_EVENTS.title,
     status: 'ready',
     events: UPCOMING_RISK_EVENTS.events,

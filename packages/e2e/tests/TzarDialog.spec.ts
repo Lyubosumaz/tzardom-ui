@@ -1,56 +1,53 @@
 import { expect, test } from '@playwright/test'
-import { DIALOG, TEST_ID } from '@tzardom-ui/mocks'
-import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+import type { Page } from '@playwright/test'
+import { BUTTON, DIALOG } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
-const DIALOG_ID = `${TEST_ID_PREFIXES.dialog}-${TEST_ID}`
-const OPEN = `${TEST_ID_PREFIXES.button}-open`
-const CANCEL = `${TEST_ID_PREFIXES.button}-${TEST_ID}-cancel`
-const CONFIRM = `${TEST_ID_PREFIXES.button}-${TEST_ID}-confirm`
+const openButton = (page: Page) =>
+  page.getByRole('button', { name: BUTTON.text })
+const dialog = (page: Page) => page.getByRole('dialog', { name: DIALOG.title })
 
 test.beforeEach(async ({ page }) => {
   await page.goto(storyUrl('reactcomponentlibrary-tzardialog--interactive'))
 })
 
 test('opens as a named modal dialog', async ({ page }) => {
-  await page.getByTestId(OPEN).click()
+  await openButton(page).click()
 
-  await expect(page.getByRole('dialog', { name: DIALOG.title })).toBeVisible()
+  await expect(dialog(page)).toBeVisible()
 })
 
 test('closes on Escape and gives focus back to the opening button', async ({
   page,
 }) => {
-  const openButton = page.getByTestId(OPEN)
-  await openButton.click()
+  await openButton(page).click()
   await page.keyboard.press('Escape')
 
-  await expect(page.getByTestId(DIALOG_ID)).toBeHidden()
-  await expect(openButton).toBeFocused()
+  await expect(dialog(page)).toBeHidden()
+  await expect(openButton(page)).toBeFocused()
 })
 
 test('keeps keyboard focus inside while open', async ({ page }) => {
-  await page.getByTestId(OPEN).click()
+  await openButton(page).click()
 
   for (let press = 0; press < 5; press += 1) {
     await page.keyboard.press('Tab')
-    const focusedInside = await page
-      .getByTestId(DIALOG_ID)
-      .evaluate((dialog) => dialog.contains(document.activeElement))
+    const focusedInside = await dialog(page).evaluate((dialog) =>
+      dialog.contains(document.activeElement),
+    )
     expect(focusedInside).toBe(true)
   }
 })
 
 test('covers the page behind, so it cannot be clicked', async ({ page }) => {
-  const openButton = page.getByTestId(OPEN)
-  const box = await openButton.boundingBox()
+  const box = await openButton(page).boundingBox()
   if (!box) {
     throw new Error('The open button should be on screen')
   }
-  await openButton.click()
+  await openButton(page).click()
 
   // The backdrop now sits on top of the button.
-  const isButtonOnTop = await openButton.evaluate(
+  const isButtonOnTop = await openButton(page).evaluate(
     (button, point) => document.elementFromPoint(point.x, point.y) === button,
     { x: box.x + box.width / 2, y: box.y + box.height / 2 },
   )
@@ -58,21 +55,19 @@ test('covers the page behind, so it cannot be clicked', async ({ page }) => {
 })
 
 test('closes from its own buttons', async ({ page }) => {
-  await page.getByTestId(OPEN).click()
-  await page.getByTestId(CANCEL).click()
-  await expect(page.getByTestId(DIALOG_ID)).toBeHidden()
+  await openButton(page).click()
+  await dialog(page).getByRole('button', { name: 'Cancel' }).click()
+  await expect(dialog(page)).toBeHidden()
 
-  await page.getByTestId(OPEN).click()
-  await page.getByTestId(CONFIRM).click()
-  await expect(page.getByTestId(DIALOG_ID)).toBeHidden()
+  await openButton(page).click()
+  await dialog(page).getByRole('button', { name: 'Confirm' }).click()
+  await expect(dialog(page)).toBeHidden()
 })
 
 test('keeps the actions at the bottom of the dialog', async ({ page }) => {
-  await page.getByTestId(OPEN).click()
-  const dialogBox = await page.getByTestId(DIALOG_ID).boundingBox()
-  const actionsBox = await page
-    .getByTestId(`${DIALOG_ID}-actions`)
-    .boundingBox()
+  await openButton(page).click()
+  const dialogBox = await dialog(page).boundingBox()
+  const actionsBox = await dialog(page).locator('footer').boundingBox()
   if (!dialogBox || !actionsBox) {
     throw new Error('The dialog and its actions should be on screen')
   }

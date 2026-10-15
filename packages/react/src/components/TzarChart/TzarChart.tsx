@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { useElementWidth } from '@/support/useElementWidth'
 import { ChartBars } from './ChartBars'
 import {
@@ -19,7 +18,6 @@ import type { TzarChartProps } from './TzarChart.types'
 const MIN_LABEL_WIDTH = 56
 
 export const TzarChart = ({
-  'data-testid': testId,
   type,
   title,
   subtitle,
@@ -34,7 +32,6 @@ export const TzarChart = ({
 }: TzarChartProps) => {
   const { ref, width } = useElementWidth(480)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const rootTestId = `${TEST_ID_PREFIXES.chart}-${testId}`
 
   // Plot area and scales.
   const plotWidth = Math.max(width - MARGIN.left - MARGIN.right, 0)
@@ -63,36 +60,20 @@ export const TzarChart = ({
         'min-w-0 rounded-lg border border-border-subtle bg-background p-4 shadow-sm',
         className,
       )}
-      data-testid={rootTestId}
     >
       <figcaption className="mb-2">
-        <p
-          className="text-sm font-semibold uppercase tracking-wide opacity-70"
-          data-testid={`${rootTestId}-title`}
-        >
+        <p className="text-sm font-semibold uppercase tracking-wide opacity-70">
           {title}
         </p>
-        {subtitle && (
-          <p
-            className="text-xs opacity-70"
-            data-testid={`${rootTestId}-subtitle`}
-          >
-            {subtitle}
-          </p>
-        )}
+        {subtitle && <p className="text-xs opacity-70">{subtitle}</p>}
       </figcaption>
 
       {data.length === 0 ? (
-        <p className="text-xs opacity-80" data-testid={`${rootTestId}-empty`}>
-          {emptyText}
-        </p>
+        <p className="text-xs opacity-80">{emptyText}</p>
       ) : (
         <>
           {series.length > 1 && (
-            <ul
-              className="mb-2 flex flex-wrap gap-4 text-xs text-foreground"
-              data-testid={`${rootTestId}-legend`}
-            >
+            <ul className="mb-2 flex flex-wrap gap-4 text-xs text-foreground">
               {series.map((serie) => (
                 <li key={serie.key} className="flex items-center gap-1.5">
                   <span
@@ -115,7 +96,6 @@ export const TzarChart = ({
               height={CHART_HEIGHT}
               aria-hidden="true"
               className="block overflow-visible"
-              data-testid={`${rootTestId}-plot`}
               onPointerLeave={() => {
                 setActiveIndex(null)
               }}
@@ -196,6 +176,9 @@ export const TzarChart = ({
               )}
 
               {/* Invisible hover areas, one full-height band per row. */}
+              {/* TODO: the hover areas and the tooltip have no role or name,
+                  so tests find them by position (Playwright) or by tag. Give
+                  them a testable hook if hover needs unit tests. */}
               {data.map((row, index) => (
                 <rect
                   key={String(row[xKey])}
@@ -204,7 +187,6 @@ export const TzarChart = ({
                   width={bandWidth}
                   height={plotHeight}
                   className="fill-transparent"
-                  data-testid={`${rootTestId}-hover-${String(index)}`}
                   onPointerEnter={() => {
                     setActiveIndex(index)
                   }}
@@ -221,7 +203,6 @@ export const TzarChart = ({
                     ? 'translateX(calc(-100% - 8px))'
                     : 'translateX(8px)',
                 }}
-                data-testid={`${rootTestId}-tooltip`}
               >
                 <p className="mb-1 text-muted">{String(activeRow[xKey])}</p>
                 {series.map((serie) => (
@@ -241,7 +222,7 @@ export const TzarChart = ({
             )}
           </div>
 
-          <details className="mt-2 text-xs" data-testid={`${rootTestId}-data`}>
+          <details className="mt-2 text-xs">
             <summary className="cursor-pointer text-muted">
               {tableLabel}
             </summary>

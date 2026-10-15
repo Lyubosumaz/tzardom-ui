@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BUTTON, DIALOG, TEST_ID } from '@tzardom-ui/mocks'
+import { BUTTON, DIALOG } from '@tzardom-ui/mocks'
 import { TzarButton, TzarDialog } from '@tzardom-ui/react'
 import { useState } from 'react'
 
@@ -7,7 +7,6 @@ const meta: Meta<typeof TzarDialog> = {
   title: 'ReactComponentLibrary/TzarDialog',
   component: TzarDialog,
   args: {
-    'data-testid': TEST_ID,
     title: DIALOG.title,
   },
 }
@@ -25,7 +24,6 @@ export const Interactive: Story = {
     return (
       <>
         <TzarButton
-          data-testid="open"
           onClick={() => {
             setOpen(true)
           }}
