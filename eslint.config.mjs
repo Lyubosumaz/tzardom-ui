@@ -110,5 +110,12 @@ export default defineConfig([
       'react/no-array-index-key': 'error',
     },
   },
+  // Library: object types are written with `type`, never `interface`
+  {
+    files: ['packages/react/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    },
+  },
   storybook.configs['flat/recommended'],
 ])

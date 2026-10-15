@@ -1,8 +1,7 @@
 import { useId } from 'react'
 import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
-
-export type TzarWidgetStatus = 'loading' | 'error' | 'ready'
+import type { TzarWidgetStatus } from './WidgetSection.types'
 
 type WidgetSectionProps = Omit<ComponentPropsWithoutRef<'section'>, 'title'> & {
   title: string
@@ -16,7 +15,7 @@ type WidgetSectionProps = Omit<ComponentPropsWithoutRef<'section'>, 'title'> & {
 
 const MESSAGE_CLASSES = 'text-xs opacity-80'
 
-// The frame TzarTeamsOverCapacity and TzarUpcomingRiskEvents share: a section
+// Internal, not exported. The frame TzarTeamsOverCapacity and TzarUpcomingRiskEvents share: a section
 // named by its heading, then a loading, error or empty message, or `children`
 // once the data is ready.
 export const WidgetSection = ({

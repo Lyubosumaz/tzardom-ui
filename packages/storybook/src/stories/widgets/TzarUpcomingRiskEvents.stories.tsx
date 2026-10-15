@@ -3,7 +3,7 @@ import { UPCOMING_RISK_EVENTS } from '@tzardom-ui/mocks'
 import { TzarUpcomingRiskEvents } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarUpcomingRiskEvents> = {
-  title: 'ReactComponentLibrary/TzarUpcomingRiskEvents',
+  title: 'Widgets/TzarUpcomingRiskEvents',
   component: TzarUpcomingRiskEvents,
   args: {
     title: UPCOMING_RISK_EVENTS.title,

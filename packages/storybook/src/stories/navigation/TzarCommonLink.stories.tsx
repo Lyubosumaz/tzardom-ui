@@ -3,7 +3,7 @@ import { LOGIN_LINK, OVERVIEW_LINK } from '@tzardom-ui/mocks'
 import { TzarCommonLink } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarCommonLink> = {
-  title: 'ReactComponentLibrary/TzarCommonLink',
+  title: 'Navigation/TzarCommonLink',
   component: TzarCommonLink,
   args: {
     href: LOGIN_LINK.href,

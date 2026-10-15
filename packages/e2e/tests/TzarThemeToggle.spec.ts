@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import { THEME_COLORS } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
-const TOGGLE_STORY = storyUrl('reactcomponentlibrary-tzarthemetoggle--default')
+const TOGGLE_STORY = storyUrl('actions-tzarthemetoggle--default')
 const { light, dark } = THEME_COLORS
 
 test('switches the page to dark and keeps it after a reload', async ({

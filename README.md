@@ -51,9 +51,9 @@ For one package only: `pnpm --filter @tzardom-ui/react build`.
 
 - A component lives in `packages/react/src/components/<Name>/` as `<Name>.tsx`,
   `<Name>.types.ts` and `<Name>.test.tsx`. Its story goes in
-  `packages/storybook/src/stories/`.
-- Imports: `@/` for another folder of the same package
-  (`@/support/WidgetSection`), `./` for the same folder.
+  `packages/storybook/src/stories/<group>/` (lowercase, e.g. `actions`).
+- Imports: `@/` for another folder of the same package (`@/hooks/useDropdown`),
+  `./` for the same folder.
 - Test and story data comes from `@tzardom-ui/mocks` and is obviously fake
   (`'Mock App'`).
 - Test by role, label or text; see

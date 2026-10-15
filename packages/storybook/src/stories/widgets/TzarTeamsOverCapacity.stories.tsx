@@ -3,7 +3,7 @@ import { TEAMS_OVER_CAPACITY } from '@tzardom-ui/mocks'
 import { TzarTeamsOverCapacity } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarTeamsOverCapacity> = {
-  title: 'ReactComponentLibrary/TzarTeamsOverCapacity',
+  title: 'Widgets/TzarTeamsOverCapacity',
   component: TzarTeamsOverCapacity,
   args: {
     title: TEAMS_OVER_CAPACITY.title,

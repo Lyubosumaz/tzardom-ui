@@ -1,4 +1,4 @@
-import { WidgetSection } from '@/support/WidgetSection'
+import { WidgetSection } from '@/components/WidgetSection/WidgetSection'
 import type { TzarTeamsOverCapacityProps } from './TzarTeamsOverCapacity.types'
 
 // Workload as a share of capacity, e.g. 15 of 10 is 150.

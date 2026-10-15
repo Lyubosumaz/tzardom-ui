@@ -3,7 +3,7 @@ import { FOOTER } from '@tzardom-ui/mocks'
 import { TzarFooter } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarFooter> = {
-  title: 'ReactComponentLibrary/TzarFooter',
+  title: 'Layout/TzarFooter',
   component: TzarFooter,
   args: { ...FOOTER },
 }

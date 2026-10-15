@@ -39,12 +39,23 @@ scripts/            dev, release and clean scripts
 ## Code conventions
 
 - **Imports:** `@/` for anything outside the current folder (`@/provider/…`,
-  `@/support/…`), `./` within it. `packages/react/src/index.ts` keeps `./`,
-  because its paths end up in the published `.d.ts` files.
+  `@/hooks/…`), `./` within it. Paths that end up in the published `.d.ts` files
+  stay relative, because apps can't resolve `@/`: the `index.ts` barrels, and a
+  type import from another folder when an exported type uses it (e.g.
+  `useTzarTheme` imports `ThemeColorMode` from `../TzarProvider/…`).
 - **A component** lives in `packages/react/src/components/<Name>/` as
   `<Name>.tsx`, `<Name>.types.ts` and `<Name>.test.tsx`, plus a story in
-  `packages/storybook/src/stories/`. Export it from `components/index.ts` and
-  document its props in `packages/react/README.md`.
+  `packages/storybook/src/stories/<group>/`, a lowercase folder (`actions`,
+  `forms`, `data-display`, …; internal pieces go in `internal`) whose story
+  title starts with the same group (`Data Display/TzarChart`). Export it from
+  `components/index.ts` and document its props in `packages/react/README.md`.
+  `provider/` follows the same rule: one folder per piece (`TzarProvider/`,
+  `TzarContext/`, `useTzarTheme/`).
+- **Names:** `Tzar…` means public (exported from the package). Internal pieces
+  have no prefix (`WidgetSection`, `ChartBars`) and are never exported; only
+  their public types may be (`TzarWidgetStatus`).
+- **Types:** in `packages/react`, write object types with `type`, never
+  `interface` (ESLint enforces it).
 - **Styling:** Tailwind v4 classes on the elements; `className` merged with
   `twMerge`, so the app's classes win. Colors only through theme names
   (`bg-main-soft`, `text-secondary`), never hex values in components.

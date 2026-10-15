@@ -1,7 +1,7 @@
 import { toNumber } from './chartLayout'
 import type { TzarChartRow, TzarChartSeries } from './TzarChart.types'
 
-interface ChartBarsProps {
+type ChartBarsProps = {
   data: readonly TzarChartRow[]
   xKey: string
   series: readonly TzarChartSeries[]

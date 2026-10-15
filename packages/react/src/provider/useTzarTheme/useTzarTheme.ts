@@ -1,7 +1,7 @@
 import { use, useMemo } from 'react'
-import { TzarContext } from './TzarProvider'
-import { ThemeActionsType } from './TzarProvider.types'
-import type { ThemeColorMode } from './TzarProvider.types'
+import { TzarContext } from '@/provider/TzarContext/TzarContext'
+import { ThemeActionsType } from '@/provider/TzarProvider/TzarProvider.types'
+import type { ThemeColorMode } from '../TzarProvider/TzarProvider.types'
 
 export const useTzarTheme = () => {
   const context = use(TzarContext)

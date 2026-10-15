@@ -5,9 +5,7 @@ import { storyUrl } from '@/support/storyUrl'
 const [first, second] = LANGUAGES
 
 test('can be used with the keyboard alone', async ({ page }) => {
-  await page.goto(
-    storyUrl('reactcomponentlibrary-tzarlanguageselect--interactive'),
-  )
+  await page.goto(storyUrl('navigation-tzarlanguageselect--interactive'))
   const trigger = page.getByRole('button', { name: /^Language/ })
   const menu = page.getByRole('list')
 
@@ -27,7 +25,7 @@ test('can be used with the keyboard alone', async ({ page }) => {
 test('opens the menu below the button, lined up with its right edge', async ({
   page,
 }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarlanguageselect--default'))
+  await page.goto(storyUrl('navigation-tzarlanguageselect--default'))
   const trigger = page.getByRole('button', { name: /^Language/ })
   const menu = page.getByRole('list')
 
@@ -47,7 +45,7 @@ test('opens the menu below the button, lined up with its right edge', async ({
 })
 
 test('closes on a click elsewhere on the page', async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarlanguageselect--default'))
+  await page.goto(storyUrl('navigation-tzarlanguageselect--default'))
   const menu = page.getByRole('list')
 
   await page.getByRole('button', { name: /^Language/ }).click()

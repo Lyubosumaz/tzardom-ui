@@ -1,4 +1,4 @@
-import { WidgetSection } from '@/support/WidgetSection'
+import { WidgetSection } from '@/components/WidgetSection/WidgetSection'
 import type { TzarUpcomingRiskEventsProps } from './TzarUpcomingRiskEvents.types'
 
 export const TzarUpcomingRiskEvents = ({

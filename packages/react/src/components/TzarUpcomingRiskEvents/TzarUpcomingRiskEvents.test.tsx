@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { UPCOMING_RISK_EVENTS } from '@tzardom-ui/mocks'
 import { describe, expect, test } from 'vitest'
-import type { TzarWidgetStatus } from '@/support/WidgetSection'
+import type { TzarWidgetStatus } from '@/components/WidgetSection/WidgetSection.types'
 import { TzarUpcomingRiskEvents } from './TzarUpcomingRiskEvents'
 import type { TzarRiskEvent } from './TzarUpcomingRiskEvents.types'
 

@@ -1,19 +1,10 @@
 'use client'
 
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-} from 'react'
-import type {
-  ThemeData,
-  ThemeAction,
-  TypeContext,
-  ITzarProviderProps,
-} from './TzarProvider.types'
+import { useCallback, useEffect, useMemo, useReducer } from 'react'
+import { TzarContext } from '@/provider/TzarContext/TzarContext'
+import type { ThemeAction, ThemeData } from '@/provider/TzarContext/TzarContext'
 import { ThemeActionsType, ThemeColorMode } from './TzarProvider.types'
+import type { TzarProviderProps } from './TzarProvider.types'
 
 const DEFAULT_THEME: ThemeData = { theme: ThemeColorMode.LIGHT }
 
@@ -57,9 +48,7 @@ const storeTheme = (key: string, theme: ThemeColorMode) => {
   }
 }
 
-export const TzarContext = createContext<TypeContext | null>(null)
-
-export const TzarProvider = ({ children, storageKey }: ITzarProviderProps) => {
+export const TzarProvider = ({ children, storageKey }: TzarProviderProps) => {
   const [tzarThemeMode, dispatch] = useReducer(themeReducer, DEFAULT_THEME)
 
   const setTheme = useCallback(

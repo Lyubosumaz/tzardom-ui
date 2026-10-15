@@ -39,7 +39,7 @@ export default defineConfig({
       include: [
         'src/components/**/*.{ts,tsx}',
         'src/provider/**/*.{ts,tsx}',
-        'src/support/**/*.{ts,tsx}',
+        'src/hooks/**/*.{ts,tsx}',
       ],
       exclude: ['src/**/*.types.ts'],
     },

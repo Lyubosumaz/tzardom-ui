@@ -3,7 +3,7 @@ import { CHART } from '@tzardom-ui/mocks'
 import { TzarChart } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarChart> = {
-  title: 'ReactComponentLibrary/TzarChart',
+  title: 'Data Display/TzarChart',
   component: TzarChart,
   args: {
     type: 'line',

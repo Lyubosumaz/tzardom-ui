@@ -4,7 +4,7 @@ import { TzarUserMenu } from '@tzardom-ui/react'
 import { fn } from 'storybook/test'
 
 const meta: Meta<typeof TzarUserMenu> = {
-  title: 'ReactComponentLibrary/TzarUserMenu',
+  title: 'Navigation/TzarUserMenu',
   component: TzarUserMenu,
   args: {
     email: USER.email,

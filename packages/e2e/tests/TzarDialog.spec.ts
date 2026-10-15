@@ -8,7 +8,7 @@ const openButton = (page: Page) =>
 const dialog = (page: Page) => page.getByRole('dialog', { name: DIALOG.title })
 
 test.beforeEach(async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzardialog--interactive'))
+  await page.goto(storyUrl('overlays-tzardialog--interactive'))
 })
 
 test('opens as a named modal dialog', async ({ page }) => {

@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react'
 
-export interface TzarLanguage<Code extends string = string> {
+export type TzarLanguage<Code extends string = string> = {
   code: Code
   short: string
   label: string

@@ -3,7 +3,7 @@ import { METRIC } from '@tzardom-ui/mocks'
 import { TzarMetricCard } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarMetricCard> = {
-  title: 'ReactComponentLibrary/TzarMetricCard',
+  title: 'Data Display/TzarMetricCard',
   component: TzarMetricCard,
   args: {
     label: METRIC.label,

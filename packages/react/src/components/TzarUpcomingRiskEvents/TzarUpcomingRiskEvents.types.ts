@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef } from 'react'
+import type { TzarWidgetStatus } from '../WidgetSection/WidgetSection.types'
 
-export interface TzarRiskEvent {
+export type TzarRiskEvent = {
   id: string
   label: string
   teamName?: string
@@ -13,7 +14,7 @@ export type TzarUpcomingRiskEventsProps = Omit<
   'title' | 'children'
 > & {
   title: string
-  status: 'loading' | 'error' | 'ready'
+  status: TzarWidgetStatus
   events: readonly TzarRiskEvent[]
   loadingText?: string
   errorText?: string

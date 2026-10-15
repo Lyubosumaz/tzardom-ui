@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { TEAMS_OVER_CAPACITY } from '@tzardom-ui/mocks'
 import { describe, expect, test } from 'vitest'
-import type { TzarWidgetStatus } from '@/support/WidgetSection'
+import type { TzarWidgetStatus } from '@/components/WidgetSection/WidgetSection.types'
 import { TzarTeamsOverCapacity } from './TzarTeamsOverCapacity'
 
 const { title, teams } = TEAMS_OVER_CAPACITY

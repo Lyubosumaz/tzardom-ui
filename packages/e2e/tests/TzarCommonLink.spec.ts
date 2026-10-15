@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import { LOGIN_LINK, THEME_COLORS } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
-const OUTLINE_LINK = storyUrl('reactcomponentlibrary-tzarcommonlink--default')
+const OUTLINE_LINK = storyUrl('navigation-tzarcommonlink--default')
 const { light } = THEME_COLORS
 
 test('looks like the dashboard link, with the hover color', async ({

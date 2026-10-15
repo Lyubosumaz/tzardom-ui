@@ -2,7 +2,7 @@
 
 import { twMerge } from 'tailwind-merge'
 import { TzarCommonLink } from '@/components/TzarCommonLink/TzarCommonLink'
-import { useDropdown } from '@/support/useDropdown'
+import { useDropdown } from '@/hooks/useDropdown'
 import type { TzarUserMenuProps } from './TzarUserMenu.types'
 
 // Turns TzarCommonLink's pill into a full-width menu row.

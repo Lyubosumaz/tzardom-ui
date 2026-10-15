@@ -7,7 +7,7 @@ import { fn } from 'storybook/test'
 const [first] = LANGUAGES
 
 const meta: Meta<typeof TzarLanguageSelect> = {
-  title: 'ReactComponentLibrary/TzarLanguageSelect',
+  title: 'Navigation/TzarLanguageSelect',
   component: TzarLanguageSelect,
   args: {
     languages: LANGUAGES,

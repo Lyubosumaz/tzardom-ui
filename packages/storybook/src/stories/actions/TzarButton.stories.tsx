@@ -4,7 +4,7 @@ import { TzarButton } from '@tzardom-ui/react'
 import { fn } from 'storybook/test'
 
 const meta: Meta<typeof TzarButton> = {
-  title: 'ReactComponentLibrary/TzarButton',
+  title: 'Actions/TzarButton',
   component: TzarButton,
   args: {
     children: BUTTON.text,

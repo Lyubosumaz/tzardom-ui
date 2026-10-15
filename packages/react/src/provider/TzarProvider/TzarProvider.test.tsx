@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { THEME_STORAGE_KEY } from '@tzardom-ui/mocks'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { TzarProvider, ThemeColorMode, useTzarTheme } from './index'
+import { TzarProvider, ThemeColorMode, useTzarTheme } from '@/provider'
 
 const ThemeConsumer = () => {
   const { theme, setTheme, resetTheme } = useTzarTheme()

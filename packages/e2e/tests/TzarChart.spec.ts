@@ -10,7 +10,7 @@ for (const story of ['line', 'bar']) {
   test(`${story}: hovering a row shows every series for it`, async ({
     page,
   }) => {
-    await page.goto(storyUrl(`reactcomponentlibrary-tzarchart--${story}`))
+    await page.goto(storyUrl(`data-display-tzarchart--${story}`))
     const tooltip = page.locator('figure svg + div')
 
     await page.locator('figure svg rect').nth(1).hover()
@@ -24,7 +24,7 @@ for (const story of ['line', 'bar']) {
 }
 
 test('fills the width of its container', async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarchart--line'))
+  await page.goto(storyUrl('data-display-tzarchart--line'))
   const figure = page.getByRole('figure')
   const plot = figure.locator('svg')
 
@@ -37,7 +37,7 @@ test('fills the width of its container', async ({ page }) => {
 })
 
 test('shows the data as a table when opened', async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarchart--line'))
+  await page.goto(storyUrl('data-display-tzarchart--line'))
   const table = page.getByRole('table')
 
   await expect(table).toBeHidden()

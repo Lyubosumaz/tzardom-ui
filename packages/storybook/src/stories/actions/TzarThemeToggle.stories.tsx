@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { TzarThemeToggle } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarThemeToggle> = {
-  title: 'ReactComponentLibrary/TzarThemeToggle',
+  title: 'Actions/TzarThemeToggle',
   component: TzarThemeToggle,
 }
 export default meta

@@ -3,7 +3,7 @@ import { PAGE_HEADER } from '@tzardom-ui/mocks'
 import { TzarPageHeader } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarPageHeader> = {
-  title: 'ReactComponentLibrary/TzarPageHeader',
+  title: 'Layout/TzarPageHeader',
   component: TzarPageHeader,
   args: {
     title: PAGE_HEADER.title,

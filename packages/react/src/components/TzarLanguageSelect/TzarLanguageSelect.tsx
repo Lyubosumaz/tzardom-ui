@@ -2,7 +2,7 @@
 
 import { ChevronDown } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
-import { useDropdown } from '@/support/useDropdown'
+import { useDropdown } from '@/hooks/useDropdown'
 import type { TzarLanguageSelectProps } from './TzarLanguageSelect.types'
 
 export const TzarLanguageSelect = <Code extends string = string>({

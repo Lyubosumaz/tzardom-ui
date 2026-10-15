@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 
 export type TzarChartType = 'line' | 'bar'
 
-export interface TzarChartSeries {
+export type TzarChartSeries = {
   key: string
   label: string
   color: string

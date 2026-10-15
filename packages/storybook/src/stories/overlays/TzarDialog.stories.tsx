@@ -4,7 +4,7 @@ import { TzarButton, TzarDialog } from '@tzardom-ui/react'
 import { useState } from 'react'
 
 const meta: Meta<typeof TzarDialog> = {
-  title: 'ReactComponentLibrary/TzarDialog',
+  title: 'Overlays/TzarDialog',
   component: TzarDialog,
   args: {
     title: DIALOG.title,

@@ -3,7 +3,7 @@ import { USER } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
 test('can be used with the keyboard alone', async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
+  await page.goto(storyUrl('navigation-tzarusermenu--default'))
   const trigger = page.getByRole('button', { name: `User menu: ${USER.email}` })
   // The menu box is the parent of the email shown inside it.
   const menu = page.getByText(USER.email).locator('..')
@@ -25,7 +25,7 @@ test('can be used with the keyboard alone', async ({ page }) => {
 test('opens the menu below the button, lined up with its right edge', async ({
   page,
 }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
+  await page.goto(storyUrl('navigation-tzarusermenu--default'))
   const trigger = page.getByRole('button', { name: `User menu: ${USER.email}` })
   const menu = page.getByText(USER.email).locator('..')
 
@@ -45,7 +45,7 @@ test('opens the menu below the button, lined up with its right edge', async ({
 })
 
 test('closes on a click elsewhere on the page', async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
+  await page.goto(storyUrl('navigation-tzarusermenu--default'))
   const menu = page.getByText(USER.email).locator('..')
 
   await page.getByRole('button', { name: `User menu: ${USER.email}` }).click()
@@ -56,7 +56,7 @@ test('closes on a click elsewhere on the page', async ({ page }) => {
 })
 
 test('stays open when the email inside it is clicked', async ({ page }) => {
-  await page.goto(storyUrl('reactcomponentlibrary-tzarusermenu--default'))
+  await page.goto(storyUrl('navigation-tzarusermenu--default'))
   const menu = page.getByText(USER.email).locator('..')
 
   await page.getByRole('button', { name: `User menu: ${USER.email}` }).click()

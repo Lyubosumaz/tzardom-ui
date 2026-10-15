@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { useElementWidth } from '@/support/useElementWidth'
+import { useElementWidth } from '@/hooks/useElementWidth'
 import { ChartBars } from './ChartBars'
 import {
   CHART_HEIGHT,

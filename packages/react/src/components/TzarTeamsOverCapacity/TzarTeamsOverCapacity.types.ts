@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef } from 'react'
+import type { TzarWidgetStatus } from '../WidgetSection/WidgetSection.types'
 
-export interface TzarTeamCapacity {
+export type TzarTeamCapacity = {
   id: string
   name: string
   workload: number
@@ -12,7 +13,7 @@ export type TzarTeamsOverCapacityProps = Omit<
   'title' | 'children'
 > & {
   title: string
-  status: 'loading' | 'error' | 'ready'
+  status: TzarWidgetStatus
   teams: readonly TzarTeamCapacity[]
   loadingText?: string
   errorText?: string

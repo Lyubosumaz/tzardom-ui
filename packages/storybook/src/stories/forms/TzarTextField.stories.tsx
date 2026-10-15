@@ -3,7 +3,7 @@ import { TEXT_FIELD } from '@tzardom-ui/mocks'
 import { TzarTextField } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarTextField> = {
-  title: 'ReactComponentLibrary/TzarTextField',
+  title: 'Forms/TzarTextField',
   component: TzarTextField,
   args: {
     label: TEXT_FIELD.label,

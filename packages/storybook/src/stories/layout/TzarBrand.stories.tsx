@@ -3,7 +3,7 @@ import { BRAND } from '@tzardom-ui/mocks'
 import { TzarBrand } from '@tzardom-ui/react'
 
 const meta: Meta<typeof TzarBrand> = {
-  title: 'ReactComponentLibrary/TzarBrand',
+  title: 'Layout/TzarBrand',
   component: TzarBrand,
   args: { ...BRAND },
   argTypes: { icon: { control: false } },
