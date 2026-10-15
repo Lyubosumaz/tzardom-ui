@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { CHART, TEST_ID } from '@tzardom-ui/mocks'
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { TEST_ID_PREFIXES } from '@/constants/testIdPrefixes'
 import { TzarChart } from './TzarChart'
 import type { TzarChartProps } from './TzarChart.types'
@@ -139,19 +139,25 @@ describe('TzarChart', () => {
     expect(screen.queryByTestId(`${ROOT_ID}-plot`)).toBeNull()
   })
 
-  test('refuses more than three series instead of repeating colors', () => {
-    vi.spyOn(console, 'error').mockImplementation(() => undefined)
+  test('colors each series with its own color', () => {
+    renderChart()
+    const lines = plot().querySelectorAll('path')
+    const swatches = screen
+      .getByTestId(`${ROOT_ID}-legend`)
+      .querySelectorAll('span')
 
-    expect(() =>
-      renderChart({
-        series: [
-          capacity,
-          workload,
-          { key: 'mock-c', label: 'Mock C' },
-          { key: 'mock-d', label: 'Mock D' },
-        ],
-      }),
-    ).toThrow('TzarChart shows up to 3 series, got 4')
+    expect(lines[0].style.stroke).toBe(capacity.color)
+    expect(lines[1].style.stroke).toBe(workload.color)
+    expect(swatches[0].style.backgroundColor).toBe(capacity.color)
+    expect(swatches[1].style.backgroundColor).toBe(workload.color)
+  })
+
+  test('fills bars with their series color', () => {
+    renderChart({ type: 'bar' })
+    const bars = plot().querySelectorAll('path')
+
+    expect(bars[0].style.fill).toBe(capacity.color)
+    expect(bars[1].style.fill).toBe(workload.color)
   })
 
   test('className overrides a conflicting built-in class', () => {

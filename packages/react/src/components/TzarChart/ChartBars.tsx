@@ -1,4 +1,4 @@
-import { SERIES_COLORS, toNumber } from './chartLayout'
+import { toNumber } from './chartLayout'
 import type { TzarChartRow, TzarChartSeries } from './TzarChart.types'
 
 interface ChartBarsProps {
@@ -68,7 +68,7 @@ export const ChartBars = ({
                     barWidth,
                     baseY,
                   )}
-                  className={SERIES_COLORS[serieIndex].fill}
+                  style={{ fill: serie.color }}
                 />
               )
             })}

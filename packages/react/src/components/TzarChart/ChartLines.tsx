@@ -1,4 +1,4 @@
-import { SERIES_COLORS, toNumber } from './chartLayout'
+import { toNumber } from './chartLayout'
 import type { TzarChartRow, TzarChartSeries } from './TzarChart.types'
 
 interface ChartLinesProps {
@@ -18,8 +18,7 @@ export const ChartLines = ({
   yAt,
 }: ChartLinesProps) => (
   <g>
-    {series.map((serie, serieIndex) => {
-      const colors = SERIES_COLORS[serieIndex]
+    {series.map((serie) => {
       const points = data.map((row, index) => ({
         name: String(row[xKey]),
         x: xAt(index),
@@ -35,7 +34,8 @@ export const ChartLines = ({
         <g key={serie.key}>
           <path
             d={path}
-            className={`fill-none ${colors.stroke}`}
+            className="fill-none"
+            style={{ stroke: serie.color }}
             strokeWidth={2}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -46,7 +46,8 @@ export const ChartLines = ({
               cx={point.x}
               cy={point.y}
               r={4}
-              className={`${colors.fill} stroke-background`}
+              className="stroke-background"
+              style={{ fill: serie.color }}
               strokeWidth={2}
             />
           ))}

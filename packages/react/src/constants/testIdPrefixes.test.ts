@@ -5,7 +5,7 @@ import { TEST_ID_PREFIXES, tzrTestId } from './testIdPrefixes'
 describe('TEST_ID_PREFIXES', () => {
   test('starts every prefix with the library prefix', () => {
     for (const value of Object.values(TEST_ID_PREFIXES)) {
-      expect(value).toMatch(/^tzr-[a-z]+$/)
+      expect(value).toMatch(/^tzr-[a-z]+(-[a-z]+)*$/)
     }
   })
 

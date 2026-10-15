@@ -40,3 +40,16 @@ export type {
   TzarChartSeries,
   TzarChartType,
 } from './TzarChart/TzarChart.types'
+export { TzarButton } from './TzarButton/TzarButton'
+export type {
+  TzarButtonProps,
+  TzarButtonSize,
+  TzarButtonVariant,
+} from './TzarButton/TzarButton.types'
+export { TzarTextField } from './TzarTextField/TzarTextField'
+export type { TzarTextFieldProps } from './TzarTextField/TzarTextField.types'
+export { TzarDialog } from './TzarDialog/TzarDialog'
+export type {
+  TzarDialogProps,
+  TzarDialogSize,
+} from './TzarDialog/TzarDialog.types'

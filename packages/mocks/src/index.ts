@@ -1,4 +1,5 @@
 export { BRAND } from './brand'
+export { BUTTON, DIALOG, TEXT_FIELD } from './form'
 export { CHART } from './chart'
 export { FOOTER } from './footer'
 export { LANGUAGES } from './languages'

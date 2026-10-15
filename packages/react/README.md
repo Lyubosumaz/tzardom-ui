@@ -60,6 +60,68 @@ screen readers.
 | `subtitle` | `string`  | —          | The smaller line under it                    |
 | `icon`     | component | `Umbrella` | Any icon component, e.g. from `lucide-react` |
 
+### `<TzarDialog>`
+
+A modal pop-up built on the native `<dialog>`. Your `open` state shows and hides
+it; the browser gives the rest: Escape asks to close, focus stays inside, the
+page behind can't be used, focus goes back to the opening button, and a backdrop
+dims the page. Screen readers announce it as a dialog named by its title.
+
+It draws its own buttons: **Cancel** (calls `onClose`) and, with `confirmLabel`,
+a confirm button.
+
+```tsx
+<TzarDialog
+  open={isOpen}
+  onClose={() => setIsOpen(false)}
+  title="Delete team"
+  confirmLabel="Delete"
+  confirmVariant="danger"
+  onConfirm={deleteTeam}
+  data-testid="delete-team"
+>
+  <p>This can't be undone.</p>
+</TzarDialog>
+```
+
+For a form, give it an `id` and pass that as `form`: the confirm button then
+submits the form (Enter in a field does too).
+
+```tsx
+<TzarDialog
+  open={isOpen}
+  onClose={close}
+  title="Edit team name"
+  confirmLabel={isSaving ? 'Saving…' : 'Save'}
+  confirmDisabled={isSaving}
+  form="edit-name"
+  data-testid="edit-name"
+>
+  <form id="edit-name" onSubmit={save}>
+    …
+  </form>
+</TzarDialog>
+```
+
+| Prop              | Type                    | Default     | Description                                              |
+| ----------------- | ----------------------- | ----------- | -------------------------------------------------------- |
+| `open`            | `boolean`               | —           | Whether it shows                                         |
+| `onClose`         | `() => void`            | —           | Called on Escape and Cancel; set `open` to `false` there |
+| `title`           | `string`                | —           | The heading, which also names the dialog                 |
+| `children`        | `ReactNode`             | —           | The content under the title                              |
+| `confirmLabel`    | `string`                | —           | Shows the confirm button with this text                  |
+| `onConfirm`       | `() => void`            | —           | Called by the confirm button (when there's no `form`)    |
+| `form`            | `string`                | —           | A form's `id`; the confirm button submits it             |
+| `confirmVariant`  | `'primary' \| 'danger'` | `'primary'` | The confirm button's look                                |
+| `confirmDisabled` | `boolean`               | `false`     | Disables the confirm button, e.g. while saving           |
+| `cancelLabel`     | `string`                | `'Cancel'`  | The Cancel button's text                                 |
+| `size`            | `'sm' \| 'lg'`          | `'sm'`      | `sm`: compact. `lg`: wider and taller, for bigger forms  |
+
+A large dialog is at least 20rem tall; any dialog is at most 85% of the screen,
+and longer content scrolls inside. On open, focus goes to the first focusable
+element inside. Don't use `autoFocus` in the content: the dialog stays in the
+page while closed, so it would take focus when the page loads.
+
 ### `<TzarFooter>`
 
 The page footer: copyright, app name and what it's built with, in one row.
@@ -142,6 +204,51 @@ closes it.
 | `accountLabel` | `string`      | `'Account'`   | The account link's text                         |
 | `logoutLabel`  | `string`      | `'Log out'`   | The log out button's text                       |
 
+### `<TzarButton>`
+
+A native `<button>` in four looks and two sizes. It's `type="button"` unless you
+pass `type="submit"`, so it never submits a form by accident.
+
+```tsx
+<TzarButton variant="primary" type="submit" data-testid="login-submit">
+  Log in
+</TzarButton>
+```
+
+| Prop      | Type                                             | Default       | Description                                                        |
+| --------- | ------------------------------------------------ | ------------- | ------------------------------------------------------------------ |
+| `variant` | `'primary' \| 'secondary' \| 'soft' \| 'danger'` | `'secondary'` | Filled accent, outlined, the header's soft color, or filled danger |
+| `size`    | `'sm' \| 'md'`                                   | `'sm'`        | Compact (`h-8`, `text-xs`) or larger (`text-sm`)                   |
+| `type`    | `'button' \| 'submit' \| 'reset'`                | `'button'`    | As on `<button>`                                                   |
+| …         |                                                  |               | Any other prop goes to the `<button>`                              |
+
+### `<TzarTextField>`
+
+A label and a text input, linked so clicking the label focuses the input and
+screen readers read its name. With `error`, the message shows under the input
+and is linked to it.
+
+```tsx
+<TzarTextField
+  label="Email"
+  type="email"
+  required
+  value={email}
+  onChange={(event) => setEmail(event.target.value)}
+  error={emailError}
+  data-testid="login-email"
+/>
+```
+
+| Prop        | Type     | Default     | Description                                       |
+| ----------- | -------- | ----------- | ------------------------------------------------- |
+| `label`     | `string` | —           | The label above the input                         |
+| `error`     | `string` | —           | An error under the input; marks it `aria-invalid` |
+| `type`      | `string` | `'text'`    | `'email'`, `'password'`, …                        |
+| `id`        | `string` | a unique id | The input's id                                    |
+| `className` | `string` | —           | Styles the wrapper                                |
+| …           |          |             | Any other prop goes to the `<input>`              |
+
 ### `<TzarChart>`
 
 A line or bar chart drawn in plain SVG, with no chart library. It has axes with
@@ -160,29 +267,28 @@ container.
   xKey="name"
   xLabel="Team"
   series={[
-    { key: 'capacity', label: 'Capacity' },
-    { key: 'workload', label: 'Workload' },
+    { key: 'capacity', label: 'Capacity', color: '#db2777' },
+    { key: 'workload', label: 'Workload', color: '#0891b2' },
   ]}
   data-testid="workload"
 />
 ```
 
-| Prop         | Type               | Default              | Description                            |
-| ------------ | ------------------ | -------------------- | -------------------------------------- |
-| `type`       | `'line' \| 'bar'`  | —                    | How to draw the series                 |
-| `title`      | `string`           | —                    | The caption                            |
-| `subtitle`   | `string`           | —                    | A line under the title                 |
-| `data`       | `TzarChartRow[]`   | —                    | One object per point / bar group       |
-| `xKey`       | `string`           | —                    | The field with each row's label        |
-| `xLabel`     | `string`           | `xKey`               | The table's first column header        |
-| `series`     | `{ key, label }[]` | —                    | Up to 3 fields to plot, in color order |
-| `emptyText`  | `string`           | `'No data to show.'` | Shown when `data` is empty             |
-| `tableLabel` | `string`           | `'Show data'`        | The data table's toggle                |
+| Prop         | Type                      | Default              | Description                             |
+| ------------ | ------------------------- | -------------------- | --------------------------------------- |
+| `type`       | `'line' \| 'bar'`         | —                    | How to draw the series                  |
+| `title`      | `string`                  | —                    | The caption                             |
+| `subtitle`   | `string`                  | —                    | A line under the title                  |
+| `data`       | `TzarChartRow[]`          | —                    | One object per point / bar group        |
+| `xKey`       | `string`                  | —                    | The field with each row's label         |
+| `xLabel`     | `string`                  | `xKey`               | The table's first column header         |
+| `series`     | `{ key, label, color }[]` | —                    | The fields to plot, each with its color |
+| `emptyText`  | `string`                  | `'No data to show.'` | Shown when `data` is empty              |
+| `tableLabel` | `string`                  | `'Show data'`        | The data table's toggle                 |
 
-Series colors come from `--chart-1`, `--chart-2` and `--chart-3` in the theme,
-always in that order. They're checked to stay apart for color-blind readers, so
-change them only as a set. More than three series throws an error instead of
-repeating a color.
+Each series brings its own `color`, any CSS color (`'#db2777'`,
+`'var(--my-color)'`, …). Pick colors that stay apart for color-blind readers on
+your background, and give a series the same color everywhere it appears.
 
 ### `<TzarMetricCard>`
 
@@ -329,7 +435,9 @@ exported if you need a bare prefix.
 | Component                | Key                  | Root                   | Parts                                                                                         |
 | ------------------------ | -------------------- | ---------------------- | --------------------------------------------------------------------------------------------- |
 | `TzarBrand`              | `brand`              | `<div>`                | `-icon`, `-title`, `-subtitle`                                                                |
+| `TzarButton`             | `button`             | `<button>`             | —                                                                                             |
 | `TzarChart`              | `chart`              | `<figure>`             | `-title`, `-subtitle`, `-legend`, `-plot`, `-hover-{index}`, `-tooltip`, `-data`, `-empty`    |
+| `TzarDialog`             | `dialog`             | `<dialog>`             | `-title`, `-content`, `-actions`; its buttons: `tzr-button-{your id}-cancel`, `-confirm`      |
 | `TzarCommonLink`         | `commonLink`         | the `<a>` or your `as` | —                                                                                             |
 | `TzarFooter`             | `footer`             | `<footer>`             | `-copyright`, `-app-name`, `-built-with`                                                      |
 | `TzarLanguageSelect`     | `languageSelect`     | `<div>`                | `-trigger`, `-menu`, `-option-{code}`                                                         |
@@ -337,6 +445,7 @@ exported if you need a bare prefix.
 | `TzarPageHeader`         | `pageHeader`         | `<hgroup>`             | `-title`, `-description`                                                                      |
 | `TzarThemeToggle`        | `themeToggle`        | `<button>`             | `-icon`                                                                                       |
 | `TzarTeamsOverCapacity`  | `teamsOverCapacity`  | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-team-{id}`                               |
+| `TzarTextField`          | `textField`          | `<div>`                | `-label`, `-input`, `-error`                                                                  |
 | `TzarUpcomingRiskEvents` | `upcomingRiskEvents` | `<section>`            | `-title`, `-loading`, `-error`, `-empty`, `-list`, `-event-{id}`                              |
 | `TzarUserMenu`           | `userMenu`           | `<div>`                | `-trigger`, `-menu`, `-email`; its `TzarCommonLink`s: `tzr-link-{root id}-account`, `-logout` |
 

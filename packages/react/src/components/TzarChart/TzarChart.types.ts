@@ -5,6 +5,7 @@ export type TzarChartType = 'line' | 'bar'
 export interface TzarChartSeries {
   key: string
   label: string
+  color: string
 }
 
 export type TzarChartRow = Record<string, string | number>

@@ -8,7 +8,6 @@ import { ChartBars } from './ChartBars'
 import {
   CHART_HEIGHT,
   MARGIN,
-  SERIES_COLORS,
   formatTick,
   getTicks,
   toNumber,
@@ -36,12 +35,6 @@ export const TzarChart = ({
   const { ref, width } = useElementWidth(480)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const rootTestId = `${TEST_ID_PREFIXES.chart}-${testId}`
-
-  if (series.length > SERIES_COLORS.length) {
-    throw new Error(
-      `TzarChart shows up to ${String(SERIES_COLORS.length)} series, got ${String(series.length)}`,
-    )
-  }
 
   // Plot area and scales.
   const plotWidth = Math.max(width - MARGIN.left - MARGIN.right, 0)
@@ -100,14 +93,14 @@ export const TzarChart = ({
               className="mb-2 flex flex-wrap gap-4 text-xs text-foreground"
               data-testid={`${rootTestId}-legend`}
             >
-              {series.map((serie, serieIndex) => (
+              {series.map((serie) => (
                 <li key={serie.key} className="flex items-center gap-1.5">
                   <span
                     aria-hidden="true"
-                    className={twMerge(
-                      SERIES_COLORS[serieIndex].bg,
-                      type === 'line' ? 'h-0.5 w-3' : 'h-2.5 w-2.5 rounded-sm',
-                    )}
+                    className={
+                      type === 'line' ? 'h-0.5 w-3' : 'h-2.5 w-2.5 rounded-sm'
+                    }
+                    style={{ backgroundColor: serie.color }}
                   />
                   {serie.label}
                 </li>
@@ -179,7 +172,7 @@ export const TzarChart = ({
                     y={MARGIN.top}
                     width={bandWidth}
                     height={plotHeight}
-                    className="fill-main-soft"
+                    className="fill-secondary-soft"
                   />
                 ))}
 
@@ -231,11 +224,12 @@ export const TzarChart = ({
                 data-testid={`${rootTestId}-tooltip`}
               >
                 <p className="mb-1 text-muted">{String(activeRow[xKey])}</p>
-                {series.map((serie, serieIndex) => (
+                {series.map((serie) => (
                   <p key={serie.key} className="flex items-center gap-1.5">
                     <span
                       aria-hidden="true"
-                      className={`h-0.5 w-3 ${SERIES_COLORS[serieIndex].bg}`}
+                      className="h-0.5 w-3"
+                      style={{ backgroundColor: serie.color }}
                     />
                     <strong className="font-semibold text-foreground tabular-nums">
                       {toNumber(activeRow[serie.key])}

@@ -7,6 +7,10 @@ export const TEST_ID_PREFIXES = {
   languageSelect: `${LIBRARY_TEST_ID_PREFIX}-lang`,
   themeToggle: `${LIBRARY_TEST_ID_PREFIX}-theme`,
   userMenu: `${LIBRARY_TEST_ID_PREFIX}-user`,
+  // Forms
+  button: `${LIBRARY_TEST_ID_PREFIX}-button`,
+  textField: `${LIBRARY_TEST_ID_PREFIX}-text-field`,
+  dialog: `${LIBRARY_TEST_ID_PREFIX}-dialog`,
   // Page
   pageHeader: `${LIBRARY_TEST_ID_PREFIX}-page`,
   // Widgets
