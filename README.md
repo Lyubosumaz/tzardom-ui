@@ -13,7 +13,7 @@ CSS v4 and color themes.
 | `packages/e2e`       | `@tzardom-ui/e2e`       | Browser tests that run against Storybook |
 | `packages/mocks`     | `@tzardom-ui/mocks`     | Fake data for the tests and stories      |
 
-The last three are private and never published. Tools: pnpm workspaces, Rollup
+The last three are private and never published. Tools: pnpm workspaces, Vite
 (build), Vitest and Testing Library (unit tests), Storybook, Playwright (browser
 tests).
 
