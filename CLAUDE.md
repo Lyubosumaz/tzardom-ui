@@ -1,96 +1,49 @@
 # tzardom-ui: rules for Claude
 
-React component library (`@tzardom-ui/react`) and its color themes
-(`@tzardom-ui/themes`), used by `../team-capacity-dashboard`. A pnpm workspace:
-
-```
-packages/react      @tzardom-ui/react      components (published)
-packages/themes     @tzardom-ui/themes     color themes (published)
-packages/storybook  @tzardom-ui/storybook  stories (private)
-packages/e2e        @tzardom-ui/e2e        Playwright tests against Storybook (private)
-packages/mocks      @tzardom-ui/mocks      mock data for tests and stories (private)
-scripts/            dev, release and clean scripts
-```
+React components (`packages/react`) and themes (`packages/themes`), used by
+`../team-capacity-dashboard`. Private: `storybook`, `e2e`, `mocks`.
 
 ## Core rules
 
-1. **Super clean code that a junior engineer can read easily.** Plain code that
-   reads top to bottom, with clear names. No clever tricks or abstractions the
-   code doesn't need.
-2. **A super optimized build: no hacks, and as few libraries as possible.** Fix
-   problems at their cause instead of working around a tool. Add a dependency
-   only when Node, the platform or the tools already here can't do the job.
-3. **Components use fully semantic HTML.** Native elements first (`<button>`,
-   `<ul>`, `<nav>`, `<footer>`, …). ARIA only where HTML has no element or
-   attribute for it.
-4. **Tests find elements by role, label or text.** `data-testid` is an optional
-   prop that goes on the root as is. Add one only where a test can't find the
-   element another way.
+1. Clean code a junior can read. No clever tricks.
+2. No hacks, as few dependencies as possible.
+3. Semantic HTML first. ARIA only when HTML can't do it.
+4. Tests find elements by role, label or text. `data-testid` only when needed.
 
 ## Working here
 
-- **Git and GitHub are the user's.** Never commit, push, create branches or open
-  PRs. Leave changes in the working tree and say what changed.
-- **Ask before big or hard-to-undo changes,** and when the user says "stop" or
-  wants to brainstorm, change no code until they say so.
-- **Check your work:** `pnpm lint`, `pnpm test:coverage`, `pnpm build`,
-  `pnpm test:e2e`.
+- Never commit, push, branch or open PRs. Git is the user's.
+- Ask before big changes. On "stop" or brainstorming, change no code.
+- Check with `pnpm lint`, `pnpm test:coverage`, `pnpm build`, `pnpm test:e2e`.
+- No changelog or upgrade notes.
 
-## Code conventions
+## Code
 
-- **Imports:** `@/` for anything outside the current folder (`@/provider/…`,
-  `@/hooks/…`), `./` within it. Paths that end up in the published `.d.ts` files
-  stay relative, because apps can't resolve `@/`: the `index.ts` barrels, and a
-  type import from another folder when an exported type uses it (e.g.
-  `useTzarTheme` imports `ThemeColorMode` from `../TzarProvider/…`).
-- **A component** lives in `packages/react/src/components/<Name>/` as
-  `<Name>.tsx`, `<Name>.types.ts` and `<Name>.test.tsx`, plus a story in
-  `packages/storybook/src/stories/<group>/`, a lowercase folder (`actions`,
-  `forms`, `data-display`, …; internal pieces go in `internal`) whose story
-  title starts with the same group (`Data Display/TzarChart`). Export it from
-  `components/index.ts` and document its props in `packages/react/README.md`.
-  `provider/` follows the same rule: one folder per piece (`TzarProvider/`,
-  `TzarContext/`, `useTzarTheme/`).
-- **Names:** `Tzar…` means public (exported from the package). Internal pieces
-  have no prefix (`WidgetSection`, `ChartBars`) and are never exported; only
-  their public types may be (`TzarWidgetStatus`).
-- **Types:** in `packages/react`, write object types with `type`, never
-  `interface` (ESLint enforces it).
-- **Styling:** Tailwind v4 classes on the elements; `className` merged with
-  `twMerge`, so the app's classes win. Colors only through theme names
-  (`bg-main-soft`, `text-secondary`), never hex values in components.
-- **Mock data** lives in `@tzardom-ui/mocks` and is obviously fake
-  (`'Mock App'`, `'#mock-login'`). The exception is `THEME_COLORS`, which must
-  match the theme CSS.
-- **Themes:** one file per app in `packages/themes/`, same variable names, each
-  starting with `@import '@tzardom-ui/react/tailwind.css'`. A new theme's file
-  name also goes into `files` in `packages/themes/package.json`.
-- **Dependencies:** `peerDependencies` list only what the published code imports
-  (`react` `^19.0.0`). Development-only packages go in `devDependencies`.
+- Imports: `@/` outside the folder, `./` inside. Relative paths in anything that
+  ends up in published `.d.ts` files.
+- A component: `components/<Name>/` with `.tsx`, `.types.ts`, `.test.tsx`; a
+  story in `stories/<group>/`; exported from `components/index.ts`; a line in
+  the `packages/react/README.md` table.
+- `Tzar…` names are public. Internal pieces have no prefix.
+- Use `type`, never `interface`.
+- Tailwind classes, `className` merged with `twMerge`. Colors only from the
+  theme, never hex.
+- Mock data in `@tzardom-ui/mocks`, obviously fake.
+- Themes: one CSS file per app, starting with
+  `@import '@tzardom-ui/react/tailwind.css'`, listed in `files` of
+  `packages/themes/package.json`.
 
-## Scripts (`scripts/*.mjs`)
+## Scripts
 
-- Same shape everywhere: work in `try`, a failure is `throw new Error('…')`,
-  `catch` prints `✖ <Name> failed: <message>` and sets `process.exitCode = 1`
-  (never `process.exit` inside `try`, or `finally` won't run), and `finally`
-  prints `THANK_YOU_MESSAGE`.
-- Console messages start with a symbol: `✔` done, `✖` failed, `➜` working, `◆`
-  note, `▲` warning.
-- Node built-ins instead of helper packages (`rmSync`, not `rimraf`).
+`try` / `throw` / `catch` (print `✖ … failed`, set `process.exitCode = 1`) /
+`finally` (print `THANK_YOU_MESSAGE`). Node built-ins, no helper packages.
 
-## Developing with the dashboard
+## Dashboard
 
-Two terminals: `pnpm dev` in tzardom-ui (builds, copies `react` and `themes`
-into the app's `node_modules`, and copies again on every change) and
-`npm run dev` in `../team-capacity-dashboard`. When a new file appears in a
-package's output, restart only the app's `npm run dev`; Turbopack doesn't notice
-new files in `node_modules`.
+`pnpm dev` here and `npm run dev` in the dashboard. If a new output file isn't
+picked up, restart the dashboard's `npm run dev`.
 
 ## Releases
 
-Versions are changed by hand. The root `package.json` version matches the
-release branch (`release/x.y.z`). Every published package that changed needs a
-higher version than on `master`. When react's middle number goes up, raise the
-`@tzardom-ui/react` peer range in `packages/themes/package.json` too. CI checks
-and publishes (`.github/workflows/`, `scripts/check-*.mjs`,
-`scripts/publish.mjs`).
+The root version matches the `release/x.y.z` branch. A changed package needs a
+higher version than on `master`.

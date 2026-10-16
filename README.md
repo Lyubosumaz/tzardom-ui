@@ -57,7 +57,7 @@ For one package only: `pnpm --filter @tzardom-ui/react build`.
 - Test and story data comes from `@tzardom-ui/mocks` and is obviously fake
   (`'Mock App'`).
 - Test by role, label or text; see
-  [Test ids](packages/react/README.md#test-ids).
+  [Good to know](packages/react/README.md#good-to-know).
 
 ## Styling and themes
 
