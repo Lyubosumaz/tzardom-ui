@@ -8,7 +8,7 @@
   "devDependencies": {
     "@playwright/test": "^1.59.0",
     "@types/node": "^22",
-    "@tzardom-ui/mocks": "workspace:*",
+    "@tzardom-ui/mocks": "link:../mocks",
     "@tzardom-ui/react": "workspace:^",
     "typescript": "~6.0.3"
   }
