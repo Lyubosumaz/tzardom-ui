@@ -1,17 +1,15 @@
 import { expect, test } from '@playwright/test'
-import { TEST_ID, THEME_COLORS } from '@tzardom-ui/mocks'
-import { TEST_ID_PREFIXES } from '@tzardom-ui/react'
+import { LOGIN_LINK, THEME_COLORS } from '@tzardom-ui/mocks'
 import { storyUrl } from '@/support/storyUrl'
 
-const LINK_ID = `${TEST_ID_PREFIXES.commonLink}-${TEST_ID}`
-const OUTLINE_LINK = storyUrl('reactcomponentlibrary-tzarcommonlink--default')
+const OUTLINE_LINK = storyUrl('navigation-tzarcommonlink--default')
 const { light } = THEME_COLORS
 
 test('looks like the dashboard link, with the hover color', async ({
   page,
 }) => {
   await page.goto(OUTLINE_LINK)
-  const link = page.getByTestId(LINK_ID)
+  const link = page.getByRole('link', { name: LOGIN_LINK.text })
 
   await expect(link).toHaveCSS('border-top-width', '1px')
   await expect(link).toHaveCSS('border-top-color', light.borderSubtle)
@@ -23,7 +21,7 @@ test('looks like the dashboard link, with the hover color', async ({
 
 test('shows a focus ring when reached with the keyboard', async ({ page }) => {
   await page.goto(OUTLINE_LINK)
-  const link = page.getByTestId(LINK_ID)
+  const link = page.getByRole('link', { name: LOGIN_LINK.text })
 
   await expect(link).toBeVisible()
   await page.keyboard.press('Tab')

@@ -1,3 +1,3 @@
-export { TzarProvider } from './TzarProvider'
-export { ThemeActionsType, ThemeColorMode } from './TzarProvider.types'
-export { useTzarTheme } from './useTzarTheme'
+export * from './TzarProvider/TzarProvider'
+export * from './TzarProvider/TzarProvider.types'
+export * from './useTzarTheme/useTzarTheme'

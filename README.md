@@ -13,14 +13,15 @@ CSS v4 and color themes.
 | `packages/e2e`       | `@tzardom-ui/e2e`       | Browser tests that run against Storybook |
 | `packages/mocks`     | `@tzardom-ui/mocks`     | Fake data for the tests and stories      |
 
-The last three are private and never published. Tools: pnpm workspaces, Rollup
+The last three are private and never published. Tools: pnpm workspaces, Vite
 (build), Vitest and Testing Library (unit tests), Storybook, Playwright (browser
 tests).
 
 ## Setup
 
-You need Node 22+ and pnpm 11 (`npm install -g pnpm`). The exact pnpm version is
-pinned in `package.json`, and pnpm switches to it by itself.
+You need Node 26 (22.12+ and 24 also work; Vitest doesn't support 25) and pnpm
+11 (`npm install -g pnpm`). The exact pnpm version is pinned in `package.json`,
+and pnpm switches to it by itself.
 
 ```bash
 pnpm install
@@ -50,13 +51,13 @@ For one package only: `pnpm --filter @tzardom-ui/react build`.
 
 - A component lives in `packages/react/src/components/<Name>/` as `<Name>.tsx`,
   `<Name>.types.ts` and `<Name>.test.tsx`. Its story goes in
-  `packages/storybook/src/stories/`.
-- Imports: `@/` for another folder of the same package
-  (`@/constants/testIdPrefixes`), `./` for the same folder.
+  `packages/storybook/src/stories/<group>/` (lowercase, e.g. `actions`).
+- Imports: `@/` for another folder of the same package (`@/hooks/useDropdown`),
+  `./` for the same folder.
 - Test and story data comes from `@tzardom-ui/mocks` and is obviously fake
   (`'Mock App'`).
-- Every component needs a `data-testid`; see
-  [Test ids](packages/react/README.md#test-ids).
+- Test by role, label or text; see
+  [Good to know](packages/react/README.md#good-to-know).
 
 ## Styling and themes
 

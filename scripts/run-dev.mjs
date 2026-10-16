@@ -146,18 +146,18 @@ const watchPackages = () => {
     process.exit(code)
   }
 
-  const rollup = spawn(
+  const vite = spawn(
     'pnpm',
-    ['--filter', '@tzardom-ui/react', 'exec', 'rollup', '--config', '--watch'],
+    ['--filter', '@tzardom-ui/react', 'exec', 'vite', 'build', '--watch'],
     { cwd: root, stdio: 'inherit' },
   )
-  rollup.on('error', (error) => {
-    console.error(`✖ Couldn't start Rollup: ${error.message}`)
+  vite.on('error', (error) => {
+    console.error(`✖ Couldn't start Vite: ${error.message}`)
     stop(1)
   })
-  rollup.on('exit', (code) => {
+  vite.on('exit', (code) => {
     if (!stopping) {
-      console.error(`✖ Rollup stopped (exit ${code}).`)
+      console.error(`✖ Vite stopped (exit ${code}).`)
       stop(1)
     }
   })

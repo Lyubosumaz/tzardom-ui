@@ -1,0 +1,26 @@
+import type { ComponentPropsWithoutRef } from 'react'
+
+export type TzarChartType = 'line' | 'bar'
+
+export type TzarChartSeries = {
+  key: string
+  label: string
+  color: string
+}
+
+export type TzarChartRow = Record<string, string | number>
+
+export type TzarChartProps = Omit<
+  ComponentPropsWithoutRef<'figure'>,
+  'title' | 'children'
+> & {
+  type: TzarChartType
+  title: string
+  subtitle?: string
+  data: readonly TzarChartRow[]
+  xKey: string
+  xLabel?: string
+  series: readonly TzarChartSeries[]
+  emptyText?: string
+  tableLabel?: string
+}
