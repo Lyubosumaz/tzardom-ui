@@ -59,6 +59,19 @@ describe('TzarCommonLink', () => {
     expect(classes).not.toContain('bg-background')
   })
 
+  test('the primary variant is a filled accent button-like link', () => {
+    render(
+      <TzarCommonLink href="/" variant="primary">
+        Back
+      </TzarCommonLink>,
+    )
+    const classes = screen.getByRole('link').className.split(' ')
+
+    expect(classes).toContain('bg-accent')
+    expect(classes).toContain('rounded-md')
+    expect(classes).not.toContain('rounded-full')
+  })
+
   test('passes data-testid through to the link', () => {
     render(
       <TzarCommonLink data-testid="mock" href="/">

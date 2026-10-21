@@ -1,6 +1,6 @@
 {
   "name": "@tzardom-ui/react",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "My pet component library",
   "type": "module",
   "publishConfig": {

@@ -23,3 +23,11 @@ export const Ghost: Story = {
     children: OVERVIEW_LINK.text,
   },
 }
+
+export const Primary: Story = {
+  args: {
+    variant: 'primary',
+    href: OVERVIEW_LINK.href,
+    children: OVERVIEW_LINK.text,
+  },
+}
