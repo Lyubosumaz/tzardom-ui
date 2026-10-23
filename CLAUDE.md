@@ -40,8 +40,8 @@ React components (`packages/react`) and themes (`packages/themes`), used by
 
 ## Dashboard
 
-`pnpm dev` here and `npm run dev` in the dashboard. If a new output file isn't
-picked up, restart the dashboard's `npm run dev`.
+`pnpm dev` here and `pnpm dev` in the dashboard. If a new output file isn't
+picked up, restart the dashboard's `pnpm dev`.
 
 ## Releases
 

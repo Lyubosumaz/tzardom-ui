@@ -83,7 +83,7 @@ Use two terminals:
 
 ```bash
 pnpm dev       # in tzardom-ui
-npm run dev    # in team-capacity-dashboard
+pnpm dev       # in team-capacity-dashboard
 ```
 
 `pnpm dev` copies `react` and `themes` into the dashboard's
@@ -92,10 +92,10 @@ dashboard updates by itself. Ctrl+C stops it.
 
 - **Another app:** `pnpm dev --app ../other-app`.
 - **Added a new file to a package** (e.g. a theme)? Restart the dashboard's
-  `npm run dev` once. Next.js doesn't see new files in `node_modules` while it
+  `pnpm dev` once. Next.js doesn't see new files in `node_modules` while it
   runs.
 - **Back to the npm versions:** in the dashboard, delete
-  `node_modules/@tzardom-ui` and run `npm install`.
+  `node_modules/@tzardom-ui` and run `pnpm install`.
 
 The packages are copied, not symlinked: a symlink would load a second copy of
 React, which breaks hooks.

@@ -5,6 +5,7 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
+  realpathSync,
   rmSync,
   watch,
   writeFileSync,
@@ -29,6 +30,9 @@ const appDir = path.resolve(
   option('--app') ?? process.env.TZARDOM_APP ?? '../team-capacity-dashboard',
 )
 const appName = path.basename(appDir)
+const appUsesPnpm = existsSync(path.join(appDir, 'pnpm-lock.yaml'))
+const appInstall = appUsesPnpm ? 'pnpm install' : 'npm install'
+const appDev = appUsesPnpm ? 'pnpm dev' : 'npm run dev'
 
 const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'))
 const pkgDir = (name) => path.join(root, 'packages', name)
@@ -90,14 +94,25 @@ const copyPackage = (name) => {
   return pkg.version
 }
 
+const canResolve = (dep, fromDir) => {
+  let dir = realpathSync(fromDir)
+  while (true) {
+    if (existsSync(path.join(dir, 'node_modules', dep, 'package.json'))) {
+      return true
+    }
+    const parent = path.dirname(dir)
+    if (parent === dir) {
+      return false
+    }
+    dir = parent
+  }
+}
+
 const missingDeps = () =>
   PACKAGES.flatMap((name) =>
     Object.entries(pkgJson(name).dependencies ?? {})
       .filter(([dep]) => !dep.startsWith('@tzardom-ui/'))
-      .filter(
-        ([dep]) =>
-          !existsSync(path.join(appDir, 'node_modules', dep, 'package.json')),
-      )
+      .filter(([dep]) => !canResolve(dep, destDir(name)))
       .map(([dep, range]) => `${dep}@${range}`),
   )
 
@@ -106,6 +121,11 @@ const linkAll = () => {
   let linked = copy()
 
   const missing = missingDeps()
+  if (missing.length > 0 && appUsesPnpm) {
+    throw new Error(
+      `${appName} is missing ${missing.join(', ')}. Publish the new tzardom-ui version and run "pnpm install" there.`,
+    )
+  }
   if (missing.length > 0) {
     console.log(`➜ Installing in ${appName}: ${missing.join(', ')}…`)
     const result = spawnSync('npm', ['install', '--no-save', ...missing], {
@@ -141,7 +161,7 @@ const watchPackages = () => {
   const stop = (code) => {
     stopping = true
     console.log(
-      `\n◆ Still linked. To go back to the npm versions, delete node_modules/@tzardom-ui in ${appName} and run "npm install" there.`,
+      `\n◆ Still linked. To go back to the npm versions, delete node_modules/@tzardom-ui in ${appName} and run "${appInstall}" there.`,
     )
     process.exit(code)
   }
@@ -190,7 +210,7 @@ const watchPackages = () => {
   }
 
   console.log(
-    `➜ Watching packages/*. Run "npm run dev" in ${appName} to see the changes. Ctrl+C stops watching.`,
+    `➜ Watching packages/*. Run "${appDev}" in ${appName} to see the changes. Ctrl+C stops watching.`,
   )
 }
 
